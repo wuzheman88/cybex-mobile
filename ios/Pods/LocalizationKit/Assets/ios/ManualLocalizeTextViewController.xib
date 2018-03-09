@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ManualLocalizeTextViewController" customModule="LocalizationKit" customModuleProvider="target">
+            <connections>
+                <outlet property="footerConstraint" destination="zft-1q-wPz" id="2cJ-1e-cJk"/>
+                <outlet property="textView" destination="WvB-eb-M5o" id="fjS-V4-MFH"/>
+                <outlet property="view" destination="iN0-l3-epB" id="Paf-ZE-ra1"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="WvB-eb-M5o">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <inset key="scrollIndicatorInsets" minX="5" minY="5" maxX="5" maxY="5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                </textView>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="WvB-eb-M5o" secondAttribute="trailing" id="5uI-mm-LnA"/>
+                <constraint firstItem="WvB-eb-M5o" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Kty-cW-nOu"/>
+                <constraint firstItem="WvB-eb-M5o" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="T9y-Z5-Mis"/>
+                <constraint firstAttribute="bottom" secondItem="WvB-eb-M5o" secondAttribute="bottom" id="zft-1q-wPz"/>
+            </constraints>
+            <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+            <point key="canvasLocation" x="33.5" y="53.5"/>
+        </view>
+    </objects>
+</document>

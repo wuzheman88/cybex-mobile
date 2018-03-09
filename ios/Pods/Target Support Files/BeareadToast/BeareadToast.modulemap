@@ -1,0 +1,6 @@
+framework module BeareadToast {
+  umbrella header "BeareadToast-umbrella.h"
+
+  export *
+  module * { export * }
+}

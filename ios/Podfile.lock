@@ -1,3 +1,108 @@
-PODFILE CHECKSUM: 18b41a2bfbd366a0b7377ca0c49f1696212e09a0
+PODS:
+  - Alamofire (4.7.0)
+  - BeareadToast (0.0.3)
+  - DGElasticPullToRefresh (1.1)
+  - ESTabBarController-swift (2.6.1)
+  - EZSwiftExtensions (1.11)
+  - JSONRPCKit (3.0.0):
+    - Result (~> 3.2.0)
+  - Kingfisher (4.6.3)
+  - KMNavigationBarTransition (1.1.5)
+  - LocalizationKit (4.0.4):
+    - LocalizationKit/Core (= 4.0.4)
+    - Socket.IO-Client-Swift (~> 13.1.0)
+  - LocalizationKit/Core (4.0.4):
+    - Socket.IO-Client-Swift (~> 13.1.0)
+  - Moya (11.0.1):
+    - Moya/Core (= 11.0.1)
+  - Moya/Core (11.0.1):
+    - Alamofire (~> 4.1)
+    - Result (~> 3.0)
+  - NVActivityIndicatorView (4.1.1):
+    - NVActivityIndicatorView/Presenter (= 4.1.1)
+  - NVActivityIndicatorView/Presenter (4.1.1)
+  - ObjectMapper (3.1.0)
+  - Proposer (1.2.0)
+  - R.swift (4.0.0):
+    - R.swift.Library (~> 4.0.0)
+  - R.swift.Library (4.0.0)
+  - Result (3.2.4)
+  - ReSwift (4.0.1)
+  - Reveal-SDK (13)
+  - Siren (3.2.0)
+  - Socket.IO-Client-Swift (13.1.1):
+    - Starscream (~> 3.0.2)
+  - Starscream (3.0.4)
+  - SwiftTheme (0.4.1)
+  - TinyConstraints (3.1.0)
+
+DEPENDENCIES:
+  - Alamofire
+  - BeareadToast (from `https://github.com/phpmaple/BeareadToast`)
+  - DGElasticPullToRefresh (from `https://github.com/sammygutierrez/DGElasticPullToRefresh`)
+  - ESTabBarController-swift
+  - EZSwiftExtensions (from `https://github.com/Steven-Cheung/EZSwiftExtensions`, branch `swift4`)
+  - JSONRPCKit
+  - Kingfisher
+  - KMNavigationBarTransition
+  - LocalizationKit
+  - Moya
+  - NVActivityIndicatorView
+  - ObjectMapper
+  - Proposer
+  - R.swift
+  - ReSwift
+  - Reveal-SDK
+  - Siren
+  - Starscream
+  - SwiftTheme
+  - TinyConstraints
+
+EXTERNAL SOURCES:
+  BeareadToast:
+    :git: https://github.com/phpmaple/BeareadToast
+  DGElasticPullToRefresh:
+    :git: https://github.com/sammygutierrez/DGElasticPullToRefresh
+  EZSwiftExtensions:
+    :branch: swift4
+    :git: https://github.com/Steven-Cheung/EZSwiftExtensions
+
+CHECKOUT OPTIONS:
+  BeareadToast:
+    :commit: 0bbfcb71a7b584b534ec212effd8ac739d3bfd69
+    :git: https://github.com/phpmaple/BeareadToast
+  DGElasticPullToRefresh:
+    :commit: f22cc61c56b03b275d15396f9bd555788779d9fa
+    :git: https://github.com/sammygutierrez/DGElasticPullToRefresh
+  EZSwiftExtensions:
+    :commit: 60303b59bdbe097f9e82b7b24dfc8aafcfb53090
+    :git: https://github.com/Steven-Cheung/EZSwiftExtensions
+
+SPEC CHECKSUMS:
+  Alamofire: 907e0a98eb68cdb7f9d1f541a563d6ac5dc77b25
+  BeareadToast: 17ff7f5ac9609b186543d6a45df8f15f78c9ca7a
+  DGElasticPullToRefresh: 28f11a6026302a90f8ffebbc6e24748e584dddd3
+  ESTabBarController-swift: 1e629e60bc6a87c1ea92a5309489b9f8dde15fa2
+  EZSwiftExtensions: 9d3dc8a51818e2fbfd11099b38a2c47d0ca693d0
+  JSONRPCKit: 50e0dc5e7f873e87f81562feb8836b7d1974da6d
+  Kingfisher: 98e6d5b5e807645743e8ed5ececd25d688d38452
+  KMNavigationBarTransition: 7a52c9bc25b39b6e3343e980b453facee1591b82
+  LocalizationKit: 18134b48e43781da8d588c796da946e153e8b407
+  Moya: 3d594ada51a21cc02b18739ab578a1984f900c8a
+  NVActivityIndicatorView: 60109b9bf46efc2e71ab81453196ccdfdfeea870
+  ObjectMapper: 20505058f54e5c3ca69e1d6de9897d152a5369a6
+  Proposer: 722fe61822b89f551ae10afe8314067f98c39c28
+  R.swift: d6a5ec2f55a8441dc0ed9f1f8b37d7d11ae85c66
+  R.swift.Library: c3af34921024333546e23b70e70d0b4e0cffca75
+  Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
+  ReSwift: f4012c613e13da7398827fe5aebdb938eaed40a3
+  Reveal-SDK: ccc2b0f8014965ea448b7534a7c2c8da232b75e8
+  Siren: 964f57553cf6a39d1bada4e403557523a213b397
+  Socket.IO-Client-Swift: f22222913f29801e30ae0df712db663ec096edc2
+  Starscream: f5da93fe6984c77b694366bf7299b7dc63a76f26
+  SwiftTheme: 36d71c4eed4b2c401c782cf036e4586c749a8173
+  TinyConstraints: 4721a4b303c799328867078ade6560e152df54d1
+
+PODFILE CHECKSUM: 8501b7a4903937a69d06d837b78be5c96ae24ea5
 
 COCOAPODS: 1.4.0

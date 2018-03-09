@@ -132,6 +132,54 @@ strip_invalid_archs() {
   STRIP_BINARY_RETVAL=1
 }
 
+
+if [[ "$CONFIGURATION" == "Debug" ]]; then
+  install_framework "${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/BeareadToast/BeareadToast.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/DGElasticPullToRefresh/DGElasticPullToRefresh.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ESTabBarController-swift/ESTabBarController_swift.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/EZSwiftExtensions/EZSwiftExtensions.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/JSONRPCKit/JSONRPCKit.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/KMNavigationBarTransition/KMNavigationBarTransition.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/LocalizationKit/LocalizationKit.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/Moya/Moya.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/NVActivityIndicatorView/NVActivityIndicatorView.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ObjectMapper/ObjectMapper.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/Proposer/Proposer.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/R.swift.Library/Rswift.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ReSwift/ReSwift.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/Result/Result.framework"
+  install_framework "${PODS_ROOT}/Reveal-SDK/RevealServer-13/iOS/RevealServer.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/Siren/Siren.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/Socket.IO-Client-Swift/SocketIO.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/SwiftTheme/SwiftTheme.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/TinyConstraints/TinyConstraints.framework"
+fi
+if [[ "$CONFIGURATION" == "Release" ]]; then
+  install_framework "${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/BeareadToast/BeareadToast.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/DGElasticPullToRefresh/DGElasticPullToRefresh.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ESTabBarController-swift/ESTabBarController_swift.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/EZSwiftExtensions/EZSwiftExtensions.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/JSONRPCKit/JSONRPCKit.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/KMNavigationBarTransition/KMNavigationBarTransition.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/LocalizationKit/LocalizationKit.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/Moya/Moya.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/NVActivityIndicatorView/NVActivityIndicatorView.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ObjectMapper/ObjectMapper.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/Proposer/Proposer.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/R.swift.Library/Rswift.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ReSwift/ReSwift.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/Result/Result.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/Siren/Siren.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/Socket.IO-Client-Swift/SocketIO.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/SwiftTheme/SwiftTheme.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/TinyConstraints/TinyConstraints.framework"
+fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
   wait
 fi
