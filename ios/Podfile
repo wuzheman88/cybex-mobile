@@ -1,0 +1,51 @@
+platform :ios, '9.0'
+
+def react
+    react_path = '../node_modules/react-native'
+    yoga_path = File.join(react_path, 'ReactCommon/yoga')
+    
+    pod 'yoga', :path => yoga_path
+    
+    pod 'React', :path => react_path, :subspecs => [
+    'RCTImage',
+    'RCTNetwork',
+    'RCTText',
+    'RCTWebSocket',
+    'RCTVibration',
+    'RCTSettings',
+    'RCTLinkingIOS',
+    'RCTGeolocation',
+    'RCTBlob',
+    'RCTActionSheet'
+    ]
+end
+
+
+target 'cybexMobile' do
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
+#  react
+
+  
+  # Pods for cybexMobile
+  target 'cybexMobileTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end
+
+target 'cybexMobile-tvOS' do
+  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
+  # use_frameworks!
+
+  # Pods for cybexMobile-tvOS
+
+  target 'cybexMobile-tvOSTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end
+
+
