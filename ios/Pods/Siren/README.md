@@ -4,7 +4,7 @@
 
 ![Swift Support](https://img.shields.io/badge/Swift-2.3%2C%203.1%2C%203.2%2C%204.0-orange.svg)
 
-[![BuddyBuild](https://dashboard.buddybuild.com/api/statusImage?appID=58c4d0d85601d40100c5c51d&branch=master&build=latest)](https://dashboard.buddybuild.com/apps/58c4d0d85601d40100c5c51d/build/latest?branch=master) [![CocoaPods](https://img.shields.io/cocoapods/v/Siren.svg)](https://cocoapods.org/pods/Siren)  [![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) [![SwiftPM Compatible](https://img.shields.io/badge/SwiftPM-Compatible-brightgreen.svg)](https://swift.org/package-manager/) [![CocoaPods](https://img.shields.io/cocoapods/dt/Siren.svg)](https://cocoapods.org/pods/Siren) [![CocoaPods](https://img.shields.io/cocoapods/dm/Siren.svg)](https://cocoapods.org/pods/Siren)
+[![CocoaPods](https://img.shields.io/cocoapods/v/Siren.svg)](https://cocoapods.org/pods/Siren)  [![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) [![SwiftPM Compatible](https://img.shields.io/badge/SwiftPM-Compatible-brightgreen.svg)](https://swift.org/package-manager/) [![CocoaPods](https://img.shields.io/cocoapods/dt/Siren.svg)](https://cocoapods.org/pods/Siren) [![CocoaPods](https://img.shields.io/cocoapods/dm/Siren.svg)](https://cocoapods.org/pods/Siren)
 ---
 
 ## Table of Contents
@@ -189,7 +189,7 @@ func application(application: UIApplication, didFinishLaunchingWithOptions launc
 
 extension AppDelegate: SirenDelegate {
 	// Returns a localized message to this delegate method upon performing a successful version check
-    func sirenDidDetectNewVersionWithoutAlert(message: String) {
+    func sirenDidDetectNewVersionWithoutAlert(message: String, updateType: UpdateType) {
         print("\(message)")
     }
 }
@@ -213,12 +213,23 @@ Six delegate methods allow you to handle or track the user's behavior. Each meth
 
 ```	swift
 public protocol SirenDelegate: class {
-    func sirenDidShowUpdateDialog(alertType: Siren.AlertType)  // User presented with update dialog
-    func sirenUserDidLaunchAppStore()                          // User did click on button that launched App Store.app
-    func sirenUserDidSkipVersion()                             // User did click on button that skips version update
-    func sirenUserDidCancel()                                  // User did click on button that cancels update dialog
-    func sirenDidFailVersionCheck(error: Error)                // Siren failed to perform version check (may return system-level error)
-    func sirenDidDetectNewVersionWithoutAlert(message: String) // Siren performed version check and did not display alert
+    // User presented with update dialog
+    func sirenDidShowUpdateDialog(alertType: Siren.AlertType)
+
+    // User did click on button that launched App Store.app
+    func sirenUserDidLaunchAppStore()
+
+    // User did click on button that skips version update
+    func sirenUserDidSkipVersion()
+
+    // User did click on button that cancels update dialog
+    func sirenUserDidCancel()                                 
+    
+    // Siren failed to perform version check (may return system-level error)
+    func sirenDidFailVersionCheck(error: Error)                
+
+    // Siren performed version check and did not display alert
+    func sirenDidDetectNewVersionWithoutAlert(message: String, updateType: UpdateType)
 }
 ```
 

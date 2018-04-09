@@ -1,5 +1,7 @@
 platform :ios, '9.0'
 
+plugin 'cocoapods-wholemodule'
+
 def network
     pod 'Starscream'
     pod 'JSONRPCKit'
@@ -10,6 +12,15 @@ end
 
 def data
     pod 'ObjectMapper'
+    pod 'SwiftyJSON'
+    pod 'BigInt'
+    pod 'GRDB.swift'
+    pod 'CryptoSwift'
+    pod 'RxGRDB'
+    pod 'SwiftyUserDefaults'
+    pod 'Zephyr'
+    pod 'Cache'
+
 end
 
 def resource
@@ -18,17 +29,27 @@ end
 
 def architecture
    pod 'ReSwift'
-   pod 'LocalizationKit'
+   pod 'RxSwift'
+   pod 'Localize-Swift'
    pod 'SwiftTheme'
-
+   pod 'UIFontComplete'
+   pod 'RxCocoa'
 end
 
 def permission
     pod 'Proposer'
+    pod 'BiometricAuthentication'
+end
+
+def animation
+    pod 'Spring', :git => 'https://github.com/MengTo/Spring.git'
+    pod 'Hero'
+    pod 'Locksmith'
 end
 
 def extension
     pod 'EZSwiftExtensions', :git => 'https://github.com/Steven-Cheung/EZSwiftExtensions', :branch => 'swift4'
+    pod 'KeychainAccess'
 end
 
 def ui
@@ -36,8 +57,15 @@ def ui
     pod 'ESTabBarController-swift'
     pod 'KMNavigationBarTransition'
     pod 'NVActivityIndicatorView'
-    pod 'DGElasticPullToRefresh' , :git => 'https://github.com/sammygutierrez/DGElasticPullToRefresh'
     pod 'BeareadToast', :git => 'https://github.com/phpmaple/BeareadToast'
+    pod 'DNSPageView'
+    pod 'TextFieldEffects'
+    pod 'MJRefresh'
+    pod 'IHKeyboardAvoiding'
+    pod 'Typist'
+    pod 'RxGesture'
+    pod 'Atributika'
+    pod 'ZLaunchAd'
 end
 
 def other
@@ -48,6 +76,11 @@ target 'cybexMobile' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
   pod 'Reveal-SDK', :configurations => ['Debug']
+  pod 'WoodPeckeriOS', :configurations => ['Debug']
+  pod 'Peek', :configurations => ['Debug']
+
+  pod 'Fabric'
+  pod 'RealReachability'
 
   network
   data
