@@ -123,6 +123,11 @@ class CBKLineMainView: UIView {
         if klineModel.open == klineModel.close, let lastmodel = last_model {
           strokeColor = klineModel.close < lastmodel.close ? configuration.theme.decreaseColor : configuration.theme.increaseColor
         }
+        
+        if klineModel.open > klineModel.close {
+          strokeColor = configuration.theme.decreaseColor
+        }
+       
  
         strokeColors.append(strokeColor)
         context.setStrokeColor(strokeColor.cgColor)

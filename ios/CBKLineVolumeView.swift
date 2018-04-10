@@ -111,6 +111,10 @@ class CBKLineVolumeView: UIView {
         strokeColor = klineModel.close < lastmodel.close ? configuration.theme.decreaseColor : configuration.theme.increaseColor
       }
       
+      if klineModel.open > klineModel.close {
+        strokeColor = configuration.theme.decreaseColor
+      }
+      
       strokeColors.append(strokeColor)
 
       let path = UIBezierPath(roundedRect: CGRect(x:xPosition - configuration.theme.klineWidth / 2, y:startPoint.y, w: configuration.theme.klineWidth, h:abs(endPoint.y - startPoint.y)), cornerRadius: configuration.theme.klineRadius).cgPath
