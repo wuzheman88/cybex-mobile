@@ -35,7 +35,7 @@ class HomePairView: UIView {
   var quote:assetID!
   var data: Any? {
     didSet {
-      guard let markets = data as? [Asset], markets.count > 0, UIApplication.shared.coordinator().state.property.assetInfo.count > 0 else {
+      guard let markets = data as? [Bucket], markets.count > 0, UIApplication.shared.coordinator().state.property.assetInfo.count > 0 else {
         let index = self.store["index"] as! Int
         
         let pair = Config.asset_ids[index]
@@ -56,7 +56,7 @@ class HomePairView: UIView {
         return
         
       }
-      let matrix = AssetMatrix(markets)
+      let matrix = BucketMatrix(markets)
       
       self.icon.image = UIImage.init(named: matrix.quote_assetid.assetIcon)
       self.asset1.text = matrix.base_name

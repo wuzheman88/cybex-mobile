@@ -65,12 +65,12 @@ extension String {
     return result!
   }
   
-  func suffixNumber() -> String {
+  func suffixNumber(digitNum:Int = 5) -> String {
     var num:Double = self.toDouble()!
     let sign = ((num < 0) ? "-" : "" )
     num = fabs(num)
     if (num < 1000.0) {
-      return "\(sign)\(num)"
+      return "\(sign)\(num.toString.formatCurrency(digitNum: digitNum))"
     }
     
     let exp: Int = Int(log10(num) / 3.0)

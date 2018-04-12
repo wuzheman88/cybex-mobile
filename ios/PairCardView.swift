@@ -54,7 +54,7 @@ class PairCardView : UIView {
   
   var data: Any? {
     didSet {
-      guard let markets = data as? [Asset], markets.count > 0 , UIApplication.shared.coordinator().state.property.assetInfo.count > 0 else {
+      guard let markets = data as? [Bucket], markets.count > 0 , UIApplication.shared.coordinator().state.property.assetInfo.count > 0 else {
         let index = self.store["index"] as! Int
         
         let pair = Config.asset_ids[index]
@@ -71,7 +71,7 @@ class PairCardView : UIView {
         return
       }
       
-      let matrix = AssetMatrix(markets)
+      let matrix = BucketMatrix(markets)
       self.base_name.text = matrix.base_name
       self.quote_name.text = "/" + matrix.quote_name
       self.change.text = (matrix.incre == .greater ? "+" : "") + matrix.change + "%"

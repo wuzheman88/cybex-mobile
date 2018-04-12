@@ -82,7 +82,7 @@ struct SubscribeMarketRequest: JSONRPCKit.Request {
 }
 
 struct getLimitOrdersRequest: JSONRPCKit.Request {
-  typealias Response = Any
+  typealias Response = [LimitOrder]
   
   var ids:[String]
   
@@ -97,18 +97,10 @@ struct getLimitOrdersRequest: JSONRPCKit.Request {
   func response(from resultObject: Any) throws -> Response {
     let result = JSON(resultObject).arrayValue
     if result.count > 1 {
-      let half = result.count / 2
-      let buy = result[0..<half]
-      
-      let sell = Array(result[half..<result.count])
-      
-      var data:[JSON] = []
-      for i in 0..<half {
-        let buy_data = buy[i]
-        let sell_data = sell[i]
-        let buy_price = buy_data["sell_price"]
-        let sell_price = sell_data["sell_price"]
-        data.append([buy_price, sell_price, buy_data["for_sale"], sell_data["for_sale"]])
+      var data:[LimitOrder] = []
+      for i in result {
+        let order = try! LimitOrder(JSON: i.dictionaryObject!)
+        data.append(order)
       }
       
       return data

@@ -20,7 +20,7 @@ class PairDetailView: UIView {
   
     var data: Any? {
     didSet {
-      guard let markets = data as? [Asset], markets.count > 0 , UIApplication.shared.coordinator().state.property.assetInfo.count > 0 else {
+      guard let markets = data as? [Bucket], markets.count > 0 , UIApplication.shared.coordinator().state.property.assetInfo.count > 0 else {
         self.baseVolume.text = "Vol: -"
         self.quoteVolume.text = "-"
         self.highLabel.text = "High: -"
@@ -32,7 +32,7 @@ class PairDetailView: UIView {
         return
       }
       
-      let matrix = AssetMatrix(markets)
+      let matrix = BucketMatrix(markets)
       
       self.baseVolume.text = "Vol: " + matrix.base_volume
       self.quoteVolume.text = matrix.quote_volume

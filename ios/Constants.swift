@@ -131,6 +131,12 @@ enum assetID:String {
   }
 }
 
+extension assetID:Equatable {
+  static func ==(lhs: assetID, rhs: assetID) -> Bool {
+    return lhs.rawValue == rhs.rawValue
+  }
+}
+
 protocol ObjectDescriptable {
   func propertyDescription() -> String
 }

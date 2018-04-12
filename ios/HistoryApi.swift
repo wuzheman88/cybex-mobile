@@ -24,7 +24,7 @@ struct AssetPairQueryParams {
 }
 
 struct GetMarketHistoryRequest: JSONRPCKit.Request {
-  typealias Response = [Asset]
+  typealias Response = [Bucket]
   
   var queryParams:AssetPairQueryParams
   
@@ -41,7 +41,7 @@ struct GetMarketHistoryRequest: JSONRPCKit.Request {
     if let response = resultObject as? [[String: Any]] {
       return response.map { data in
     
-        return try! Asset(JSON:data)
+        return try! Bucket(JSON:data)
       }
     } else {
       throw CastError(actualValue: resultObject, expectedType: Response.self)

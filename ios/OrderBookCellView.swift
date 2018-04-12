@@ -22,15 +22,30 @@ class OrderBookCellView:UIView {
 
   var data: Any? {
     didSet {
-      guard let showData = data as? ([String], Double, Double) else { return }
+      guard let showData = data as? (OrderBook.Order?, OrderBook.Order?) else { return }
       
-      self.buy_price.text = showData.0[0]
-      self.buy_volume.text = showData.0[1].suffixNumber()
-      self.sell_price.text = showData.0[2]
-      self.sell_volume.text = showData.0[3].suffixNumber()
+      if let bid = showData.0 {
+        self.buy_price.text = bid.price
+        self.buy_volume.text = bid.volume
+        self.leftBoxWidth = self.leftBoxWidth.changeMultiplier(multiplier: CGFloat(bid.volume_percent))
+      }
+      else {
+        self.buy_price.text = ""
+        self.buy_volume.text = ""
+        self.leftBoxWidth = self.leftBoxWidth.changeMultiplier(multiplier: 0)
+      }
+      
+      if let ask = showData.1 {
+        self.sell_price.text = ask.price
+        self.sell_volume.text = ask.volume
+        self.rightBoxWidth = self.rightBoxWidth.changeMultiplier(multiplier: CGFloat(ask.volume_percent))
+      }
+      else {
+        self.sell_price.text = ""
+        self.sell_volume.text = ""
+        self.rightBoxWidth = self.rightBoxWidth.changeMultiplier(multiplier: 0)
+      }
 
-      self.leftBoxWidth = self.leftBoxWidth.changeMultiplier(multiplier: CGFloat(showData.1))
-      self.rightBoxWidth = self.rightBoxWidth.changeMultiplier(multiplier: CGFloat(showData.2))
     }
   }
   

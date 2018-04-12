@@ -13,7 +13,7 @@ import EZSwiftExtensions
 class HomeViewController: BaseViewController, UINavigationControllerDelegate, UIScrollViewDelegate {
   var coordinator: (HomeCoordinatorProtocol & HomeStateManagerProtocol)?
   
-  private lazy var contentsSubscriber: BlockSubscriber<([[Asset]]?,[assetID:AssetInfo])> = BlockSubscriber {[weak self] s in
+  private lazy var contentsSubscriber: BlockSubscriber<([[Bucket]]?,[assetID:AssetInfo])> = BlockSubscriber {[weak self] s in
     guard let `self` = self else { return }
     
     self.tableView.reloadData()

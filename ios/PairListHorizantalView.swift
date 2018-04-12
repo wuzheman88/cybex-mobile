@@ -14,12 +14,12 @@ class PairListHorizantalView: UIView {
   
   @IBOutlet weak var collectionView: UICollectionView!
   
-  var pairData:[[Asset]] = []
+  var pairData:[[Bucket]] = []
   var curIndex:Int?
   
   var data: Any? {
     didSet {
-      guard let datas = data as? [Any], let curIndex = datas[0] as? Int, let markets = datas[1] as? [[Asset]], markets.count > 0 else { return }
+      guard let datas = data as? [Any], let curIndex = datas[0] as? Int, let markets = datas[1] as? [[Bucket]], markets.count > 0 else { return }
       
       self.pairData = markets
       self.curIndex = curIndex

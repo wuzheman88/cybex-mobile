@@ -15,8 +15,8 @@ struct AppState:StateType {
 struct AppPropertyState {
   var haveData:Bool = false
 
-  var data:[[Asset]]?
-  var detailData:[[candlesticks:[Asset]]]?
+  var data:[[Bucket]]?
+  var detailData:[[candlesticks:[Bucket]]]?
 
   var subscribeIds:[Int]?
   
@@ -54,13 +54,13 @@ struct ResetPage: Action {}
 
 struct AssetsFetched:Action {
   let index:Int
-  let assets:[Asset]
+  let assets:[Bucket]
 }
 
 struct kLineFetched:Action {
   let index:Int
   let stick:candlesticks
-  let assets:[Asset]
+  let assets:[Bucket]
 }
 
 struct FetchOver:Action {
@@ -86,7 +86,7 @@ struct AssetInfoAction:Action {
   let info:AssetInfo
 }
 
-typealias MarketDataCallback = (Int, [Asset]) -> Void
+typealias MarketDataCallback = (Int, [Bucket]) -> Void
 
 class AppPropertyActionCreate: LoadingActionCreator {
   public typealias ActionCreator = (_ state: AppState, _ store: Store<AppState>) -> Action?
@@ -109,17 +109,17 @@ class AppPropertyActionCreate: LoadingActionCreator {
       self.fetchingMarketList(params, callback: {[weak self] (res) in
         guard let `self` = self else { return }
         
-        if let response = res as? [[Asset?]], var assets = response[0] as? [Asset] {
+        if let response = res as? [[Bucket?]], var assets = response[0] as? [Bucket] {
           if assets.count > 0 {
             let asset = assets[0]
             
             if asset.open > params.startTime.timeIntervalSince1970 {
               
               self.cycleFetch(asset, params: params, callback: { (o_asset) in
-                if let o_asset = o_asset as? Asset {
+                if let o_asset = o_asset as? Bucket {
                   let close = o_asset.close_base
                   let quote_close = o_asset.close_quote
-                  let addAsset = asset.copy() as! Asset
+                  let addAsset = asset.copy() as! Bucket
                   
                   let gapCount = ceil((asset.open - params.startTime.timeIntervalSince1970) / asset.seconds.toDouble()!)
                   addAsset.close_base = close
@@ -181,13 +181,13 @@ class AppPropertyActionCreate: LoadingActionCreator {
     }
   }
   
-  func cycleFetch(_ asset:Asset, params:AssetPairQueryParams, callback:CommonAnyCallback?) {
+  func cycleFetch(_ asset:Bucket, params:AssetPairQueryParams, callback:CommonAnyCallback?) {
     var re_params = params
     re_params.startTime = Date(timeIntervalSince1970: asset.open - 86400)
     re_params.endTime = Date(timeIntervalSince1970: asset.open - 3600)
     self.fetchingMarketList(re_params, callback: {[weak self] (o_res) in
       guard let `self` = self else { return }
-      if let o_response = o_res as? [[Asset?]], let o_assets = o_response[0] as? [Asset] {
+      if let o_response = o_res as? [[Bucket?]], let o_assets = o_response[0] as? [Bucket] {
         if o_assets.count > 0, let o_asset = o_assets.last {
           if let callback = callback {
             callback(o_asset)

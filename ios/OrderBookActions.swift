@@ -19,11 +19,24 @@ struct OrderBookState: StateType {
 }
 
 struct OrderBookPropertyState {
-  var data:[JSON]?
+  var data:OrderBook?
+}
+
+struct OrderBook {
+  struct Order {
+    let price:String
+    let volume:String
+    
+    let volume_percent:Double
+  }
+  
+  let bids:[Order]
+  let asks:[Order]
 }
 
 struct FetchedLimitData:Action {
-  let data:[JSON]
+  let data:[LimitOrder]
+  let base:assetID
 }
 
 //MARK: - Action Creator

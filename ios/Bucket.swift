@@ -9,7 +9,7 @@
 import Foundation
 import ObjectMapper
 
-class Asset : ImmutableMappable, NSCopying {
+class Bucket : ImmutableMappable, NSCopying {
   var id: String
   
   var base_volume: String
@@ -50,25 +50,25 @@ class Asset : ImmutableMappable, NSCopying {
   }
 
   func mapping(map: Map) {
-    id                   <- (map["id"],ToStringTransform())
-    base_volume          <- (map["base_volume"],ToStringTransform())
-    quote_volume         <- (map["quote_volume"],ToStringTransform())
-    high_base            <- (map["high_base"],ToStringTransform())
-    high_quote           <- (map["high_quote"],ToStringTransform())
-    low_base             <- (map["low_base"],ToStringTransform())
-    low_quote            <- (map["low_quote"],ToStringTransform())
-    open_base            <- (map["open_base"],ToStringTransform())
-    open_quote           <- (map["open_quote"],ToStringTransform())
-    close_base           <- (map["close_base"],ToStringTransform())
-    close_quote          <- (map["close_quote"],ToStringTransform())
-    open                  <- (map["key.open"], DateIntervalTransform())
-    base          <- (map["key.base"],ToStringTransform())
-    quote          <- (map["key.quote"],ToStringTransform())
-    seconds          <- (map["key.seconds"],ToStringTransform())
+    id                   >>> (map["id"],ToStringTransform())
+    base_volume          >>> (map["base_volume"],ToStringTransform())
+    quote_volume         >>> (map["quote_volume"],ToStringTransform())
+    high_base            >>> (map["high_base"],ToStringTransform())
+    high_quote           >>> (map["high_quote"],ToStringTransform())
+    low_base             >>> (map["low_base"],ToStringTransform())
+    low_quote            >>> (map["low_quote"],ToStringTransform())
+    open_base            >>> (map["open_base"],ToStringTransform())
+    open_quote           >>> (map["open_quote"],ToStringTransform())
+    close_base           >>> (map["close_base"],ToStringTransform())
+    close_quote          >>> (map["close_quote"],ToStringTransform())
+    open                  >>> (map["key.open"], DateIntervalTransform())
+    base          >>> (map["key.base"],ToStringTransform())
+    quote          >>> (map["key.quote"],ToStringTransform())
+    seconds          >>> (map["key.seconds"],ToStringTransform())
   }
   
   func copy(with zone: NSZone? = nil) -> Any {
-    let copy = try! Asset(JSON: self.toJSON())
+    let copy = try! Bucket(JSON: self.toJSON())
     return copy
   }
   
@@ -102,7 +102,7 @@ enum changeScope {
   }
 }
 
-class AssetMatrix {
+class BucketMatrix {
   var base_name:String
   var quote_name:String
 
@@ -111,7 +111,7 @@ class AssetMatrix {
   
   var price:String
   
-  var asset:[Asset]
+  var asset:[Bucket]
   
   var base_volume:String
   var quote_volume:String
@@ -124,7 +124,7 @@ class AssetMatrix {
   var incre:changeScope
   
 
-  init(_ asset:[Asset]) {
+  init(_ asset:[Bucket]) {
     self.asset = asset
     
     let last = self.asset.last!
@@ -237,8 +237,8 @@ class ToStringTransform: TransformType {
   }
 }
 
-extension Asset: Equatable {
-  static func ==(lhs: Asset, rhs: Asset) -> Bool {
+extension Bucket: Equatable {
+  static func ==(lhs: Bucket, rhs: Bucket) -> Bool {
     return lhs.id == rhs.id && lhs.base_volume == rhs.base_volume && lhs.quote_volume == rhs.quote_volume && lhs.high_base == rhs.high_base && lhs.high_quote == rhs.high_quote && lhs.low_base == rhs.low_base && lhs.low_quote == rhs.low_quote && lhs.open_base == rhs.open_base && lhs.open_quote == rhs.open_quote && lhs.close_base == rhs.close_base && lhs.close_quote == rhs.close_quote && lhs.open == rhs.open
   }
 }

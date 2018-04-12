@@ -19,7 +19,7 @@ class MarketViewController: BaseViewController {
     @IBOutlet weak var pageContentViewHeight: NSLayoutConstraint!
     @IBOutlet weak var scrollView: UIScrollView!
     
-    private lazy var contentsSubscriber: BlockSubscriber<([[Asset]]?,[assetID:AssetInfo])> = BlockSubscriber {[weak self] s in
+    private lazy var contentsSubscriber: BlockSubscriber<([[Bucket]]?,[assetID:AssetInfo])> = BlockSubscriber {[weak self] s in
     guard let `self` = self else { return }
     
     self.refreshView()

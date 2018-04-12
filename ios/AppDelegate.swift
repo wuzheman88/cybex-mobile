@@ -30,8 +30,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     window?.peek.enabled = true
     
-
-    
 //    let jsCodeLocation = RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "index", fallbackResource: "")
 //    let rootView = RCTRootView(bundleURL: jsCodeLocation, moduleName: "cybexMobile", initialProperties: [:], launchOptions: launchOptions)
   
