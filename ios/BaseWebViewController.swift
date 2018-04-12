@@ -37,6 +37,8 @@ class BaseWebViewController: BaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    self.edgesForExtendedLayout = []
+    
     webView.uiDelegate = self
     webView.navigationDelegate = self
     view.addSubview(webView)

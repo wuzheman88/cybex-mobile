@@ -37,11 +37,10 @@ class PairCardView : UIView {
         self.change.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         self.timeLabel.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         self.base_name.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-
       }
       else {
         gradient.removeFromSuperlayer()
-        
+        self.gradient = CAGradientLayer()
         self.arrowIcon.image = #imageLiteral(resourceName: "ic_arrow_drop_down_24px")
         self.quote_name.textColor = #colorLiteral(red: 0.5436816812, green: 0.5804407597, blue: 0.6680644155, alpha: 1)
         self.change.textColor = #colorLiteral(red: 0.5436816812, green: 0.5804407597, blue: 0.6680644155, alpha: 1)
@@ -111,6 +110,8 @@ class PairCardView : UIView {
     layer.locations = [0, 1]
     layer.startPoint = CGPoint.zero
     layer.endPoint = CGPoint(x: 1, y: 0.89)
+    layer.cornerRadius = 4
+    layer.masksToBounds = true
     return layer
   }
   

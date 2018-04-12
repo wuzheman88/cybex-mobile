@@ -25,6 +25,7 @@ class SettingViewController: BaseViewController {
       navigationItem.largeTitleDisplayMode = .always
     }
 
+    self.tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, w: self.tableView.bounds.size.width, h: 0.01))
 
     setupNotification()
   }

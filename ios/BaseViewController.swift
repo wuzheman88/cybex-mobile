@@ -125,6 +125,7 @@ class BaseViewController: UIViewController {
 
   func configLeftNavButton(_ image:UIImage?) {
     leftNavButton = UIButton.init(type: .custom)
+    leftNavButton?.frame = CGRect(x: 0, y: 0, w: 24, h: 24)
     leftNavButton?.setImage(image ?? #imageLiteral(resourceName: "ic_view_list_24px"), for: .normal)
     leftNavButton?.addTarget(self, action: #selector(leftAction(_:)), for: .touchUpInside)
     leftNavButton?.isHidden = false
