@@ -96,26 +96,58 @@ func AppReducer(action:Action, state:AppState?) -> AppState {
 
 func AppPropertyReducer(_ state: AppPropertyState?, action: Action) -> AppPropertyState {
   var state = state ?? AppPropertyState()
-  var data = state.data ?? Array(repeating: [], count: Config.asset_ids.count)
-  var ids = state.subscribeIds ?? Array(repeating: 0, count: Config.asset_ids.count)
-  var klineDatas = state.detailData ?? Array(repeating: [:], count: Config.asset_ids.count)
+  var data = state.data ?? [:]
+
+  var ids = state.subscribeIds ?? [:]
+  var klineDatas = state.detailData ?? [:]
   
   switch action {
   case let action as AssetsFetched:
-    data[action.index] = action.assets
+    if action.assets.count != 0  {
+      data[action.pair.secondAssetId] = action.assets
+    }
+    else if action.assets.count == 0 {
+      data[action.pair.secondAssetId] = []
+    }
+    
+    var sortingData = Array(data.values)
+    
+    if data.count > 1 {
+      sortingData.sort { (last, cur) -> Bool in
+        if last.count == 0 && cur.count != 0 {
+          return false
+        }
+        else if last.count != 0 && cur.count == 0 {
+          return true
+        }
+        else if last.count == 0 && cur.count == 0 {
+          return false
+        }
+        
+        return BucketMatrix.init(last).base_volume_origin > BucketMatrix.init(cur).base_volume_origin
+      }
+    }
+    
     state.data = data
+    state.sortedData = sortingData
   case _ as FetchOver:
     state.haveData = true
   case let action as SubscribeSuccess:
-    ids[action.index] = action.id
+    ids[action.assetID] = action.id
     state.subscribeIds = ids
   case let action as AssetInfoAction:
     state.assetInfo[action.assetID] = action.info
   case let action as kLineFetched:
-    var klinedata = klineDatas[action.index]
-    klinedata[action.stick] = action.assets
-    klineDatas[action.index] = klinedata
+    if klineDatas.has(action.assetID) {
+      var klineData = klineDatas[action.assetID]!
+      klineData[action.stick] = action.assets
+      klineDatas[action.assetID] = klineData
+    }
+    else {
+      klineDatas[action.assetID] = [action.stick: action.assets]
+    }
     state.detailData = klineDatas
+    
   default:
     break
   }

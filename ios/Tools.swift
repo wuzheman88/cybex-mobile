@@ -226,7 +226,7 @@ extension String {
     formatter.numberStyle = .currency
     formatter.currencySymbol = ""
     formatter.maximumFractionDigits = digitNum
-    formatter.minimumFractionDigits = 0
+    formatter.minimumFractionDigits = digitNum
 
     let result = formatter.string(from: NumberFormatter().number(from: self)!)
     return result!
@@ -244,7 +244,7 @@ extension String {
     let units: [String] = ["k","m","b"]
     let roundedNum: Double = round(100 * num / pow(1000.0,Double(exp))) / 100
     
-    return "\(sign)\(roundedNum)" + "\(units[exp-1])"
+    return "\(sign)\(roundedNum.toString.formatCurrency(digitNum:2))" + "\(units[exp-1])"
   }
 }
 

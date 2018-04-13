@@ -153,7 +153,7 @@ public class CBMainConfiguration {
   var scale: CGFloat = 0.50
   
   /// 主图顶部提示信息高度
-  var assistViewHeight: CGFloat = 18.0
+  var assistViewHeight: CGFloat = 25.0
   
   /// 主图时间线信息高度
   var dateAssistViewHeight: CGFloat = 14.0

@@ -33,7 +33,7 @@ class AssetInfo : ImmutableMappable {
 
 class Asset : ImmutableMappable {
   let amount: String
-  let assetID: assetID
+  let assetID: String
   
   required  init(map: Map) throws {
     amount               = try map.value("amount", using:ToStringTransform())

@@ -14,6 +14,7 @@ import SwiftTheme
 import RealReachability
 import Peek
 import SwiftyUserDefaults
+import BeareadToast
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -42,7 +43,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
   
     RealReachability.sharedInstance().startNotifier()
-    NotificationCenter.default.addObserver(forName: NSNotification.Name.realReachabilityChanged, object: self, queue: nil) { (notifi) in
+    NotificationCenter.default.addObserver(forName: NSNotification.Name.realReachabilityChanged, object: nil, queue: nil) { (notifi) in
+      let status = RealReachability.sharedInstance().currentReachabilityStatus()
+      if status == .RealStatusNotReachable {
+        BeareadToast.showError(text: "network is not available.", inView: self.window!, hide:2)
+      }
       NetWorkService.shared.checkNetworAndConnect()
     }
     

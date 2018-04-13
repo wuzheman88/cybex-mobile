@@ -41,7 +41,7 @@ struct GetMarketHistoryRequest: JSONRPCKit.Request {
     if let response = resultObject as? [[String: Any]] {
       return response.map { data in
     
-        return try! Bucket(JSON:data)
+        return Bucket(JSON:data)!
       }
     } else {
       throw CastError(actualValue: resultObject, expectedType: Response.self)

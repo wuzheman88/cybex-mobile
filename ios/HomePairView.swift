@@ -31,22 +31,22 @@ class HomePairView: UIView {
   @IBOutlet weak var bulking: UILabel!
   @IBOutlet weak var total_time: UILabel!
 
-  var base:assetID!
-  var quote:assetID!
+  var base:String!
+  var quote:String!
   var data: Any? {
     didSet {
+      let index = self.store["index"] as! Int
+      
+      let base_asset = AssetConfiguration.CYB
+      let quote_asset = AssetConfiguration.shared.asset_ids[index]
+      let base_info = UIApplication.shared.coordinator().state.property.assetInfo[base_asset]
+      let quote_info = UIApplication.shared.coordinator().state.property.assetInfo[quote_asset]
+      self.asset1.text = base_info != nil ? base_info!.symbol : "-"
+      self.asset2.text = quote_info != nil ? ("/" + quote_info!.symbol) : "/-"
+      
+      self.icon.image = UIImage.init(named: AssetConfiguration.shared.asset_icon(quote_asset))
+      
       guard let markets = data as? [Bucket], markets.count > 0, UIApplication.shared.coordinator().state.property.assetInfo.count > 0 else {
-        let index = self.store["index"] as! Int
-        
-        let pair = Config.asset_ids[index]
-        let base_asset = assetID(rawValue: pair[0])!
-        let quote_asset = assetID(rawValue: pair[1])!
-        let base_info = UIApplication.shared.coordinator().state.property.assetInfo[base_asset]
-        let quote_info = UIApplication.shared.coordinator().state.property.assetInfo[quote_asset]
-
-        self.asset1.text = base_info != nil ? base_info!.symbol : "-"
-        self.asset2.text = quote_info != nil ? ("/" + quote_info!.symbol) : "/-"
-        self.icon.image = UIImage.init(named: quote_asset.assetIcon)
         self.volume.text = "V: -"
         self.high_low.text = "H: - L: -"
         self.price.text = "-"
@@ -57,11 +57,7 @@ class HomePairView: UIView {
         
       }
       let matrix = BucketMatrix(markets)
-      
-      self.icon.image = UIImage.init(named: matrix.quote_assetid.assetIcon)
-      self.asset1.text = matrix.base_name
-      self.asset2.text = "/" + matrix.quote_name
-      
+     
       self.volume.text = "V: " + matrix.base_volume
       self.high_low.text = "H: " + matrix.high + " L: " + matrix.low
       self.price.text = matrix.price

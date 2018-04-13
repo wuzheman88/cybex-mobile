@@ -11,6 +11,7 @@ import ReSwift
 import BigInt
 import DNSPageView
 import SwiftTheme
+import Localize_Swift
 
 class MarketViewController: BaseViewController {
     @IBOutlet weak var pageTitleView: DNSPageTitleView!
@@ -19,7 +20,7 @@ class MarketViewController: BaseViewController {
     @IBOutlet weak var pageContentViewHeight: NSLayoutConstraint!
     @IBOutlet weak var scrollView: UIScrollView!
     
-    private lazy var contentsSubscriber: BlockSubscriber<([[Bucket]]?,[assetID:AssetInfo])> = BlockSubscriber {[weak self] s in
+    private lazy var contentsSubscriber: BlockSubscriber<([[Bucket]]?,[String:AssetInfo])> = BlockSubscriber {[weak self] s in
     guard let `self` = self else { return }
     
     self.refreshView()
@@ -32,7 +33,7 @@ class MarketViewController: BaseViewController {
   @IBOutlet weak var detailView: PairDetailView!
   @IBOutlet weak var kLineView: CBKLineView!
   
-  var timeGap:candlesticks = .one_hour
+  var timeGap:candlesticks = .five_minute
   var indicator:indicator = .ma {
     didSet {
       switch indicator {
@@ -81,7 +82,7 @@ class MarketViewController: BaseViewController {
     
 
     // 设置标题内容
-    let titles = ["Order Book", "Trade History"]
+    let titles = Localize.currentLanguage() == "en" ? ["Order Book", "Trade History"] : ["买卖单", "交易历史"]
     
     // 设置默认的起始位置
     let startIndex = 0
@@ -97,7 +98,7 @@ class MarketViewController: BaseViewController {
     
     // 创建每一页对应的controller
   
-    let pair = Config.asset_ids[self.curIndex]
+    let pair = [AssetConfiguration.CYB, AssetConfiguration.shared.asset_ids[self.curIndex]]
     let childViewControllers: [BaseViewController] = coordinator!.setupChildViewControllers(pair)
     
     self.coordinator?.refreshChildViewController(childViewControllers, pair: pair)
@@ -122,7 +123,7 @@ class MarketViewController: BaseViewController {
   }
   
   func refreshDetailView() {
-    if let assets = UIApplication.shared.coordinator().state.property.data {
+    if let assets = UIApplication.shared.coordinator().state.property.sortedData {
       let data = assets[self.curIndex]
       detailView.data = data
       
@@ -136,7 +137,7 @@ class MarketViewController: BaseViewController {
     self.refreshDetailView()
     fetchKlineData()
     
-    let pair = Config.asset_ids[self.curIndex]
+    let pair = [AssetConfiguration.CYB, AssetConfiguration.shared.asset_ids[self.curIndex]]
     self.coordinator?.refreshChildViewController(pageContentView.childViewControllers as! [BaseViewController], pair: pair)
   }
   
@@ -145,12 +146,13 @@ class MarketViewController: BaseViewController {
 
     self.kLineView.isHidden = true
     
-    UIApplication.shared.coordinator().requestKlineDetailData(index: self.curIndex, gap: timeGap, vc: self, selector: #selector(refreshKLine))
+    UIApplication.shared.coordinator().requestKlineDetailData(sepcialID: AssetConfiguration.shared.asset_ids[self.curIndex], gap: timeGap, vc: self, selector: #selector(refreshKLine))
   }
   
   @objc func refreshKLine() {
-    if let klineDatas = UIApplication.shared.coordinator().state.property.detailData, klineDatas[self.curIndex].count > 0 {
-      let klineData = klineDatas[self.curIndex]
+    let oid = AssetConfiguration.shared.asset_ids[self.curIndex]
+    if let klineDatas = UIApplication.shared.coordinator().state.property.detailData, klineDatas[oid]!.count > 0 {
+      let klineData = klineDatas[oid]!
       guard let response = klineData[timeGap] else {
         fetchKlineData()
         return
@@ -160,11 +162,11 @@ class MarketViewController: BaseViewController {
       self.kLineView.isHidden = false
 
       var dataArray = [CBKLineModel]()
-      for (idx, data) in response.enumerated() {
-        let base_assetid = assetID(rawValue: data.base)!
+      for (_, data) in response.enumerated() {
+        let base_assetid = data.base
         let base_info = UIApplication.shared.coordinator().state.property.assetInfo[base_assetid]!
         let base_precision = pow(10, base_info.precision.toDouble)
-        let quote_assetid = assetID(rawValue: data.quote)!
+        let quote_assetid = data.quote
         let quote_info = UIApplication.shared.coordinator().state.property.assetInfo[quote_assetid]!
         let quote_precision = pow(10, quote_info.precision.toDouble)
 
@@ -233,7 +235,7 @@ class MarketViewController: BaseViewController {
     commonObserveState()
     
     UIApplication.shared.coordinator().subscribe(contentsSubscriber) { sub in
-      return sub.select { state in (state.property.data, state.property.assetInfo) }.skipRepeats({ (old, new) -> Bool in
+      return sub.select { state in (state.property.sortedData, state.property.assetInfo) }.skipRepeats({ (old, new) -> Bool in
         if new.0 == nil || new.1.count == 0 || (old.0 == new.0 && old.1 == new.1) {
           return true
         }

@@ -53,17 +53,17 @@ class PairCardView : UIView {
   
   var data: Any? {
     didSet {
+      let index = self.store["index"] as! Int
+      
+      let base_asset = AssetConfiguration.CYB
+      let quote_asset = AssetConfiguration.shared.asset_ids[index]
+    
+      let base_info = UIApplication.shared.coordinator().state.property.assetInfo[base_asset]
+      let quote_info = UIApplication.shared.coordinator().state.property.assetInfo[quote_asset]
+      self.base_name.text = base_info != nil ? base_info!.symbol : "-"
+      self.quote_name.text = quote_info != nil ? ("/" + quote_info!.symbol) : "/-"
+      
       guard let markets = data as? [Bucket], markets.count > 0 , UIApplication.shared.coordinator().state.property.assetInfo.count > 0 else {
-        let index = self.store["index"] as! Int
-        
-        let pair = Config.asset_ids[index]
-        let base_asset = assetID(rawValue: pair[0])!
-        let quote_asset = assetID(rawValue: pair[1])!
-        let base_info = UIApplication.shared.coordinator().state.property.assetInfo[base_asset]
-        let quote_info = UIApplication.shared.coordinator().state.property.assetInfo[quote_asset]
-        
-        self.base_name.text = base_info != nil ? base_info!.symbol : "-"
-        self.quote_name.text = quote_info != nil ? ("/" + quote_info!.symbol) : "/-"
         self.change.text = "-"
         self.arrowIcon.transform = CGAffineTransform(rotationAngle: CGFloat.pi / 2.0)
 
@@ -71,8 +71,6 @@ class PairCardView : UIView {
       }
       
       let matrix = BucketMatrix(markets)
-      self.base_name.text = matrix.base_name
-      self.quote_name.text = "/" + matrix.quote_name
       self.change.text = (matrix.incre == .greater ? "+" : "") + matrix.change + "%"
       
       switch matrix.incre {

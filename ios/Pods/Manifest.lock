@@ -5,19 +5,18 @@ PODS:
   - BigInt (3.0.1):
     - SipHash (~> 1.2)
   - BiometricAuthentication (1.0.5)
-  - Cache (4.1.2)
+  - Cache (4.2.0)
   - CryptoSwift (0.9.0)
   - DNSPageView (1.0.1)
-  - ESTabBarController-swift (2.6.1)
+  - ESTabBarController-swift (2.6.2)
   - EZSwiftExtensions (1.11)
   - Fabric (1.7.6)
-  - GraphicsRenderer (1.2.0)
   - GRDB.swift (2.10.0)
   - IHKeyboardAvoiding (4.2)
   - JSONRPCKit (3.0.0):
     - Result (~> 3.2.0)
-  - KeychainAccess (3.1.0)
-  - Kingfisher (4.6.4)
+  - KeychainAccess (3.1.1)
+  - Kingfisher (4.7.0)
   - KMNavigationBarTransition (1.1.5)
   - Localize-Swift (2.0.0)
   - MJRefresh (3.1.15.3)
@@ -26,12 +25,11 @@ PODS:
   - Moya/Core (11.0.2):
     - Alamofire (~> 4.1)
     - Result (~> 3.0)
-  - NVActivityIndicatorView (4.1.1):
-    - NVActivityIndicatorView/Presenter (= 4.1.1)
-  - NVActivityIndicatorView/Presenter (4.1.1)
+  - NVActivityIndicatorView (4.2.0):
+    - NVActivityIndicatorView/Presenter (= 4.2.0)
+  - NVActivityIndicatorView/Presenter (4.2.0)
   - ObjectMapper (3.1.0)
-  - Peek (5.0.0):
-    - GraphicsRenderer (= 1.2.0)
+  - Peek (5.1.0)
   - Proposer (1.2.0)
   - R.swift (4.0.0):
     - R.swift.Library (~> 4.0.0)
@@ -43,7 +41,7 @@ PODS:
   - RealReachability/Ping (1.1.9)
   - Result (3.2.4)
   - ReSwift (4.0.1)
-  - Reveal-SDK (13)
+  - Reveal-SDK (14)
   - RxCocoa (4.1.2):
     - RxSwift (~> 4.0)
   - RxGesture (1.2.1):
@@ -59,7 +57,7 @@ PODS:
   - SDCAlertView (8.0.2)
   - SipHash (1.2.0)
   - Siren (3.3.0)
-  - Starscream (3.0.4)
+  - Starscream (3.0.5)
   - SwiftHash (2.0.1)
   - SwiftTheme (0.4.1)
   - SwiftyJSON (4.0.0)
@@ -129,7 +127,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   BeareadToast:
-    :commit: 965e541125e1a50f24582fd569699495134defbb
+    :commit: 713dcccfd32494bdf2c1e6a26248f5d8584b682b
     :git: https://github.com/phpmaple/BeareadToast
   EZSwiftExtensions:
     :commit: 2daa79e708df5793d191c95ad4fae6d7f9347533
@@ -141,32 +139,31 @@ SPEC CHECKSUMS:
   BeareadToast: 17ff7f5ac9609b186543d6a45df8f15f78c9ca7a
   BigInt: 8e8a52161c745cd3ab78e3dc346a9fbee51e6cf6
   BiometricAuthentication: e80e99bf1fe871ab624172eb91f1ddbbc47499b5
-  Cache: bd0233fc688b5e83a27bcd87807db7e6f23adcc5
+  Cache: f28f8dd64b632155aabf9b3906b036a659048251
   CryptoSwift: bca8c5b653dcc2d9734409242a070ff53bafac86
   DNSPageView: 93b0f9c9ab0e2f8c1d9aa5b0d44740bd2d775d78
-  ESTabBarController-swift: 1e629e60bc6a87c1ea92a5309489b9f8dde15fa2
+  ESTabBarController-swift: f0a8679e43df1e60b7b36bbcaf1dc98ba6273c7d
   EZSwiftExtensions: 9d3dc8a51818e2fbfd11099b38a2c47d0ca693d0
   Fabric: f8d42c893bb187326a7968b62abe55c36a987a46
-  GraphicsRenderer: fec3014926360221359205a64060414273d625e5
   GRDB.swift: 9859cab1b990eac62ee550d3d2208ec1b44f76af
   IHKeyboardAvoiding: 9fbf816b7c3c84911964802ff110d12caf40ebef
   JSONRPCKit: 50e0dc5e7f873e87f81562feb8836b7d1974da6d
-  KeychainAccess: 94c5540b32eabf7bc32bfb976a268e8ea05fd6da
-  Kingfisher: 68498a706e46c2a050b0c9572f100e5db407f6e0
+  KeychainAccess: 7bd430028059754a3debab3cfc0bd1fc7fb85df3
+  Kingfisher: da6b005aa96d37698e3e4f1ccfe96a5b9bbf27d6
   KMNavigationBarTransition: 7a52c9bc25b39b6e3343e980b453facee1591b82
   Localize-Swift: c798ec9286494866f7068f85f7c71283ac5bdab4
   MJRefresh: b48380ae2b927b46c4ef000de9adb8dc748e1df7
   Moya: a725035953bc1c0eb1be505ab903984501d82440
-  NVActivityIndicatorView: 60109b9bf46efc2e71ab81453196ccdfdfeea870
+  NVActivityIndicatorView: 75c9634073e03b31d7e2748cd2417feab1206195
   ObjectMapper: 20505058f54e5c3ca69e1d6de9897d152a5369a6
-  Peek: 56d064f87b43a8db22cabcc0e3904c4488b7e31a
+  Peek: 452c6789d786321f9865d67c61c930d3b9ef3bb6
   Proposer: 722fe61822b89f551ae10afe8314067f98c39c28
   R.swift: d6a5ec2f55a8441dc0ed9f1f8b37d7d11ae85c66
   R.swift.Library: c3af34921024333546e23b70e70d0b4e0cffca75
   RealReachability: a8c483900986a0f3305733961effbfbb00637a02
   Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
   ReSwift: f4012c613e13da7398827fe5aebdb938eaed40a3
-  Reveal-SDK: ccc2b0f8014965ea448b7534a7c2c8da232b75e8
+  Reveal-SDK: 55b5c5545233b680c2f8da734f202acc15d422b7
   RxCocoa: d88ba0f1f6abf040011a9eb4b539324fc426843a
   RxGesture: c278eb05b187abd47e11e65464ae4de53ab71d95
   RxGRDB: 6a62783c9559f9b1d87c52abd1c331e469765903
@@ -174,7 +171,7 @@ SPEC CHECKSUMS:
   SDCAlertView: 289481e983c60abc5b4b5f4c7241fec9c7a853d5
   SipHash: c6e9e43e9c531b5bc6602545130c26194a6d31ce
   Siren: e7183967550b986736103f24ca6c74896a475145
-  Starscream: f5da93fe6984c77b694366bf7299b7dc63a76f26
+  Starscream: faf918b2f2eff7d5dd21180646bf015a669673bd
   SwiftHash: c805de5a434eacfa0dac7210745a50c55d7fe33d
   SwiftTheme: 36d71c4eed4b2c401c782cf036e4586c749a8173
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa

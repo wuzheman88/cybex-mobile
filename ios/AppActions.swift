@@ -15,12 +15,14 @@ struct AppState:StateType {
 struct AppPropertyState {
   var haveData:Bool = false
 
-  var data:[[Bucket]]?
-  var detailData:[[candlesticks:[Bucket]]]?
-
-  var subscribeIds:[Int]?
+  var data:[String:[Bucket]]?
+  var sortedData:[[Bucket]]?
   
-  var assetInfo:[assetID:AssetInfo] = [:]
+  var detailData:[String:[candlesticks:[Bucket]]]?
+
+  var subscribeIds:[String:Int]?
+  
+  var assetInfo:[String:AssetInfo] = [:]
 }
 
 class LoadingActionCreator {
@@ -53,12 +55,12 @@ struct ResetPage: Action {}
 
 
 struct AssetsFetched:Action {
-  let index:Int
+  let pair:AssetPairQueryParams
   let assets:[Bucket]
 }
 
 struct kLineFetched:Action {
-  let index:Int
+  let assetID:String
   let stick:candlesticks
   let assets:[Bucket]
 }
@@ -77,16 +79,16 @@ struct RefreshState:Action {
 }
 
 struct SubscribeSuccess:Action {
-  let index:Int
+  let assetID:String
   let id:Int
 }
 
 struct AssetInfoAction:Action {
-  let assetID:assetID
+  let assetID:String
   let info:AssetInfo
 }
 
-typealias MarketDataCallback = (Int, [Bucket]) -> Void
+typealias MarketDataCallback = ([Bucket]) -> Void
 
 class AppPropertyActionCreate: LoadingActionCreator {
   public typealias ActionCreator = (_ state: AppState, _ store: Store<AppState>) -> Action?
@@ -99,13 +101,6 @@ class AppPropertyActionCreate: LoadingActionCreator {
   
   func fetchAssets(with sub:Bool = true, params:AssetPairQueryParams, callback:MarketDataCallback?) -> ActionCreator {
     return { state, store in
-      var index = 0
-      for (idx, pair) in Config.asset_ids.enumerated() {
-        if pair[0] == params.firstAssetId, pair[1] == params.secondAssetId {
-          index = idx
-        }
-      }
-      
       self.fetchingMarketList(params, callback: {[weak self] (res) in
         guard let `self` = self else { return }
         
@@ -138,18 +133,18 @@ class AppPropertyActionCreate: LoadingActionCreator {
       
                 }
                 
-                callback?(index, assets)
+                callback?(assets)
 
               })
               
             }
             else {
-              callback?(index, assets)
+              callback?(assets)
             }
             
           }
           else {
-            callback?(index, [])
+            callback?([])
           }
         }
       })
@@ -161,7 +156,7 @@ class AppPropertyActionCreate: LoadingActionCreator {
      
         NetWorkService.shared.send(request: [subRequest], callback: { response in
           if let id = response[0] as? Int {
-            store.dispatch(SubscribeSuccess(index:index, id: id))
+            store.dispatch(SubscribeSuccess(assetID: params.firstAssetId, id: id))
           }
         })
       }

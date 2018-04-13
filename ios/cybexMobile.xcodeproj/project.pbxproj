@@ -1146,8 +1146,6 @@
 		73D977EF2056600700CB7DE1 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				73E49E2E2079FF98003B14D2 /* TradeHistory */,
-				73E49E2D2079FF8C003B14D2 /* OrderBook */,
 				73D9788C20577C5D00CB7DE1 /* Cells */,
 				73D9788B20577C5600CB7DE1 /* Views */,
 				73D977F32056603800CB7DE1 /* HomeViewController.swift */,
@@ -1234,6 +1232,8 @@
 		73D9789720579ECE00CB7DE1 /* Market */ = {
 			isa = PBXGroup;
 			children = (
+				73E49E2E2079FF98003B14D2 /* TradeHistory */,
+				73E49E2D2079FF8C003B14D2 /* OrderBook */,
 				73D978A12057A3F900CB7DE1 /* Views */,
 				73D978A02057A3EF00CB7DE1 /* Cells */,
 				73D9789820579EE200CB7DE1 /* MarketActions.swift */,
@@ -2000,7 +2000,6 @@
 				"${BUILT_PRODUCTS_DIR}/ESTabBarController-swift/ESTabBarController_swift.framework",
 				"${BUILT_PRODUCTS_DIR}/EZSwiftExtensions/EZSwiftExtensions.framework",
 				"${BUILT_PRODUCTS_DIR}/GRDB.swift/GRDB.framework",
-				"${BUILT_PRODUCTS_DIR}/GraphicsRenderer/GraphicsRenderer.framework",
 				"${BUILT_PRODUCTS_DIR}/IHKeyboardAvoiding/IHKeyboardAvoiding.framework",
 				"${BUILT_PRODUCTS_DIR}/JSONRPCKit/JSONRPCKit.framework",
 				"${BUILT_PRODUCTS_DIR}/KMNavigationBarTransition/KMNavigationBarTransition.framework",
@@ -2017,7 +2016,7 @@
 				"${BUILT_PRODUCTS_DIR}/ReSwift/ReSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/RealReachability/RealReachability.framework",
 				"${BUILT_PRODUCTS_DIR}/Result/Result.framework",
-				"${PODS_ROOT}/Reveal-SDK/RevealServer-13/iOS/RevealServer.framework",
+				"${PODS_ROOT}/Reveal-SDK/RevealServer-14/iOS/RevealServer.framework",
 				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
 				"${BUILT_PRODUCTS_DIR}/RxGRDB/RxGRDB.framework",
 				"${BUILT_PRODUCTS_DIR}/RxGesture/RxGesture.framework",
@@ -2051,7 +2050,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ESTabBarController_swift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/EZSwiftExtensions.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GRDB.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GraphicsRenderer.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IHKeyboardAvoiding.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JSONRPCKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KMNavigationBarTransition.framework",

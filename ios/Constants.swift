@@ -13,7 +13,7 @@ typealias CommonAnyCallback = (Any) -> Void
 
 struct AppConfiguration {
   static let APPID = ""
-  static let SERVER_VERSION_URLString = "http://localhost:3000/update"
+  static let SERVER_VERSION_URLString = "https://cybex.io/iOS_update.json"
 }
 
 enum indicator:String {
@@ -40,20 +40,6 @@ enum candlesticks:Double,Hashable {
   }
   
   static let all:[candlesticks] = [.five_minute, .one_hour, .one_day]
-}
-
-struct Config {
-   static let asset_ids = [[assetID.cyb.rawValue, assetID.eth.rawValue],
-                           [assetID.cyb.rawValue, assetID.btc.rawValue],
-                           [assetID.cyb.rawValue, assetID.omg.rawValue],
-                           [assetID.cyb.rawValue, assetID.ven.rawValue],
-                           [assetID.cyb.rawValue, assetID.bat.rawValue],
-                           [assetID.cyb.rawValue, assetID.eos.rawValue],
-                           [assetID.cyb.rawValue, assetID.snt.rawValue],
-                           [assetID.cyb.rawValue, assetID.eng.rawValue],
-                           [assetID.cyb.rawValue, assetID.knc.rawValue],
-                           [assetID.cyb.rawValue, assetID.nas.rawValue],
-                           [assetID.cyb.rawValue, assetID.pay.rawValue]]
 }
 
 enum objectID:String {
@@ -88,59 +74,28 @@ enum objectID:String {
   case special_authority_object = "2.14.x"
 }
 
-enum assetID:String {
+class AssetConfiguration {
+  static let icons: [String:String] = ["1.3.0":"ic_cyb_grey","1.3.2":"ic_eth_grey","1.3.3":"ic_btc_grey","1.3.4":"ic_eos_grey","1.3.5":"ic_snt_grey","1.3.6":"ic_bat_grey","1.3.7":"ic_ven_grey","1.3.8":"ic_omg_grey","1.3.9":"ic_nas_grey","1.3.10":"ic_knc_grey","1.3.11":"ic_pay_grey","1.3.12":"ic_eng_grey"]
   
-  case cyb = "1.3.0"
-  case eth = "1.3.2"
-  case btc = "1.3.3"
-  case omg = "1.3.8"
-  case ven = "1.3.7"
-  case bat = "1.3.6"
-  case eos = "1.3.4"
-  case snt = "1.3.5"
-  case eng = "1.3.12"
-  case knc = "1.3.10"
-  case nas = "1.3.9"
-  case pay = "1.3.11"
+  static let CYB = "1.3.0"
   
-  static let all:[assetID] = [.cyb, .eth, .btc, .omg, .ven, .bat, .eos, .snt, .eng, .knc, .nas, .pay]
+  var asset_ids:[String] = []
   
-  var assetIcon:String {
-    switch self {
-    case .cyb:
-      return "ic_cyb_grey"
-    case .eth:
-      return "ic_eth_grey"
-    case .btc:
-      return "ic_btc_grey"
-    case .omg:
-      return "ic_omg_grey"
-    case .ven:
-      return "ic_ven_grey"
-    case .bat:
-      return "ic_bat_grey"
-    case .eos:
-      return "ic_eos_grey"
-    case .snt:
-      return "ic_snt_grey"
-    case .eng:
-      return "ic_eng_grey"
-    case .knc:
-      return "ic_knc_grey"
-    case .nas:
-      return "ic_nas_grey"
-    case .pay:
-      return "ic_pay_grey"
-   
-    }
+  private init() {
   }
+  
+  func asset_icon(_ assetID:String) -> String {
+    if AssetConfiguration.icons.has(assetID) {
+      return AssetConfiguration.icons[assetID]!
+    }
+    
+    return AssetConfiguration.icons["1.3.0"]!
+  }
+  
+  static let shared = AssetConfiguration()
 }
 
-extension assetID:Equatable {
-  static func ==(lhs: assetID, rhs: assetID) -> Bool {
-    return lhs.rawValue == rhs.rawValue
-  }
-}
+
 
 protocol ObjectDescriptable {
   func propertyDescription() -> String

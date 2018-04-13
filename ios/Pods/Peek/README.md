@@ -1,13 +1,16 @@
-<a href="https://player.vimeo.com/video/261323610"><img src="shot.jpg" name="Peek on Vimeo"/></a>
+[![Peek Site][gif]][peek]
 
-[![Version][image-1]][1]
-[![License][image-2]][2]
-[![Language][image-3]][3]
-[![Platform][image-4]][4]
+[![Carthage][carthage-0]][0]
+[![Version][pods-1]][1]
+[![License][pods-2]][2]
+[![Language][pods-3]][3]
+[![Platform][pods-4]][4]
 
 # Peek: All new design
 
-Peek 5.0 with an all new design and all new features. Whether you're a developer, designer or QA/tester, Peek can help you at all stages of your development process.
+Peek 5 with an all new design and all new features. Whether you're a developer, designer or QA/tester, Peek can help you at all stages of your development process.
+
+[Watch the Promo][vimeo] to see it in action.
 
 ## Unified Inspectors
 All inspectors and attributes have now been unified into a single window, making inspection simpler and faster than ever before.
@@ -49,10 +52,14 @@ You can't get simpler than that!
 
 ### Device
 
-The simplest way to integrate Peek into your project is to use `Cocoapods`:
+The simplest way to integrate Peek into your project is to use `Cocoapods` or `Carthage`:
 
 ```ruby
+# Cocoapods
 pod 'Peek', :configurations => ['Debug']
+
+# Carthage
+github "shaps80/Peek" ~> 5.1.0
 ```
 
 You only need 1 line of code to enable Peek in your application:
@@ -88,7 +95,19 @@ override func motionBegan(_ motion: UIEventSubtype, with event: UIEvent?) {
 
 Now you can press `CMD+CTRL+Z` (or use the Menu option) to show/hide Peek in your Simulator.
 
+### Contributing
+
+Contributions to Peek are welcomed and encouraged!
+
+It is easy to get involved. Please see the [Contributing guide][contrib-guide] for more details.
+
+[A list of contributors is available through GitHub.][contrib-list]
+
+To give clarity of what is expected of our community, Peek has adopted the code of conduct defined by the Contributor Covenant. This document is used across many open source communities, and I think it articulates my values well. For more, see the [Code of Conduct][code-of-conduct].
+
 # What is Peek?
+
+[![Peek on Vimeo][preview]][vimeo]
 
 Peek is an open source framework that provides runtime inspection of your application while its running on your device (or Simulator).
 
@@ -125,7 +144,7 @@ Peek allows many options to be configured, allowing you more control over how Pe
 ```swift
 window?.peek.enableWithOptions { options in
     options.theme = .black
-    options.activationMode = .Auto
+    options.activationMode = .auto
     options.shouldIgnoreContainers = true
   
     /*
@@ -171,59 +190,6 @@ If you need Swift 2.2 support, update your Podfile as such:
 
 ---
 
-# Changelog
-
-5.0 (Major Release)
--
-
-- All new design
-- Unified Inspectors:
-- Collapse/Expand Groups
-- Nested Inspectors
-- Previews
-- Revamped Reporting
-- Accessibilty, StackViews & More
-- Removed InkKit & SwiftLayout dependencies
-- and more
-
-> Note: Dropped support for iOS 8.x.
-
-4.0
--
-
-Just a Swift compatibility update.
-Minor changes as per Swift APIs but no functional changes to Peek.
-
-3.0
--
-
-Swift 3.x unfortunately broke some of the compatilibity issues I required to work with the runtime.
-Please use the Swift 4 version instead.
-
-2.2.0
--
-
-* Slack integration
-* Email reports
-* Screenshot upload block (for Slack)
-* NSAttributedString support, including paragraph styles
-
-2.1.0
--
-
-* Enable with options
-* Force shake gesture on device
-* Allow container selection
-
-2.0 (Major Release)
--
-
-* Absolute layout overlay
-* Multiple inspectors
-* Swift Support
-* iOS 8.3 Support
-
-
 # Attribution
 
 Original concept, code and app design by [@shaps][5]<br />
@@ -231,15 +197,25 @@ Original concept, code and app design by [@shaps][5]<br />
 Icons in the demo app found on [The Noun Project][6].
 Artwork by [Vitaliy Gorbachev][7]
 
+[0]:    https://github.com/Carthage/Carthage
 [1]:	http://cocoapods.org/pods/Peek
 [2]:	http://cocoapods.org/pods/Peek
 [3]:	http://cocoadocs.org/docsets/Peek
 [4]:	http://cocoapods.org/pods/Peek
-[5]:	http://twitter.com/shaps "Shaps on Twitter"
-[6]:	www.thenounproject.com
+[5]:	https://twitter.com/shaps "Shaps on Twitter"
+[6]:	https://thenounproject.com
 [7]:	https://thenounproject.com/vitalikexpert
 
-[image-1]:	https://img.shields.io/cocoapods/v/Peek.svg?style=flat
-[image-2]:	https://img.shields.io/cocoapods/l/Peek.svg?style=flat
-[image-3]:	https://img.shields.io/badge/language-swift-ff69b4.svg
-[image-4]:	https://img.shields.io/cocoapods/p/Peek.svg?style=flat
+[pods-1]:	https://img.shields.io/cocoapods/v/Peek.svg?style=flat
+[pods-2]:	https://img.shields.io/cocoapods/l/Peek.svg?style=flat
+[pods-3]:	https://img.shields.io/badge/language-swift-ff69b4.svg
+[pods-4]:	https://img.shields.io/cocoapods/p/Peek.svg?style=flat
+[carthage-0]: https://img.shields.io/badge/Carthage-✓-4BC51D.svg?style=flat
+
+[peek]: https://shaps.me/peek
+[preview]: https://github.com/shaps80/Peek/raw/master/preview.jpg
+[vimeo]: https://player.vimeo.com/video/261323610
+[gif]: https://github.com/shaps80/Peek/raw/master/preview.gif
+[contrib-guide]: https://github.com/shaps80/Peek/blob/master/CONTRIBUTING.md
+[contrib-list]: https://github.com/shaps80/Peek/graphs/contributors
+[code-of-conduct]: https://github.com/shaps80/Peek/blob/master/CODE_OF_CONDUCT.md

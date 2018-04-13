@@ -36,7 +36,7 @@ struct OrderBook {
 
 struct FetchedLimitData:Action {
   let data:[LimitOrder]
-  let base:assetID
+  let base:String
 }
 
 //MARK: - Action Creator

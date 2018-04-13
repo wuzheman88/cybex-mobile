@@ -26,14 +26,14 @@ import MediaPlayer
 /**
  *  Defines a controller that is responsible for presenting Peek
  */
-protocol PeekActivationController {
+protocol PeekActivating {
     func register()
     func unregister()
     init(peek: Peek, handleActivation: @escaping () -> Void)
 }
 
 /// Defines an controller that activates Peek via your device Volume controls
-final class VolumeController: NSObject, PeekActivationController {
+final class VolumeController: NSObject, PeekActivating {
     
     unowned var peek: Peek
     fileprivate var volumeView: MPVolumeView!
@@ -65,21 +65,16 @@ final class VolumeController: NSObject, PeekActivationController {
             handleActivation()
             resetVolume()
         }
-        
     }
     //swiftlint:enable block_based_kvo
     
     func resetVolume() {
-        for view in volumeView.subviews {
-            if view.responds(to: #selector(UISlider.setValue(_:animated:))) {
-                view.perform(#selector(UISlider.setValue(_:animated:)), with: previousVolume, with: false)
-                
-                if view.responds(to: Selector(("_commitVolumeChange"))) {
-                    view.perform(Selector(("_commitVolumeChange")))
-                }
-                
-                return
-            }
+        let setValueSelector = #selector(UISlider.setValue(_:animated:))
+        guard let v = volumeView.subviews.first(where: { $0.responds(to: setValueSelector) }) else { return }
+        v.perform(setValueSelector, with: previousVolume, with: false)
+        let _commitVolumeChangeSelector = Selector("_commitVolumeChange")
+        if v.responds(to: _commitVolumeChangeSelector) {
+            v.perform(_commitVolumeChangeSelector)
         }
     }
     
@@ -104,7 +99,7 @@ final class VolumeController: NSObject, PeekActivationController {
     }
     
     @objc func unregister() {
-        if volumeView == nil {
+        guard volumeView != nil else {
             print("\(#file): already unregistered")
             return
         }

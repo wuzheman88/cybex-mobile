@@ -204,7 +204,7 @@ extension NetWorkService {
     self.retry = {[weak self] in
       guard let `self` = self else { return }
       
-      UIApplication.shared.coordinator().fetchAsset(assetID.all)
+      UIApplication.shared.coordinator().fetchAsset()
       UIApplication.shared.coordinator().getLatestData()
       JsonRPCService.shared.requestIDs([LoginRequest(username: "", password: "")])
       self.retry = nil
@@ -249,9 +249,10 @@ extension NetWorkService: WebSocketDelegate {
     
     guard let id = data["id"].int else {
       if let method = data["method"].string, method == "notice", let params = data["params"].array, let mID = params[0].int {
-        if let ids = UIApplication.shared.coordinator().state.property.subscribeIds, ids.contains(mID) {
-          let index = ids.index(of: mID)
-          UIApplication.shared.coordinator().request24hMarkets(index: index, sub: false)
+        if let ids = UIApplication.shared.coordinator().state.property.subscribeIds, ids.values.contains(mID) {
+          let index = ids.values.index(of: mID)!
+          
+          UIApplication.shared.coordinator().request24hMarkets(specialID: ids.keys[index], sub: false)
         }
       }
       return

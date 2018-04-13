@@ -28,7 +28,7 @@ func OrderBookPropertyReducer(_ state: OrderBookPropertyState?, action: Action) 
     return state
 }
 
-func limitOrders_to_OrderBook(orders: [LimitOrder], base:assetID) -> OrderBook {
+func limitOrders_to_OrderBook(orders: [LimitOrder], base:String) -> OrderBook {
   var bids:[OrderBook.Order] = []
   var asks:[OrderBook.Order] = []
   

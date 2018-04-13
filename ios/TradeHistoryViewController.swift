@@ -42,8 +42,8 @@ class TradeHistoryViewController: BaseViewController {
         self.tableView.isHidden = true
       }
      
-      let base_info = UIApplication.shared.coordinator().state.property.assetInfo[assetID(rawValue: pair[0])!]!
-      let quote_info = UIApplication.shared.coordinator().state.property.assetInfo[assetID(rawValue: pair[1])!]!
+      let base_info = UIApplication.shared.coordinator().state.property.assetInfo[pair[0]]!
+      let quote_info = UIApplication.shared.coordinator().state.property.assetInfo[pair[1]]!
 
       self.quote_name.text = quote_info.symbol
       self.base_name.text = base_info.symbol
@@ -100,8 +100,8 @@ class TradeHistoryViewController: BaseViewController {
         let receive = curData[1]
         let time = curData[2].stringValue
         
-        let base_info = UIApplication.shared.coordinator().state.property.assetInfo[assetID(rawValue: pair[0])!]!
-        let quote_info = UIApplication.shared.coordinator().state.property.assetInfo[assetID(rawValue: pair[1])!]!
+        let base_info = UIApplication.shared.coordinator().state.property.assetInfo[pair[0]]!
+        let quote_info = UIApplication.shared.coordinator().state.property.assetInfo[pair[1]]!
         let base_precision = pow(10, base_info.precision.toDouble)
         let quote_precision = pow(10, quote_info.precision.toDouble)
         
@@ -110,14 +110,14 @@ class TradeHistoryViewController: BaseViewController {
           let base_volume = pay["amount"].stringValue.toDouble()! / base_precision
           
           let price = base_volume / quote_volume
-          showData.append((false, price.toString.formatCurrency(digitNum: base_info.precision), quote_volume.toString.suffixNumber(), base_volume.toString.suffixNumber(), time.dateFromISO8601!.toString(format: "dd/MM HH:mm:ss")))
+          showData.append((false, price.toString.formatCurrency(digitNum: base_info.precision), quote_volume.toString.suffixNumber(), base_volume.toString.suffixNumber(), time.dateFromISO8601!.toString(format: "MM/dd HH:mm:ss")))
         }
         else {
           let quote_volume = pay["amount"].stringValue.toDouble()! / quote_precision
           let base_volume = receive["amount"].stringValue.toDouble()! / base_precision
           
           let price = base_volume / quote_volume
-          showData.append((true, price.toString.formatCurrency(digitNum: base_info.precision), quote_volume.toString.suffixNumber(), base_volume.toString.suffixNumber(), time.dateFromISO8601!.toString(format: "dd/MM HH:mm:ss")))
+          showData.append((true, price.toString.formatCurrency(digitNum: base_info.precision), quote_volume.toString.suffixNumber(), base_volume.toString.suffixNumber(), time.dateFromISO8601!.toString(format: "MM/dd HH:mm:ss")))
         }
         
       }

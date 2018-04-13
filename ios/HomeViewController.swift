@@ -13,7 +13,7 @@ import EZSwiftExtensions
 class HomeViewController: BaseViewController, UINavigationControllerDelegate, UIScrollViewDelegate {
   var coordinator: (HomeCoordinatorProtocol & HomeStateManagerProtocol)?
   
-  private lazy var contentsSubscriber: BlockSubscriber<([[Bucket]]?,[assetID:AssetInfo])> = BlockSubscriber {[weak self] s in
+  private lazy var contentsSubscriber: BlockSubscriber<([[Bucket]]?,[String:AssetInfo])> = BlockSubscriber {[weak self] s in
     guard let `self` = self else { return }
     
     self.tableView.reloadData()
@@ -36,9 +36,9 @@ class HomeViewController: BaseViewController, UINavigationControllerDelegate, UI
     setupUI()
     
     handlerUpdateVersion(nil)
-
-    requestData()
     
+    AssetConfiguration.shared.asset_ids = ["1.3.2", "1.3.3", "1.3.4", "1.3.5", "1.3.6", "1.3.7", "1.3.8", "1.3.9", "1.3.10", "1.3.11", "1.3.12"]
+    requestData()
   }
   
   
@@ -62,7 +62,7 @@ class HomeViewController: BaseViewController, UINavigationControllerDelegate, UI
   func requestData() {
     self.startLoading()
     UIApplication.shared.coordinator().request24hMarkets()
-    UIApplication.shared.coordinator().fetchAsset(assetID.all)
+    UIApplication.shared.coordinator().fetchAsset()
   }
   
   func commonObserveState() {
@@ -83,7 +83,7 @@ class HomeViewController: BaseViewController, UINavigationControllerDelegate, UI
     commonObserveState()
     
     UIApplication.shared.coordinator().subscribe(contentsSubscriber) { sub in
-      return sub.select { state in (state.property.data, state.property.assetInfo) }.skipRepeats({ (old, new) -> Bool in
+      return sub.select { state in (state.property.sortedData, state.property.assetInfo) }.skipRepeats({ (old, new) -> Bool in
         if new.0 == nil || new.1.count == 0 {
           return true
         }
@@ -107,13 +107,13 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    let data = UIApplication.shared.coordinator().state.property.data ?? []
+    let data = UIApplication.shared.coordinator().state.property.sortedData ?? []
     return data.count
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: String.init(describing: HomePairCell.self), for: indexPath) as! HomePairCell
-    if let assets = UIApplication.shared.coordinator().state.property.data {
+    if let assets = UIApplication.shared.coordinator().state.property.sortedData {
       let data = assets[indexPath.row]
       cell.setup(data, indexPath: indexPath)
     }

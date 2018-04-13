@@ -19,7 +19,6 @@ protocol AppStateManagerProtocol {
   ) where S.StoreSubscriberStateType == SelectedState
   
   func fetchData(_ params:AssetPairQueryParams, sub:Bool)
-  func fetchAsset(_ assetID: [assetID])
 }
 
 class AppCoordinator {

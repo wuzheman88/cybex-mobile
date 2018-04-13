@@ -9,67 +9,56 @@
 import Foundation
 import ObjectMapper
 
-class Bucket : ImmutableMappable, NSCopying {
-  var id: String
+class Bucket : Mappable, NSCopying {
+  var id: String = ""
   
-  var base_volume: String
-  var quote_volume: String
+  var base_volume: String = ""
+  var quote_volume: String = ""
   
-  var high_base: String
-  var high_quote: String
-  var low_base: String
-  var low_quote: String
+  var high_base: String = ""
+  var high_quote: String = ""
+  var low_base: String = ""
+  var low_quote: String = ""
   
-  var open_base: String
-  var open_quote: String
-  var close_base: String
-  var close_quote: String
+  var open_base: String = ""
+  var open_quote: String = ""
+  var close_base: String = ""
+  var close_quote: String = ""
   
-  var open:TimeInterval
-  var base:String
-  var quote:String
-  var seconds:String
+  var open:TimeInterval = 0
+  var base:String = ""
+  var quote:String = ""
+  var seconds:String = ""
 
 
-  required  init(map: Map) throws {
-    id                   = try map.value("id", using:ToStringTransform())
-    base_volume          = try map.value("base_volume", using:ToStringTransform())
-    quote_volume         = try map.value("quote_volume", using:ToStringTransform())
-    high_base            = try map.value("high_base", using:ToStringTransform())
-    high_quote           = try map.value("high_quote", using:ToStringTransform())
-    low_base             = try map.value("low_base", using:ToStringTransform())
-    low_quote            = try map.value("low_quote", using:ToStringTransform())
-    open_base            = try map.value("open_base", using:ToStringTransform())
-    open_quote           = try map.value("open_quote", using:ToStringTransform())
-    close_base           = try map.value("close_base", using:ToStringTransform())
-    close_quote          = try map.value("close_quote", using:ToStringTransform())
-    open                  = try map.value("key.open", using:DateIntervalTransform())
-    base          = try map.value("key.base", using:ToStringTransform())
-    quote          = try map.value("key.quote", using:ToStringTransform())
-    seconds          = try map.value("key.seconds", using:ToStringTransform())
+  required init?(map: Map) {
   }
 
   func mapping(map: Map) {
-    id                   >>> (map["id"],ToStringTransform())
-    base_volume          >>> (map["base_volume"],ToStringTransform())
-    quote_volume         >>> (map["quote_volume"],ToStringTransform())
-    high_base            >>> (map["high_base"],ToStringTransform())
-    high_quote           >>> (map["high_quote"],ToStringTransform())
-    low_base             >>> (map["low_base"],ToStringTransform())
-    low_quote            >>> (map["low_quote"],ToStringTransform())
-    open_base            >>> (map["open_base"],ToStringTransform())
-    open_quote           >>> (map["open_quote"],ToStringTransform())
-    close_base           >>> (map["close_base"],ToStringTransform())
-    close_quote          >>> (map["close_quote"],ToStringTransform())
-    open                  >>> (map["key.open"], DateIntervalTransform())
-    base          >>> (map["key.base"],ToStringTransform())
-    quote          >>> (map["key.quote"],ToStringTransform())
-    seconds          >>> (map["key.seconds"],ToStringTransform())
+    id                   <- (map["id"],ToStringTransform())
+    base_volume          <- (map["base_volume"],ToStringTransform())
+    quote_volume         <- (map["quote_volume"],ToStringTransform())
+    high_base            <- (map["high_base"],ToStringTransform())
+    high_quote           <- (map["high_quote"],ToStringTransform())
+    low_base             <- (map["low_base"],ToStringTransform())
+    low_quote            <- (map["low_quote"],ToStringTransform())
+    open_base            <- (map["open_base"],ToStringTransform())
+    open_quote           <- (map["open_quote"],ToStringTransform())
+    close_base           <- (map["close_base"],ToStringTransform())
+    close_quote          <- (map["close_quote"],ToStringTransform())
+    open                 <- (map["key.open"], DateIntervalTransform())
+    base          <- (map["key.base"],ToStringTransform())
+    quote          <- (map["key.quote"],ToStringTransform())
+    seconds         <- (map["key.seconds"],ToStringTransform())
   }
   
   func copy(with zone: NSZone? = nil) -> Any {
-    let copy = try! Bucket(JSON: self.toJSON())
+    let copy = Bucket(JSON: self.toJSON())!
     return copy
+  }
+  
+  static func empty() -> Bucket {
+    return Bucket(JSON: [:])!
   }
   
 }
@@ -106,13 +95,15 @@ class BucketMatrix {
   var base_name:String
   var quote_name:String
 
-  var base_assetid:assetID
-  var quote_assetid:assetID
+  var base_assetid:String
+  var quote_assetid:String
   
   var price:String
   
   var asset:[Bucket]
   
+  var base_volume_origin:Double
+
   var base_volume:String
   var quote_volume:String
   
@@ -137,8 +128,8 @@ class BucketMatrix {
     
     let base_id = last.base
     let quote_id = last.quote
-    base_assetid = assetID(rawValue: base_id)!
-    quote_assetid = assetID(rawValue: quote_id)!
+    base_assetid = base_id
+    quote_assetid = quote_id
     
     let base_info = UIApplication.shared.coordinator().state.property.assetInfo[base_assetid]!
     let quote_info = UIApplication.shared.coordinator().state.property.assetInfo[quote_assetid]!
@@ -162,11 +153,12 @@ class BucketMatrix {
     
     let quote_volume = self.asset.map{$0.quote_volume}.reduce(0) { (last, cur) -> Double in
       last + cur.toDouble()!
-      } / base_precision
+      } / quote_precision
 
     self.base_name = base_info.symbol
     self.quote_name = quote_info.symbol
     
+    self.base_volume_origin = base_volume
     self.base_volume = base_volume.toString.suffixNumber()
     self.quote_volume = quote_volume.toString.suffixNumber()
     
@@ -176,7 +168,9 @@ class BucketMatrix {
     self.price = lastClose_price.toString.formatCurrency(digitNum: base_info.precision)
     
     let change = (lastClose_price - firseOpen_price) * 100 / firseOpen_price
-    let percent = round(change * 100) / 100.0
+    var percent = round(change * 100) / 100.0
+    percent = percent.toString.formatCurrency(digitNum: 2).toDouble()!
+    
     if percent == 0 {
       self.incre = .equal
     }
