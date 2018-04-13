@@ -56,6 +56,7 @@ PODS:
     - GRDB.swift (~> 2.6)
     - RxSwift (~> 4.0)
   - RxSwift (4.1.2)
+  - SDCAlertView (8.0.2)
   - SipHash (1.2.0)
   - Siren (3.3.0)
   - Starscream (3.0.4)
@@ -105,6 +106,7 @@ DEPENDENCIES:
   - RxGesture
   - RxGRDB
   - RxSwift
+  - SDCAlertView
   - Siren
   - Starscream
   - SwiftTheme
@@ -169,6 +171,7 @@ SPEC CHECKSUMS:
   RxGesture: c278eb05b187abd47e11e65464ae4de53ab71d95
   RxGRDB: 6a62783c9559f9b1d87c52abd1c331e469765903
   RxSwift: e49536837d9901277638493ea537394d4b55f570
+  SDCAlertView: 289481e983c60abc5b4b5f4c7241fec9c7a853d5
   SipHash: c6e9e43e9c531b5bc6602545130c26194a6d31ce
   Siren: e7183967550b986736103f24ca6c74896a475145
   Starscream: f5da93fe6984c77b694366bf7299b7dc63a76f26
@@ -184,6 +187,6 @@ SPEC CHECKSUMS:
   Zephyr: 2574069fd7879147b64ac74349dfabb1c78099c9
   ZLaunchAd: 877d9f43b6f389e2ed192ed10fe92767c0f18124
 
-PODFILE CHECKSUM: adb42d07407e9232559a89b68377c96d20a874c1
+PODFILE CHECKSUM: d9b5bf49687f51eed4fd57f7fa8544e641e8230e
 
 COCOAPODS: 1.4.0

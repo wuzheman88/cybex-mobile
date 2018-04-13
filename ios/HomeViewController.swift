@@ -34,7 +34,11 @@ class HomeViewController: BaseViewController, UINavigationControllerDelegate, UI
     super.viewDidLoad()
 
     setupUI()
+    
+    handlerUpdateVersion(nil)
+
     requestData()
+    
   }
   
   

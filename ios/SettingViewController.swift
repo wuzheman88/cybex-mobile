@@ -11,6 +11,7 @@ import ReSwift
 import Localize_Swift
 import SwiftTheme
 import SwiftyUserDefaults
+import EZSwiftExtensions
 
 class SettingViewController: BaseViewController {
     @IBOutlet weak var tableView: UITableView!
@@ -85,7 +86,7 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
   }
   
   func numberOfSections(in tableView: UITableView) -> Int {
-    return 2
+    return 3
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -98,14 +99,26 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
       cell.textLabel?.localized_text = R.string.localizable.theme.key.localizedContainer()
       cell.detailTextLabel?.localized_text = ThemeManager.currentThemeIndex == 0 ? R.string.localizable.dark.key.localizedContainer() : R.string.localizable.light.key.localizedContainer()
     }
-    else {
+    else if indexPath.section == 0 {
       cell.textLabel?.localized_text = R.string.localizable.language.key.localizedContainer()
       cell.detailTextLabel?.text = Localize.currentLanguage() == "en" ? "English" : "简体中文"
+    }
+    else {
+      cell.textLabel?.localized_text = R.string.localizable.version.key.localizedContainer()
+      cell.detailTextLabel?.text = ez.appVersion!
     }
     return cell
   }
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    if indexPath.section == 2 {
+      self.startLoading()
+      handlerUpdateVersion({
+        self.endLoading()
+      }, showNoUpdate: true)
+      return
+    }
+    
     self.coordinator?.openSettingDetail(type: indexPath.section == 0 ? .language : .theme)
    
   }

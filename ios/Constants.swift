@@ -11,6 +11,11 @@ import Foundation
 typealias CommonCallback = () -> Void
 typealias CommonAnyCallback = (Any) -> Void
 
+struct AppConfiguration {
+  static let APPID = ""
+  static let SERVER_VERSION_URLString = "http://localhost:3000/update"
+}
+
 enum indicator:String {
   case none
   case macd = "MACD"
