@@ -11,6 +11,16 @@ import Foundation
 typealias CommonCallback = () -> Void
 typealias CommonAnyCallback = (Any) -> Void
 
+var app_data: AppPropertyState {
+  return UIApplication.shared.coordinator().state.property
+}
+var app_state: AppState {
+  return UIApplication.shared.coordinator().state
+}
+var app_coodinator:AppCoordinator {
+  return UIApplication.shared.coordinator()
+}
+
 struct AppConfiguration {
   static let APPID = ""
   static let SERVER_VERSION_URLString = "https://cybex.io/iOS_update.json"

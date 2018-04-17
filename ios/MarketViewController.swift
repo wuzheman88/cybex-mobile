@@ -14,18 +14,11 @@ import SwiftTheme
 import Localize_Swift
 
 class MarketViewController: BaseViewController {
-    @IBOutlet weak var pageTitleView: DNSPageTitleView!
-    @IBOutlet weak var pageContentView: DNSPageContentView!
-  
-    @IBOutlet weak var pageContentViewHeight: NSLayoutConstraint!
-    @IBOutlet weak var scrollView: UIScrollView!
-    
-    private lazy var contentsSubscriber: BlockSubscriber<([[Bucket]]?,[String:AssetInfo])> = BlockSubscriber {[weak self] s in
-    guard let `self` = self else { return }
-    
-    self.refreshView()
-  }
-  
+  @IBOutlet weak var pageTitleView: DNSPageTitleView!
+  @IBOutlet weak var pageContentView: DNSPageContentView!
+
+  @IBOutlet weak var pageContentViewHeight: NSLayoutConstraint!
+  @IBOutlet weak var scrollView: UIScrollView!
   
 
   @IBOutlet weak var pairListView: PairListHorizantalView!
@@ -33,7 +26,12 @@ class MarketViewController: BaseViewController {
   @IBOutlet weak var detailView: PairDetailView!
   @IBOutlet weak var kLineView: CBKLineView!
   
-  var timeGap:candlesticks = .five_minute
+  var timeGap:candlesticks = .one_day {
+    didSet {
+      kLineView.timeGap = timeGap
+    }
+  }
+  
   var indicator:indicator = .ma {
     didSet {
       switch indicator {
@@ -57,14 +55,21 @@ class MarketViewController: BaseViewController {
   
   var curIndex:Int = 0
   var coordinator: (MarketCoordinatorProtocol & MarketStateManagerProtocol)?
+  
+  var pair:Pair {
+    let markets = app_data.data.value
+    let market = markets[self.curIndex]
+    
+    return Pair(base: market.base, quote: market.quote)
+  }
 
 	override func viewDidLoad() {
     super.viewDidLoad()
+    
     self.localized_text = R.string.localizable.market.key.localizedContainer()
     self.view.theme_backgroundColor = [#colorLiteral(red: 0.06666666667, green: 0.0862745098, blue: 0.1294117647, alpha: 1).hexString(true), #colorLiteral(red: 0.937254902, green: 0.9450980392, blue: 0.9568627451, alpha: 1).hexString(true)]
     automaticallyAdjustsScrollViewInsets = false
 
-    
     configLeftNavButton(nil)
     setupPageView()
   }
@@ -98,7 +103,6 @@ class MarketViewController: BaseViewController {
     
     // 创建每一页对应的controller
   
-    let pair = [AssetConfiguration.CYB, AssetConfiguration.shared.asset_ids[self.curIndex]]
     let childViewControllers: [BaseViewController] = coordinator!.setupChildViewControllers(pair)
     
     self.coordinator?.refreshChildViewController(childViewControllers, pair: pair)
@@ -117,44 +121,49 @@ class MarketViewController: BaseViewController {
     pageContentView.delegate = pageTitleView
   }
   
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-   
-  }
-  
   func refreshDetailView() {
-    if let assets = UIApplication.shared.coordinator().state.property.sortedData {
-      let data = assets[self.curIndex]
-      detailView.data = data
-      
-      pairListView.data = [self.curIndex, assets]
-      
-    }
-
+    let markets = app_data.data.value
+    let data = markets[self.curIndex]
+    detailView.data = data
+    
+    pairListView.data = [self.curIndex, markets]
   }
   
   func refreshView() {
     self.refreshDetailView()
     fetchKlineData()
     
-    let pair = [AssetConfiguration.CYB, AssetConfiguration.shared.asset_ids[self.curIndex]]
+    let markets = app_data.data.value
+    let market = markets[self.curIndex]
+    
     self.coordinator?.refreshChildViewController(pageContentView.childViewControllers as! [BaseViewController], pair: pair)
   }
   
   func fetchKlineData() {
-    self.startLoading()
+    let markets = app_data.data.value
 
-    self.kLineView.isHidden = true
+    let bucket = markets[self.curIndex]
     
-    UIApplication.shared.coordinator().requestKlineDetailData(sepcialID: AssetConfiguration.shared.asset_ids[self.curIndex], gap: timeGap, vc: self, selector: #selector(refreshKLine))
+    self.startLoading()
+    self.kLineView.isHidden = true
+
+    UIApplication.shared.coordinator().requestKlineDetailData(pair:Pair(base: bucket.base, quote: bucket.quote), gap: timeGap, vc: self, selector: #selector(refreshKLine))
   }
   
   @objc func refreshKLine() {
-    let oid = AssetConfiguration.shared.asset_ids[self.curIndex]
-    if let klineDatas = UIApplication.shared.coordinator().state.property.detailData, klineDatas[oid]!.count > 0 {
-      let klineData = klineDatas[oid]!
+    let markets = app_data.data.value
+
+    let bucket = markets[self.curIndex]
+    
+    if bucket.bucket.count == 0 {
+      endLoading()
+      return
+    }
+    
+    if let klineDatas = app_data.detailData, let klineData = klineDatas[Pair(base:bucket.base, quote:bucket.quote)] {
+     
       guard let response = klineData[timeGap] else {
-        fetchKlineData()
+        endLoading()
         return
       }
       
@@ -164,10 +173,10 @@ class MarketViewController: BaseViewController {
       var dataArray = [CBKLineModel]()
       for (_, data) in response.enumerated() {
         let base_assetid = data.base
-        let base_info = UIApplication.shared.coordinator().state.property.assetInfo[base_assetid]!
+        let base_info = app_data.assetInfo[base_assetid]!
         let base_precision = pow(10, base_info.precision.toDouble)
         let quote_assetid = data.quote
-        let quote_info = UIApplication.shared.coordinator().state.property.assetInfo[quote_assetid]!
+        let quote_info = app_data.assetInfo[quote_assetid]!
         let quote_precision = pow(10, quote_info.precision.toDouble)
 
         let open_price = (data.open_base.toDouble()! / base_precision)  / (data.open_quote.toDouble()! / quote_precision)
@@ -234,15 +243,11 @@ class MarketViewController: BaseViewController {
   override func configureObserveState() {
     commonObserveState()
     
-    UIApplication.shared.coordinator().subscribe(contentsSubscriber) { sub in
-      return sub.select { state in (state.property.sortedData, state.property.assetInfo) }.skipRepeats({ (old, new) -> Bool in
-        if new.0 == nil || new.1.count == 0 || (old.0 == new.0 && old.1 == new.1) {
-          return true
-        }
-        return false
-      })
-    }
-    
+    app_data.data.asObservable().distinctUntilChanged()
+      .filter({$0.count == AssetConfiguration.shared.asset_ids.count})
+      .subscribe(onNext: { (s) in
+        self.refreshView()
+      }, onError: nil, onCompleted: nil, onDisposed: nil).disposed(by: disposeBag)
     
   }
   

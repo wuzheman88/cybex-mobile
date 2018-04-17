@@ -19,7 +19,7 @@ func OrderBookPropertyReducer(_ state: OrderBookPropertyState?, action: Action) 
   switch action {
   case let action as FetchedLimitData:
     
-    state.data = limitOrders_to_OrderBook(orders: action.data, base: action.base)
+    state.data = limitOrders_to_OrderBook(orders: action.data, pair: action.pair)
     
     default:
         break
@@ -28,7 +28,7 @@ func OrderBookPropertyReducer(_ state: OrderBookPropertyState?, action: Action) 
     return state
 }
 
-func limitOrders_to_OrderBook(orders: [LimitOrder], base:String) -> OrderBook {
+func limitOrders_to_OrderBook(orders: [LimitOrder], pair:Pair) -> OrderBook {
   var bids:[OrderBook.Order] = []
   var asks:[OrderBook.Order] = []
   
@@ -37,7 +37,7 @@ func limitOrders_to_OrderBook(orders: [LimitOrder], base:String) -> OrderBook {
 
   for order in orders {
     let sellPrice_base = order.sellPrice.base
-    if sellPrice_base.assetID == base {
+    if sellPrice_base.assetID == pair.base {
       bids_total_amount.append(order.forSale.toDouble()!)
     }
     else {
@@ -47,7 +47,7 @@ func limitOrders_to_OrderBook(orders: [LimitOrder], base:String) -> OrderBook {
   
   for order in orders {
     let sellPrice_base = order.sellPrice.base
-    if sellPrice_base.assetID == base {
+    if sellPrice_base.assetID == pair.base {
       let percent = bids_total_amount[0...bids.count].reduce(0, +) / bids_total_amount.reduce(0, +)
       
       let precision_ratio = pow(10, order.sellPrice.base.info().precision.toDouble) / pow(10, order.sellPrice.quote.info().precision.toDouble)

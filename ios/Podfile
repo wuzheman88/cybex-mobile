@@ -20,7 +20,7 @@ def data
     pod 'SwiftyUserDefaults'
     pod 'Zephyr'
     pod 'Cache'
-
+    pod 'Locksmith'
 end
 
 def resource
@@ -34,6 +34,7 @@ def architecture
    pod 'SwiftTheme'
    pod 'UIFontComplete'
    pod 'RxCocoa'
+   pod 'AwaitKit'
 end
 
 def permission
@@ -42,9 +43,10 @@ def permission
 end
 
 def animation
-    pod 'Spring', :git => 'https://github.com/MengTo/Spring.git'
+    pod 'EasyAnimation'
     pod 'Hero'
-    pod 'Locksmith'
+    pod 'ChainableAnimations'
+    pod 'TableFlip'
 end
 
 def extension
@@ -78,12 +80,12 @@ target 'cybexMobile' do
   use_frameworks!
   pod 'Reveal-SDK', :configurations => ['Debug']
   pod 'WoodPeckeriOS', :configurations => ['Debug']
-  pod 'Peek', :configurations => ['Debug']
 
   pod 'Fabric'
   pod 'RealReachability'
 
   network
+  animation
   data
   resource
   architecture

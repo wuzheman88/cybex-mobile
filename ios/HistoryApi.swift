@@ -53,15 +53,14 @@ struct GetMarketHistoryRequest: JSONRPCKit.Request {
 struct GetFillOrderHistoryRequest: JSONRPCKit.Request {
   typealias Response = [JSON]
   
-  var firstAssetId:String
-  var secondAssetId:String
+  var pair:Pair
   
   var method: String {
     return "call"
   }
   
   var parameters: Any? {
-    return [JsonRPCService.shared.ids[apiCategory.history] ?? 0, historyCatogery.get_fill_order_history.rawValue, [firstAssetId, secondAssetId, 40]]
+    return [JsonRPCService.shared.ids[apiCategory.history] ?? 0, historyCatogery.get_fill_order_history.rawValue, [pair.base, pair.quote, 40]]
   }
   
   func response(from resultObject: Any) throws -> Response {

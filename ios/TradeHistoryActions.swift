@@ -36,10 +36,10 @@ class TradeHistoryPropertyActionCreate: LoadingActionCreator {
         _ actionCreatorCallback: @escaping ((ActionCreator) -> Void)
         ) -> Void
   
-  func fetchFillOrders(with ids:[String], callback:CommonAnyCallback?) -> ActionCreator {
+  func fetchFillOrders(with pair:Pair, callback:CommonAnyCallback?) -> ActionCreator {
     return { state, store in
       
-      let request = GetFillOrderHistoryRequest(firstAssetId: ids[0], secondAssetId: ids[1])
+      let request = GetFillOrderHistoryRequest(pair:pair)
       
       NetWorkService.shared.send(request: [request]) { (response) in
         if let callback = callback {

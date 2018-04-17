@@ -9,50 +9,46 @@
 import Foundation
 import ObjectMapper
 
-class AssetInfo : ImmutableMappable {
-  var precision: Int
-  var id: String
-  var symbol: String
-  var dynamic_asset_data_id: String
+class AssetInfo : Mappable {
+  var precision: Int = 0
+  var id: String = ""
+  var symbol: String = ""
+  var dynamic_asset_data_id: String = ""
 
 
-  required  init(map: Map) throws {
-    precision            = try map.value("precision")
-    id                   = try map.value("id")
-    symbol               = try map.value("symbol")
-    dynamic_asset_data_id = try map.value("dynamic_asset_data_id")
+  required init?(map: Map) {
   }
 
   func mapping(map: Map) {
-    precision            >>> map["precision"]
-    id                   >>> map["id"]
-    symbol               >>> map["symbol"]
-    dynamic_asset_data_id >>> map["dynamic_asset_data_id"]
+    precision            <- map["precision"]
+    id                   <-  map["id"]
+    symbol               <-  map["symbol"]
+    dynamic_asset_data_id <-  map["dynamic_asset_data_id"]
   }
 }
 
-class Asset : ImmutableMappable {
-  let amount: String
-  let assetID: String
+
+
+class Asset : Mappable {
+  var amount: String = ""
+  var assetID: String = ""
   
-  required  init(map: Map) throws {
-    amount               = try map.value("amount", using:ToStringTransform())
-    assetID              = try map.value("asset_id")
+  required init?(map: Map) {
   }
   
   func mapping(map: Map) {
-    amount               >>> (map["amount"], ToStringTransform())
-    assetID              >>> map["asset_id"]
+    amount               <- (map["amount"], ToStringTransform())
+    assetID              <- map["asset_id"]
   }
   
   func volume() -> Double {
-    let info = UIApplication.shared.coordinator().state.property.assetInfo[assetID]!
+    let info = app_data.assetInfo[assetID]!
     
     return amount.toDouble()! / pow(10, info.precision.toDouble)
   }
   
   func info() -> AssetInfo {
-    return UIApplication.shared.coordinator().state.property.assetInfo[self.assetID]!
+    return app_data.assetInfo[self.assetID]!
   }
 }
 
@@ -93,4 +89,3 @@ extension AssetInfo: Equatable {
     return lhs.precision == rhs.precision && lhs.id == rhs.id && lhs.symbol == rhs.symbol && lhs.dynamic_asset_data_id == rhs.dynamic_asset_data_id
   }
 }
-

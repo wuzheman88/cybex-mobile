@@ -10,6 +10,8 @@ import Foundation
 import BeareadToast
 import EZSwiftExtensions
 import SwiftTheme
+import RxCocoa
+import RxSwift
 
 class BaseViewController: UIViewController {
   lazy var errorSubscriber: BlockSubscriber<String?> = BlockSubscriber {[weak self] s in
@@ -51,6 +53,7 @@ class BaseViewController: UIViewController {
 //    configLeftNavButton()
 //    configRightNavButton()
    
+    configureObserveState()
 
   }
   
@@ -60,9 +63,6 @@ class BaseViewController: UIViewController {
     navigationController?.isNavigationBarHidden = false
     let color = ThemeManager.currentThemeIndex == 0 ? #colorLiteral(red: 0.1178231761, green: 0.1536857784, blue: 0.2179759443, alpha: 1) : #colorLiteral(red: 0.9750029445, green: 0.9783667922, blue: 0.9844790101, alpha: 1)
     navigationController?.navigationBar.setBackgroundImage(UIImage(color: color), for: .default)
-
-    
-    configureObserveState()
   }
   
   override func viewDidAppear(_ animated: Bool) {

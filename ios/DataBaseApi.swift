@@ -54,7 +54,7 @@ struct GetAssetRequest: JSONRPCKit.Request {
     if let response = resultObject as? [[String: Any]] {
       return response.map { data in
         
-        return try! AssetInfo(JSON:data)
+        return AssetInfo(JSON:data)!
       }
     } else {
       throw CastError(actualValue: resultObject, expectedType: Response.self)
@@ -84,14 +84,14 @@ struct SubscribeMarketRequest: JSONRPCKit.Request {
 struct getLimitOrdersRequest: JSONRPCKit.Request {
   typealias Response = [LimitOrder]
   
-  var ids:[String]
+  var pair:Pair
   
   var method: String {
     return "call"
   }
   
   var parameters: Any? {
-    return [JsonRPCService.shared.ids[apiCategory.database] ?? 0, dataBaseCatogery.get_limit_orders.rawValue, [ids[0], ids[1], 20]]
+    return [JsonRPCService.shared.ids[apiCategory.database] ?? 0, dataBaseCatogery.get_limit_orders.rawValue, [pair.base, pair.quote, 20]]
   }
   
   func response(from resultObject: Any) throws -> Response {

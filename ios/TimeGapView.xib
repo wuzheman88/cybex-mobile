@@ -31,10 +31,10 @@
                                 <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="5m" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0oz-a3-p8G">
                                     <rect key="frame" x="10" y="0.0" width="22" height="60"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
-                                    <color key="textColor" red="1" green="0.56862747669219971" blue="0.26274511218070984" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="textColor" red="0.47058823704719543" green="0.5058823823928833" blue="0.60392159223556519" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <view tag="2" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wfr-ls-Ezt">
+                                <view hidden="YES" tag="2" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wfr-ls-Ezt">
                                     <rect key="frame" x="10" y="42" width="22" height="2"/>
                                     <color key="backgroundColor" red="1" green="0.56862747669219971" blue="0.26274511218070984" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
@@ -85,10 +85,10 @@
                                 <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1d" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xd9-Hj-Qhm">
                                     <rect key="frame" x="98" y="0.0" width="16.5" height="60"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
-                                    <color key="textColor" red="0.47058823704719543" green="0.5058823823928833" blue="0.60392159223556519" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="textColor" red="1" green="0.56862747669219971" blue="0.26274511218070984" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <view hidden="YES" tag="2" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tgV-dT-Tpf">
+                                <view tag="2" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tgV-dT-Tpf">
                                     <rect key="frame" x="98.5" y="42" width="16.5" height="2"/>
                                     <color key="backgroundColor" red="1" green="0.56862747670000002" blue="0.26274511220000002" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>

@@ -52,6 +52,7 @@ class AppCoordinator {
     }
     
     let home = BaseNavigationController()
+
     homeCoordinator = HomeRootCoordinator(rootVC: home)
     home.tabBarItem = ESTabBarItem.init(CBTabBarView(), title: R.string.localizable.navWatchlist.key.localized(), image: R.image.ic_watchlist_24px(), selectedImage: R.image.ic_watchlist_active_24px())
     

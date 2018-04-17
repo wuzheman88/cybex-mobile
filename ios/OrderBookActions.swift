@@ -36,7 +36,7 @@ struct OrderBook {
 
 struct FetchedLimitData:Action {
   let data:[LimitOrder]
-  let base:String
+  let pair:Pair
 }
 
 //MARK: - Action Creator
@@ -50,10 +50,10 @@ class OrderBookPropertyActionCreate: LoadingActionCreator {
         ) -> Void
   
   
-  func fetchLimitOrders(with ids:[String], callback:CommonAnyCallback?) -> ActionCreator {
+  func fetchLimitOrders(with pair:Pair, callback:CommonAnyCallback?) -> ActionCreator {
     return { state, store in
      
-      let request = getLimitOrdersRequest(ids: ids)
+      let request = getLimitOrdersRequest(pair: pair)
       
       NetWorkService.shared.send(request: [request]) { (response) in
         if let callback = callback {

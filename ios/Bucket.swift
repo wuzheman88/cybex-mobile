@@ -131,8 +131,8 @@ class BucketMatrix {
     base_assetid = base_id
     quote_assetid = quote_id
     
-    let base_info = UIApplication.shared.coordinator().state.property.assetInfo[base_assetid]!
-    let quote_info = UIApplication.shared.coordinator().state.property.assetInfo[quote_assetid]!
+    let base_info = app_data.assetInfo[base_assetid]!
+    let quote_info = app_data.assetInfo[quote_assetid]!
     let base_precision = pow(10, base_info.precision.toDouble)
     let quote_precision = pow(10, quote_info.precision.toDouble)
     
@@ -231,8 +231,9 @@ class ToStringTransform: TransformType {
   }
 }
 
+
 extension Bucket: Equatable {
   static func ==(lhs: Bucket, rhs: Bucket) -> Bool {
-    return lhs.id == rhs.id && lhs.base_volume == rhs.base_volume && lhs.quote_volume == rhs.quote_volume && lhs.high_base == rhs.high_base && lhs.high_quote == rhs.high_quote && lhs.low_base == rhs.low_base && lhs.low_quote == rhs.low_quote && lhs.open_base == rhs.open_base && lhs.open_quote == rhs.open_quote && lhs.close_base == rhs.close_base && lhs.close_quote == rhs.close_quote && lhs.open == rhs.open
+    return lhs.id == rhs.id && lhs.base_volume == rhs.base_volume && lhs.quote_volume == rhs.quote_volume && lhs.high_base == rhs.high_base && lhs.high_quote == rhs.high_quote && lhs.low_base == rhs.low_base && lhs.low_quote == rhs.low_quote && lhs.open_base == rhs.open_base && lhs.open_quote == rhs.open_quote && lhs.close_base == rhs.close_base && lhs.close_quote == rhs.close_quote && lhs.open == rhs.open && lhs.base == rhs.base && lhs.quote == rhs.quote && lhs.seconds == rhs.seconds
   }
 }

@@ -20,8 +20,7 @@ extension AppCoordinator:AppStateManagerProtocol {
     store.dispatch(creator.fetchAssets(with: sub, params:params, callback: {[weak self] (assets) in
       guard let `self` = self else { return }
      
-      self.store.dispatch(AssetsFetched(pair: params, assets: assets))
-      self.store.dispatch(FetchOver())
+      self.store.dispatch(MarketsFetched(pair: params, assets: assets))
     }))
   }
   
@@ -29,8 +28,7 @@ extension AppCoordinator:AppStateManagerProtocol {
     store.dispatch(creator.fetchAssets(with: false, params:params, callback: {[weak self] (assets) in
       guard let `self` = self else { return }
 
-      self.store.dispatch(kLineFetched(assetID:params.secondAssetId, stick: gap, assets: assets))
-      self.store.dispatch(FetchKlineOver())
+      self.store.dispatch(kLineFetched(pair:Pair(base: params.firstAssetId, quote: params.secondAssetId), stick: gap, assets: assets))
       if let vc = vc, let sel = selector {
         self.store.dispatch(RefreshState(sel: sel, vc: vc))
       }
@@ -53,7 +51,7 @@ extension AppCoordinator:AppStateManagerProtocol {
 }
 
 extension AppCoordinator {
-  func request24hMarkets(specialID:String? = nil, sub:Bool = true) {
+  func request24hMarkets(_ pairs:[Pair], sub:Bool = true) {
     let now = Date()
     var start = now.addingTimeInterval(-3600*24)
     
@@ -61,28 +59,27 @@ extension AppCoordinator {
     start = start.addingTimeInterval(timePassed)
     
 
-    if let special = specialID {
-      UIApplication.shared.coordinator().fetchData(AssetPairQueryParams(firstAssetId: AssetConfiguration.CYB, secondAssetId: special, timeGap: 60 * 60, startTime: start, endTime: now), sub:sub)
-      return
+    for pair in pairs {
+        UIApplication.shared.coordinator().fetchData(AssetPairQueryParams(firstAssetId: pair.base, secondAssetId: pair.quote, timeGap: 60 * 60, startTime: start, endTime: now), sub: sub)
     }
     
-    for assetID in AssetConfiguration.shared.asset_ids {
-
-      UIApplication.shared.coordinator().fetchData(AssetPairQueryParams(firstAssetId: AssetConfiguration.CYB, secondAssetId: assetID, timeGap: 60 * 60, startTime: start, endTime: now), sub: sub)
-    }
-   
   }
   
-  func requestKlineDetailData(sepcialID:String, gap:candlesticks, vc:BaseViewController? = nil, selector:Selector?) {
+  func requestKlineDetailData(pair:Pair, gap:candlesticks, vc:BaseViewController? = nil, selector:Selector?) {
     let now = Date()
     let start = now.addingTimeInterval(-gap.rawValue * 199)
     
-    UIApplication.shared.coordinator().fetchKline(AssetPairQueryParams(firstAssetId: AssetConfiguration.CYB, secondAssetId: sepcialID, timeGap: gap.rawValue.toInt, startTime: start, endTime: now), gap:gap, vc:vc, selector: selector)
+    UIApplication.shared.coordinator().fetchKline(AssetPairQueryParams(firstAssetId: pair.base, secondAssetId: pair.quote, timeGap: gap.rawValue.toInt, startTime: start, endTime: now), gap:gap, vc:vc, selector: selector)
   }
   
   
   func getLatestData() {
-    request24hMarkets()
+    var pairs:[Pair] = []
+    for assetID in AssetConfiguration.shared.asset_ids {
+      pairs.append(Pair(base: AssetConfiguration.CYB, quote: assetID))
+    }
+    
+    request24hMarkets(pairs)
   }
 }
 

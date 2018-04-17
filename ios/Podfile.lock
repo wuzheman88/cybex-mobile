@@ -1,17 +1,22 @@
 PODS:
   - Alamofire (4.7.1)
   - Atributika (4.4.1)
+  - AwaitKit (5.0.0):
+    - PromiseKit (~> 6)
   - BeareadToast (0.0.3)
   - BigInt (3.0.1):
     - SipHash (~> 1.2)
   - BiometricAuthentication (1.0.5)
   - Cache (4.2.0)
+  - ChainableAnimations (3.0.1)
   - CryptoSwift (0.9.0)
   - DNSPageView (1.0.1)
+  - EasyAnimation (2.0.2)
   - ESTabBarController-swift (2.6.2)
   - EZSwiftExtensions (1.11)
   - Fabric (1.7.6)
   - GRDB.swift (2.10.0)
+  - Hero (1.2.0)
   - IHKeyboardAvoiding (4.2)
   - JSONRPCKit (3.0.0):
     - Result (~> 3.2.0)
@@ -19,6 +24,7 @@ PODS:
   - Kingfisher (4.7.0)
   - KMNavigationBarTransition (1.1.5)
   - Localize-Swift (2.0.0)
+  - Locksmith (4.0.0)
   - MJRefresh (3.1.15.3)
   - Moya (11.0.2):
     - Moya/Core (= 11.0.2)
@@ -29,7 +35,15 @@ PODS:
     - NVActivityIndicatorView/Presenter (= 4.2.0)
   - NVActivityIndicatorView/Presenter (4.2.0)
   - ObjectMapper (3.1.0)
-  - Peek (5.1.0)
+  - PromiseKit (6.2.4):
+    - PromiseKit/CorePromise (= 6.2.4)
+    - PromiseKit/Foundation (= 6.2.4)
+    - PromiseKit/UIKit (= 6.2.4)
+  - PromiseKit/CorePromise (6.2.4)
+  - PromiseKit/Foundation (6.2.4):
+    - PromiseKit/CorePromise
+  - PromiseKit/UIKit (6.2.4):
+    - PromiseKit/CorePromise
   - Proposer (1.2.0)
   - R.swift (4.0.0):
     - R.swift.Library (~> 4.0.0)
@@ -62,6 +76,7 @@ PODS:
   - SwiftTheme (0.4.1)
   - SwiftyJSON (4.0.0)
   - SwiftyUserDefaults (3.0.1)
+  - TableFlip (1.2)
   - TextFieldEffects (1.4.0)
   - TinyConstraints (3.1.0)
   - Typist (1.2.1)
@@ -74,27 +89,31 @@ PODS:
 DEPENDENCIES:
   - Alamofire
   - Atributika
+  - AwaitKit
   - BeareadToast (from `https://github.com/phpmaple/BeareadToast`)
   - BigInt
   - BiometricAuthentication
   - Cache
+  - ChainableAnimations
   - CryptoSwift
   - DNSPageView
+  - EasyAnimation
   - ESTabBarController-swift
   - EZSwiftExtensions (from `https://github.com/Steven-Cheung/EZSwiftExtensions`, branch `swift4`)
   - Fabric
   - GRDB.swift
+  - Hero
   - IHKeyboardAvoiding
   - JSONRPCKit
   - KeychainAccess
   - Kingfisher
   - KMNavigationBarTransition
   - Localize-Swift
+  - Locksmith
   - MJRefresh
   - Moya
   - NVActivityIndicatorView
   - ObjectMapper
-  - Peek
   - Proposer
   - R.swift
   - RealReachability
@@ -110,6 +129,7 @@ DEPENDENCIES:
   - SwiftTheme
   - SwiftyJSON
   - SwiftyUserDefaults
+  - TableFlip
   - TextFieldEffects
   - TinyConstraints
   - Typist
@@ -117,6 +137,62 @@ DEPENDENCIES:
   - WoodPeckeriOS
   - Zephyr
   - ZLaunchAd
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - Alamofire
+    - Atributika
+    - AwaitKit
+    - BigInt
+    - BiometricAuthentication
+    - Cache
+    - ChainableAnimations
+    - CryptoSwift
+    - DNSPageView
+    - EasyAnimation
+    - ESTabBarController-swift
+    - Fabric
+    - GRDB.swift
+    - Hero
+    - IHKeyboardAvoiding
+    - JSONRPCKit
+    - KeychainAccess
+    - Kingfisher
+    - KMNavigationBarTransition
+    - Localize-Swift
+    - Locksmith
+    - MJRefresh
+    - Moya
+    - NVActivityIndicatorView
+    - ObjectMapper
+    - PromiseKit
+    - Proposer
+    - R.swift
+    - R.swift.Library
+    - RealReachability
+    - Result
+    - ReSwift
+    - Reveal-SDK
+    - RxCocoa
+    - RxGesture
+    - RxGRDB
+    - RxSwift
+    - SDCAlertView
+    - SipHash
+    - Siren
+    - Starscream
+    - SwiftHash
+    - SwiftTheme
+    - SwiftyJSON
+    - SwiftyUserDefaults
+    - TableFlip
+    - TextFieldEffects
+    - TinyConstraints
+    - Typist
+    - UIFontComplete
+    - WoodPeckeriOS
+    - Zephyr
+    - ZLaunchAd
 
 EXTERNAL SOURCES:
   BeareadToast:
@@ -136,27 +212,32 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Alamofire: 68d7d521118d49c615a8d2214d87cdf525599d30
   Atributika: 6c4d2a789a18ed64f2f5e7fe696da22973d8af0d
+  AwaitKit: d8a6e30eeb2da916630270b44636b31033388bd8
   BeareadToast: 17ff7f5ac9609b186543d6a45df8f15f78c9ca7a
   BigInt: 8e8a52161c745cd3ab78e3dc346a9fbee51e6cf6
   BiometricAuthentication: e80e99bf1fe871ab624172eb91f1ddbbc47499b5
   Cache: f28f8dd64b632155aabf9b3906b036a659048251
+  ChainableAnimations: 12e0a88e72fb554ad4cda38c40474e4d65c972a2
   CryptoSwift: bca8c5b653dcc2d9734409242a070ff53bafac86
   DNSPageView: 93b0f9c9ab0e2f8c1d9aa5b0d44740bd2d775d78
+  EasyAnimation: 977ef673efe8ce62447807eedb380a77b189dc80
   ESTabBarController-swift: f0a8679e43df1e60b7b36bbcaf1dc98ba6273c7d
   EZSwiftExtensions: 9d3dc8a51818e2fbfd11099b38a2c47d0ca693d0
   Fabric: f8d42c893bb187326a7968b62abe55c36a987a46
   GRDB.swift: 9859cab1b990eac62ee550d3d2208ec1b44f76af
+  Hero: 33dadf2cd1c98af71e213dcbc2902e6e03622a4e
   IHKeyboardAvoiding: 9fbf816b7c3c84911964802ff110d12caf40ebef
   JSONRPCKit: 50e0dc5e7f873e87f81562feb8836b7d1974da6d
   KeychainAccess: 7bd430028059754a3debab3cfc0bd1fc7fb85df3
   Kingfisher: da6b005aa96d37698e3e4f1ccfe96a5b9bbf27d6
   KMNavigationBarTransition: 7a52c9bc25b39b6e3343e980b453facee1591b82
   Localize-Swift: c798ec9286494866f7068f85f7c71283ac5bdab4
+  Locksmith: e9bebbaaa4cee3c511bc358a44f843c3fe00e21f
   MJRefresh: b48380ae2b927b46c4ef000de9adb8dc748e1df7
   Moya: a725035953bc1c0eb1be505ab903984501d82440
   NVActivityIndicatorView: 75c9634073e03b31d7e2748cd2417feab1206195
   ObjectMapper: 20505058f54e5c3ca69e1d6de9897d152a5369a6
-  Peek: 452c6789d786321f9865d67c61c930d3b9ef3bb6
+  PromiseKit: 625b1fc69944fc839503748101c5968cf54b527b
   Proposer: 722fe61822b89f551ae10afe8314067f98c39c28
   R.swift: d6a5ec2f55a8441dc0ed9f1f8b37d7d11ae85c66
   R.swift.Library: c3af34921024333546e23b70e70d0b4e0cffca75
@@ -176,6 +257,7 @@ SPEC CHECKSUMS:
   SwiftTheme: 36d71c4eed4b2c401c782cf036e4586c749a8173
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
   SwiftyUserDefaults: 3d273b1739b68ada3145dc754a70ec775bc5c8be
+  TableFlip: 2ae22773412b295a7cbc54d95b44085bb28092f6
   TextFieldEffects: 4ee41b5216e674d55fb6ac25107bf1af7629176f
   TinyConstraints: 4721a4b303c799328867078ade6560e152df54d1
   Typist: 88b462c1c5adc6d4e8601773fcb0b7d7113d18af
@@ -184,6 +266,6 @@ SPEC CHECKSUMS:
   Zephyr: 2574069fd7879147b64ac74349dfabb1c78099c9
   ZLaunchAd: 877d9f43b6f389e2ed192ed10fe92767c0f18124
 
-PODFILE CHECKSUM: d9b5bf49687f51eed4fd57f7fa8544e641e8230e
+PODFILE CHECKSUM: 33c71adcfb253278cd6517dc6bad24dae96a4cea
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.5.0

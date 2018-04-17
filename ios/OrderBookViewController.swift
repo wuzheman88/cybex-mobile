@@ -33,12 +33,12 @@ class OrderBookViewController: BaseViewController {
     return coordinator?.state.property.data
   }
 
-  var pair:[String] = [] {
+  var pair:Pair? {
     didSet {
       if self.tableView != nil, oldValue != pair {
         self.tableView.isHidden = true
       }
-      self.coordinator?.fetchData(pair)
+      self.coordinator?.fetchData(pair!)
     }
   }
 

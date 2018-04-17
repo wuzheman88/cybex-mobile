@@ -12,9 +12,9 @@ import UIKit
 import Localize_Swift
 import SwiftTheme
 import RealReachability
-import Peek
 import SwiftyUserDefaults
 import BeareadToast
+import EasyAnimation
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -24,12 +24,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   var enteredBackground:Bool = false
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    EasyAnimation.enable()
+
+    
     self.window = UIWindow.init(frame: UIScreen.main.bounds)
     self.window?.theme_backgroundColor = [#colorLiteral(red: 0.1178231761, green: 0.1536857784, blue: 0.2179759443, alpha: 1).hexString(true), #colorLiteral(red: 0.9750029445, green: 0.9783667922, blue: 0.9844790101, alpha: 1).hexString(true)]
 
     self.window?.backgroundColor = ThemeManager.currentThemeIndex == 0 ? #colorLiteral(red: 0.1178231761, green: 0.1536857784, blue: 0.2179759443, alpha: 1) : #colorLiteral(red: 0.9750029445, green: 0.9783667922, blue: 0.9844790101, alpha: 1)
-    
-    window?.peek.enabled = true
     
 //    let jsCodeLocation = RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "index", fallbackResource: "")
 //    let rootView = RCTRootView(bundleURL: jsCodeLocation, moduleName: "cybexMobile", initialProperties: [:], launchOptions: launchOptions)

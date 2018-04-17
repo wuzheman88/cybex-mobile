@@ -22,6 +22,12 @@ class CBKLineView: UIView {
       klineDrawView.switchToAccessory(indicator == .macd)
     }
   }
+  
+  var timeGap:candlesticks = .one_day {
+    didSet {
+      timeGapView.switchButton(candlesticks.all.index(of: timeGap)!)
+    }
+  }
 
   override init(frame: CGRect) {
     super.init(frame: frame)

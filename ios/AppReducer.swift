@@ -8,6 +8,7 @@
 
 import Foundation
 import ReSwift
+import RxCocoa
 
 public class BlockSubscriber<S>: StoreSubscriber {
   public typealias StoreSubscriberStateType = S
@@ -96,55 +97,28 @@ func AppReducer(action:Action, state:AppState?) -> AppState {
 
 func AppPropertyReducer(_ state: AppPropertyState?, action: Action) -> AppPropertyState {
   var state = state ?? AppPropertyState()
-  var data = state.data ?? [:]
 
   var ids = state.subscribeIds ?? [:]
   var klineDatas = state.detailData ?? [:]
   
   switch action {
-  case let action as AssetsFetched:
-    if action.assets.count != 0  {
-      data[action.pair.secondAssetId] = action.assets
-    }
-    else if action.assets.count == 0 {
-      data[action.pair.secondAssetId] = []
-    }
-    
-    var sortingData = Array(data.values)
-    
-    if data.count > 1 {
-      sortingData.sort { (last, cur) -> Bool in
-        if last.count == 0 && cur.count != 0 {
-          return false
-        }
-        else if last.count != 0 && cur.count == 0 {
-          return true
-        }
-        else if last.count == 0 && cur.count == 0 {
-          return false
-        }
-        
-        return BucketMatrix.init(last).base_volume_origin > BucketMatrix.init(cur).base_volume_origin
-      }
-    }
-    
-    state.data = data
-    state.sortedData = sortingData
-  case _ as FetchOver:
-    state.haveData = true
+  case let action as MarketsFetched:
+    let data = applyMarketsToState(state, action: action)
+    state.data.accept(data)
+
   case let action as SubscribeSuccess:
-    ids[action.assetID] = action.id
+    ids[action.pair] = action.id
     state.subscribeIds = ids
   case let action as AssetInfoAction:
     state.assetInfo[action.assetID] = action.info
   case let action as kLineFetched:
-    if klineDatas.has(action.assetID) {
-      var klineData = klineDatas[action.assetID]!
+    if klineDatas.has(action.pair) {
+      var klineData = klineDatas[action.pair]!
       klineData[action.stick] = action.assets
-      klineDatas[action.assetID] = klineData
+      klineDatas[action.pair] = klineData
     }
     else {
-      klineDatas[action.assetID] = [action.stick: action.assets]
+      klineDatas[action.pair] = [action.stick: action.assets]
     }
     state.detailData = klineDatas
     
@@ -153,4 +127,47 @@ func AppPropertyReducer(_ state: AppPropertyState?, action: Action) -> AppProper
   }
   
   return state
+}
+
+func applyMarketsToState(_ state: AppPropertyState, action:MarketsFetched) -> [HomeBucket] {
+  var data = state.data.value
+  
+  guard let base_info = state.assetInfo[action.pair.firstAssetId], let quote_info = state.assetInfo[action.pair.secondAssetId] else { return data }
+
+  var homeBucket = HomeBucket(base: action.pair.firstAssetId, quote: action.pair.secondAssetId, bucket: [], base_info: base_info, quote_info: quote_info)
+  if action.assets.count != 0  {
+    homeBucket.bucket = action.assets
+  }
+  
+  let (contain, index) = data.containHashable(homeBucket)
+  
+  if !contain {
+    data.append(homeBucket)
+  }
+  else {
+    data[index] = homeBucket
+  }
+  
+  if data.count > 1 {
+    let sortedData = data.sorted { (last, cur) -> Bool in
+      if last.bucket.count == 0 && cur.bucket.count != 0 {
+        return false
+      }
+      else if last.bucket.count != 0 && cur.bucket.count == 0 {
+        return true
+      }
+      else if last.bucket.count == 0 && cur.bucket.count == 0 {
+        return false
+      }
+      
+      return BucketMatrix.init(last.bucket).base_volume_origin > BucketMatrix.init(cur.bucket).base_volume_origin
+    }
+    
+    return sortedData
+  }
+  else {
+    
+    return data
+  }
+
 }

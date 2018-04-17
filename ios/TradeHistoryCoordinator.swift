@@ -19,7 +19,7 @@ protocol TradeHistoryStateManagerProtocol {
         _ subscriber: S, transform: ((Subscription<TradeHistoryState>) -> Subscription<SelectedState>)?
     ) where S.StoreSubscriberStateType == SelectedState
   
-  func fetchData(_ pair:[String]) 
+  func fetchData(_ pair:Pair)
   func updateMarketListHeight(_ height:CGFloat)
 }
 
@@ -49,7 +49,7 @@ extension TradeHistoryCoordinator: TradeHistoryStateManagerProtocol {
         store.subscribe(subscriber, transform: transform)
     }
   
-  func fetchData(_ pair:[String]) {
+  func fetchData(_ pair:Pair) {
     store.dispatch(creator.fetchFillOrders(with: pair, callback: {[weak self] (data) in
       guard let `self` = self else { return }
       if let data = data as? [JSON] {

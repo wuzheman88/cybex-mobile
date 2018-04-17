@@ -19,8 +19,8 @@ protocol MarketStateManagerProtocol {
         _ subscriber: S, transform: ((Subscription<MarketState>) -> Subscription<SelectedState>)?
     ) where S.StoreSubscriberStateType == SelectedState
   
-  func setupChildViewControllers(_ pair:[String]) -> [BaseViewController]
-  func refreshChildViewController(_ vcs:[BaseViewController], pair:[String]) 
+  func setupChildViewControllers(_ pair:Pair) -> [BaseViewController]
+  func refreshChildViewController(_ vcs:[BaseViewController], pair:Pair)
 }
 
 class MarketCoordinator: HomeRootCoordinator {
@@ -39,7 +39,7 @@ class MarketCoordinator: HomeRootCoordinator {
 }
 
 extension MarketCoordinator: MarketCoordinatorProtocol {
-  func setupChildViewControllers(_ pair:[String]) -> [BaseViewController] {
+  func setupChildViewControllers(_ pair:Pair) -> [BaseViewController] {
     let vc = R.storyboard.main.orderBookViewController()!
     let coordinator = OrderBookCoordinator(rootVC: self.rootVC)
     vc.coordinator = coordinator
@@ -55,7 +55,7 @@ extension MarketCoordinator: MarketCoordinatorProtocol {
     return [vc, vc2]
   }
   
-  func refreshChildViewController(_ vcs:[BaseViewController], pair:[String]) {
+  func refreshChildViewController(_ vcs:[BaseViewController], pair:Pair) {
     for vc in vcs {
       if let vc = vc as? OrderBookViewController {
         vc.pair = pair

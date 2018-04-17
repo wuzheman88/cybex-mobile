@@ -249,10 +249,10 @@ extension NetWorkService: WebSocketDelegate {
     
     guard let id = data["id"].int else {
       if let method = data["method"].string, method == "notice", let params = data["params"].array, let mID = params[0].int {
-        if let ids = UIApplication.shared.coordinator().state.property.subscribeIds, ids.values.contains(mID) {
+        if let ids = app_data.subscribeIds, ids.values.contains(mID) {
           let index = ids.values.index(of: mID)!
           
-          UIApplication.shared.coordinator().request24hMarkets(specialID: ids.keys[index], sub: false)
+          UIApplication.shared.coordinator().request24hMarkets([ids.keys[index]], sub: false)
         }
       }
       return

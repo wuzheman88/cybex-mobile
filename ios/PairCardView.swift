@@ -52,25 +52,20 @@ class PairCardView : UIView {
   }
   
   var data: Any? {
-    didSet {
-      let index = self.store["index"] as! Int
+    didSet {      
+      guard let markets = data as? HomeBucket else { return }
       
-      let base_asset = AssetConfiguration.CYB
-      let quote_asset = AssetConfiguration.shared.asset_ids[index]
-    
-      let base_info = UIApplication.shared.coordinator().state.property.assetInfo[base_asset]
-      let quote_info = UIApplication.shared.coordinator().state.property.assetInfo[quote_asset]
-      self.base_name.text = base_info != nil ? base_info!.symbol : "-"
-      self.quote_name.text = quote_info != nil ? ("/" + quote_info!.symbol) : "/-"
+      self.base_name.text = markets.base_info.symbol
+      self.quote_name.text = "/" + markets.quote_info.symbol
       
-      guard let markets = data as? [Bucket], markets.count > 0 , UIApplication.shared.coordinator().state.property.assetInfo.count > 0 else {
+      if markets.bucket.count == 0 {
         self.change.text = "-"
         self.arrowIcon.transform = CGAffineTransform(rotationAngle: CGFloat.pi / 2.0)
-
+        
         return
       }
       
-      let matrix = BucketMatrix(markets)
+      let matrix = BucketMatrix(markets.bucket)
       self.change.text = (matrix.incre == .greater ? "+" : "") + matrix.change + "%"
       
       switch matrix.incre {

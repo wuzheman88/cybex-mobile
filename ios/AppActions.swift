@@ -8,21 +8,41 @@
 
 import Foundation
 import ReSwift
+import RxCocoa
 
 struct AppState:StateType {
   var property: AppPropertyState
 }
 struct AppPropertyState {
-  var haveData:Bool = false
-
-  var data:[String:[Bucket]]?
-  var sortedData:[[Bucket]]?
+  var data:BehaviorRelay<[HomeBucket]> = BehaviorRelay(value: [])
   
-  var detailData:[String:[candlesticks:[Bucket]]]?
+  var detailData:[Pair:[candlesticks:[Bucket]]]?
 
-  var subscribeIds:[String:Int]?
+  var subscribeIds:[Pair:Int]?
   
   var assetInfo:[String:AssetInfo] = [:]
+}
+
+struct HomeBucket:Equatable,Hashable {
+  let base:String
+  let quote:String
+  var bucket:[Bucket]
+  let base_info:AssetInfo
+  let quote_info:AssetInfo
+
+  public static func == (lhs: HomeBucket, rhs: HomeBucket) -> Bool {
+    return lhs.base == rhs.base && lhs.quote == rhs.quote && lhs.bucket == rhs.bucket && lhs.base_info == rhs.base_info && lhs.quote_info == rhs.quote_info
+  }
+  
+  var hashValue: Int {
+    return base.hashValue ^ quote.hashValue
+  }
+}
+
+
+struct Pair:Hashable {
+  let base:String
+  let quote:String
 }
 
 class LoadingActionCreator {
@@ -54,23 +74,15 @@ struct NextPage: Action {}
 struct ResetPage: Action {}
 
 
-struct AssetsFetched:Action {
+struct MarketsFetched:Action {
   let pair:AssetPairQueryParams
   let assets:[Bucket]
 }
 
 struct kLineFetched:Action {
-  let assetID:String
+  let pair:Pair
   let stick:candlesticks
   let assets:[Bucket]
-}
-
-struct FetchOver:Action {
-  
-}
-
-struct FetchKlineOver:Action {
-  
 }
 
 struct RefreshState:Action {
@@ -79,7 +91,7 @@ struct RefreshState:Action {
 }
 
 struct SubscribeSuccess:Action {
-  let assetID:String
+  let pair:Pair
   let id:Int
 }
 
@@ -156,7 +168,7 @@ class AppPropertyActionCreate: LoadingActionCreator {
      
         NetWorkService.shared.send(request: [subRequest], callback: { response in
           if let id = response[0] as? Int {
-            store.dispatch(SubscribeSuccess(assetID: params.firstAssetId, id: id))
+            store.dispatch(SubscribeSuccess(pair: Pair(base: params.firstAssetId, quote: params.secondAssetId), id: id))
           }
         })
       }

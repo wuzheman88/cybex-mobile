@@ -36,18 +36,18 @@ class TradeHistoryViewController: BaseViewController {
     
     var coordinator: (TradeHistoryCoordinatorProtocol & TradeHistoryStateManagerProtocol)?
   
-  var pair:[String] = [] {
+  var pair:Pair? {
     didSet {
       if self.tableView != nil, oldValue != pair {
         self.tableView.isHidden = true
       }
      
-      let base_info = UIApplication.shared.coordinator().state.property.assetInfo[pair[0]]!
-      let quote_info = UIApplication.shared.coordinator().state.property.assetInfo[pair[1]]!
+      let base_info = app_data.assetInfo[pair!.base]!
+      let quote_info = app_data.assetInfo[pair!.quote]!
 
       self.quote_name.text = quote_info.symbol
       self.base_name.text = base_info.symbol
-      self.coordinator?.fetchData(pair)
+      self.coordinator?.fetchData(pair!)
 
     }
   }
@@ -100,12 +100,12 @@ class TradeHistoryViewController: BaseViewController {
         let receive = curData[1]
         let time = curData[2].stringValue
         
-        let base_info = UIApplication.shared.coordinator().state.property.assetInfo[pair[0]]!
-        let quote_info = UIApplication.shared.coordinator().state.property.assetInfo[pair[1]]!
+        let base_info = app_data.assetInfo[pair!.base]!
+        let quote_info = app_data.assetInfo[pair!.quote]!
         let base_precision = pow(10, base_info.precision.toDouble)
         let quote_precision = pow(10, quote_info.precision.toDouble)
         
-        if pay["asset_id"].stringValue == pair[0] {
+        if pay["asset_id"].stringValue == pair!.base {
           let quote_volume = receive["amount"].stringValue.toDouble()! / quote_precision
           let base_volume = pay["amount"].stringValue.toDouble()! / base_precision
           

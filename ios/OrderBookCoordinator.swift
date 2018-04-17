@@ -19,7 +19,7 @@ protocol OrderBookStateManagerProtocol {
         _ subscriber: S, transform: ((Subscription<OrderBookState>) -> Subscription<SelectedState>)?
     ) where S.StoreSubscriberStateType == SelectedState
   
-  func fetchData(_ pair:[String]) 
+  func fetchData(_ pair:Pair)
   func updateMarketListHeight(_ height:CGFloat)
 }
 
@@ -49,11 +49,11 @@ extension OrderBookCoordinator: OrderBookStateManagerProtocol {
         store.subscribe(subscriber, transform: transform)
     }
   
-  func fetchData(_ pair:[String]) {
+  func fetchData(_ pair:Pair) {
     store.dispatch(creator.fetchLimitOrders(with: pair, callback: {[weak self] (data) in
       guard let `self` = self else { return }
       if let data = data as? [LimitOrder] {
-        self.store.dispatch(FetchedLimitData(data:data, base:pair[0]))
+        self.store.dispatch(FetchedLimitData(data:data, pair:pair))
       }
     }))
   }
