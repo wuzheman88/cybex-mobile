@@ -204,7 +204,6 @@ extension NetWorkService {
     self.retry = {[weak self] in
       guard let `self` = self else { return }
       
-      UIApplication.shared.coordinator().fetchAsset()
       UIApplication.shared.coordinator().getLatestData()
       JsonRPCService.shared.requestIDs([LoginRequest(username: "", password: "")])
       self.retry = nil

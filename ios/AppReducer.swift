@@ -160,7 +160,7 @@ func applyMarketsToState(_ state: AppPropertyState, action:MarketsFetched) -> [H
         return false
       }
       
-      return BucketMatrix.init(last.bucket).base_volume_origin > BucketMatrix.init(cur.bucket).base_volume_origin
+      return BucketMatrix.init(last).base_volume_origin > BucketMatrix.init(cur).base_volume_origin
     }
     
     return sortedData

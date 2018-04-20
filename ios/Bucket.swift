@@ -92,12 +92,6 @@ enum changeScope {
 }
 
 class BucketMatrix {
-  var base_name:String
-  var quote_name:String
-
-  var base_assetid:String
-  var quote_assetid:String
-  
   var price:String
   
   var asset:[Bucket]
@@ -115,48 +109,54 @@ class BucketMatrix {
   var incre:changeScope
   
 
-  init(_ asset:[Bucket]) {
-    self.asset = asset
+  init(_ homebucket:HomeBucket) {
+    self.asset = homebucket.bucket
     
     let last = self.asset.last!
-    let last_closebase_amount = last.close_base.toDouble()!
-    let last_closequote_amount = last.close_quote.toDouble()!
-
     let first = self.asset.first!
-    let first_openbase_amount = first.open_base.toDouble()!
-    let first_openquote_amount = first.open_quote.toDouble()!
+
+    let flip = homebucket.base != last.base
     
-    let base_id = last.base
-    let quote_id = last.quote
-    base_assetid = base_id
-    quote_assetid = quote_id
+    let last_closebase_amount = flip ? last.close_quote.toDouble()! : last.close_base.toDouble()!
+    let last_closequote_amount = flip ? last.close_base.toDouble()! : last.close_quote.toDouble()!
+
+    let first_openbase_amount = flip ? first.open_quote.toDouble()! : first.open_base.toDouble()!
+    let first_openquote_amount = flip ? first.open_base.toDouble()! : first.open_quote.toDouble()!
     
-    let base_info = app_data.assetInfo[base_assetid]!
-    let quote_info = app_data.assetInfo[quote_assetid]!
+    
+    let base_info = homebucket.base_info
+    let quote_info = homebucket.quote_info
+    
     let base_precision = pow(10, base_info.precision.toDouble)
     let quote_precision = pow(10, quote_info.precision.toDouble)
     
     let lastClose_price = (last_closebase_amount / base_precision) / (last_closequote_amount / quote_precision)
     let firseOpen_price = (first_openbase_amount / base_precision) / (first_openquote_amount / quote_precision)
     
-    let high_price_collection = self.asset.map{($0.high_base.toDouble()! / base_precision) / ($0.high_quote.toDouble()! / quote_precision)}
+   
+    let high_price_collection = self.asset.map { (bucket) -> Double in
+      let high_base = flip ? (bucket.high_quote.toDouble()! / base_precision) : (bucket.high_base.toDouble()! / quote_precision)
+      let quote_base = flip ? (bucket.high_base.toDouble()! / base_precision) : (bucket.high_quote.toDouble()! / quote_precision)
+      return high_base / quote_base
+    }
+    
+    let low_price_collection = self.asset.map { (bucket) -> Double in
+      let low_base = flip ? (bucket.low_quote.toDouble()! / base_precision) : (bucket.low_base.toDouble()! / quote_precision)
+      let low_quote = flip ? (bucket.low_base.toDouble()! / base_precision) : (bucket.low_quote.toDouble()! / quote_precision)
+      return low_base / low_quote
+    }
 
-    let low_price_collection = self.asset.map{($0.low_base.toDouble()! / base_precision) / ($0.low_quote.toDouble()! / quote_precision)}
-    
-    
     let high = high_price_collection.max()!
     let low = low_price_collection.min()!
 
-    let base_volume = self.asset.map{$0.base_volume}.reduce(0) { (last, cur) -> Double in
+    let base_volume = self.asset.map{flip ? $0.quote_volume : $0.base_volume}.reduce(0) { (last, cur) -> Double in
       last + cur.toDouble()!
     } / base_precision
     
-    let quote_volume = self.asset.map{$0.quote_volume}.reduce(0) { (last, cur) -> Double in
+    let quote_volume = self.asset.map{flip ? $0.base_volume: $0.quote_volume}.reduce(0) { (last, cur) -> Double in
       last + cur.toDouble()!
       } / quote_precision
 
-    self.base_name = base_info.symbol
-    self.quote_name = quote_info.symbol
     
     self.base_volume_origin = base_volume
     self.base_volume = base_volume.toString.suffixNumber()

@@ -52,6 +52,19 @@ public struct Version : Equatable, Comparable {
 
 }
 
+func requestMarketList(_ completion: @escaping (_ pairs: [Pair]) -> Void) {
+  Alamofire.request(AppConfiguration.SERVER_MARKETLIST_URLString).responseJSON { (response) in
+    guard let value = response.result.value else {
+      completion([])
+      return
+    }
+    
+    let data = JSON(value).dictionaryValue["data"]!
+    let pairs = data.arrayValue.map({ Pair(base: $0.arrayValue[0].stringValue, quote:$0.arrayValue[1].stringValue)})
+    completion(pairs)
+  }
+}
+
 func checkVersion(_ completion: @escaping (_ update:Bool, _ url:String, _ force:Bool) -> Void) {
   Alamofire.request(AppConfiguration.SERVER_VERSION_URLString).responseJSON { (response) in
     guard let value = response.result.value else {

@@ -23,7 +23,11 @@ var app_coodinator:AppCoordinator {
 
 struct AppConfiguration {
   static let APPID = ""
-  static let SERVER_VERSION_URLString = "https://cybex.io/iOS_update.json"
+  static let SERVER_BASE_URLString = "https://cybex.io/"
+  static let SERVER_ICONS_BASE_URLString = "https://cybex.io/icons/"
+
+  static let SERVER_VERSION_URLString = SERVER_BASE_URLString + "iOS_update.json"
+  static let SERVER_MARKETLIST_URLString = SERVER_BASE_URLString + "market_list.json"
 }
 
 enum indicator:String {
@@ -84,22 +88,14 @@ enum objectID:String {
   case special_authority_object = "2.14.x"
 }
 
-class AssetConfiguration {
-  static let icons: [String:String] = ["1.3.0":"ic_cyb_grey","1.3.2":"ic_eth_grey","1.3.3":"ic_btc_grey","1.3.4":"ic_eos_grey","1.3.5":"ic_snt_grey","1.3.6":"ic_bat_grey","1.3.7":"ic_ven_grey","1.3.8":"ic_omg_grey","1.3.9":"ic_nas_grey","1.3.10":"ic_knc_grey","1.3.11":"ic_pay_grey","1.3.12":"ic_eng_grey"]
+class AssetConfiguration {  
+  var asset_ids:[Pair] = []
   
-  static let CYB = "1.3.0"
-  
-  var asset_ids:[String] = []
-  
-  private init() {
+  var unique_ids:[String] {
+    return asset_ids.map({[$0.base, $0.quote]}).flatMap({ $0 }).unique()
   }
   
-  func asset_icon(_ assetID:String) -> String {
-    if AssetConfiguration.icons.has(assetID) {
-      return AssetConfiguration.icons[assetID]!
-    }
-    
-    return AssetConfiguration.icons["1.3.0"]!
+  private init() {
   }
   
   static let shared = AssetConfiguration()

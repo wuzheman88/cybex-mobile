@@ -65,7 +65,7 @@ class PairCardView : UIView {
         return
       }
       
-      let matrix = BucketMatrix(markets.bucket)
+      let matrix = BucketMatrix(markets)
       self.change.text = (matrix.incre == .greater ? "+" : "") + matrix.change + "%"
       
       switch matrix.incre {
