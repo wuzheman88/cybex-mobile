@@ -13,6 +13,7 @@ import RxCocoa
 import RxSwift
 import ChainableAnimations
 import TableFlip
+import SwiftyJSON
 
 class HomeViewController: BaseViewController, UINavigationControllerDelegate, UIScrollViewDelegate {
   var coordinator: (HomeCoordinatorProtocol & HomeStateManagerProtocol)?
@@ -26,7 +27,6 @@ class HomeViewController: BaseViewController, UINavigationControllerDelegate, UI
     
     handlerUpdateVersion(nil)
     
-    AssetConfiguration.shared.asset_ids = ["1.3.2", "1.3.3", "1.3.4", "1.3.5", "1.3.6", "1.3.7", "1.3.8", "1.3.9", "1.3.10", "1.3.11", "1.3.12"]
     requestData()
   }
   
@@ -49,7 +49,6 @@ class HomeViewController: BaseViewController, UINavigationControllerDelegate, UI
 
   func requestData() {
     self.startLoading()
-    UIApplication.shared.coordinator().fetchAsset()
     UIApplication.shared.coordinator().getLatestData()
   }
   
@@ -75,7 +74,6 @@ class HomeViewController: BaseViewController, UINavigationControllerDelegate, UI
       .subscribe(onNext: { (s) in
         self.endLoading()
         self.tableView.reloadData()
-        self.tableView.animate(animation: TableViewAnimation.Cell.right(duration: 0.5))
     }, onError: nil, onCompleted: nil, onDisposed: nil).disposed(by: disposeBag)
   }
   

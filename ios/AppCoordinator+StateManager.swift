@@ -38,7 +38,7 @@ extension AppCoordinator:AppStateManagerProtocol {
   func fetchAsset() {
     guard AssetConfiguration.shared.asset_ids.count > 0 else { return }
     
-    let request = GetAssetRequest(ids: AssetConfiguration.shared.asset_ids + [AssetConfiguration.CYB])
+    let request = GetAssetRequest(ids: AssetConfiguration.shared.unique_ids)
     NetWorkService.shared.send(request: [request]) { response in
       if let assetinfo = response[0] as? [AssetInfo] {
         for info in assetinfo {
@@ -74,12 +74,18 @@ extension AppCoordinator {
   
   
   func getLatestData() {
-    var pairs:[Pair] = []
-    for assetID in AssetConfiguration.shared.asset_ids {
-      pairs.append(Pair(base: AssetConfiguration.CYB, quote: assetID))
+    if AssetConfiguration.shared.asset_ids.isEmpty {
+      requestMarketList { (pairs) in
+        AssetConfiguration.shared.asset_ids = pairs
+        self.fetchAsset()
+        self.request24hMarkets(pairs)
+      }
     }
-    
-    request24hMarkets(pairs)
+    else {
+      fetchAsset()
+      request24hMarkets(AssetConfiguration.shared.asset_ids)
+    }
+   
   }
 }
 

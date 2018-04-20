@@ -9,6 +9,7 @@
 import Foundation
 import EZSwiftExtensions
 import RxGesture
+import Kingfisher
 
 @IBDesignable
 class HomePairView: UIView {
@@ -40,8 +41,9 @@ class HomePairView: UIView {
       self.asset1.text = markets.base_info.symbol
       self.asset2.text = "/" + markets.quote_info.symbol
       
-      self.icon.image = UIImage.init(named: AssetConfiguration.shared.asset_icon(markets.quote))
-
+      let iconString = AppConfiguration.SERVER_ICONS_BASE_URLString + markets.quote.replacingOccurrences(of: ".", with: "_") + "_grey.png"
+      self.icon.kf.setImage(with: URL(string: iconString))
+      
       if markets.bucket.count == 0 {
         self.volume.text = "V: -"
         self.high_low.text = "H: - L: -"
@@ -52,7 +54,7 @@ class HomePairView: UIView {
         return
       }
       
-      let matrix = BucketMatrix(markets.bucket)
+      let matrix = BucketMatrix(markets)
       self.volume.text = "V: " + matrix.base_volume
       self.high_low.text = "H: " + matrix.high + " L: " + matrix.low
       self.price.text = matrix.price

@@ -34,7 +34,7 @@ class PairDetailView: UIView {
         return
       }
       
-      let matrix = BucketMatrix(markets.bucket)
+      let matrix = BucketMatrix(markets)
       
       self.baseVolume.text = "Vol: " + matrix.base_volume
       self.quoteVolume.text = matrix.quote_volume
