@@ -25,7 +25,7 @@ protocol TradeHistoryStateManagerProtocol {
 
 class TradeHistoryCoordinator: HomeRootCoordinator {
     
-    lazy var creator = TradeHistoryPropertyActionCreate(vc: self.rootVC.topViewController as? BaseViewController)
+    lazy var creator = TradeHistoryPropertyActionCreate()
     
     var store = Store<TradeHistoryState>(
         reducer: TradeHistoryReducer,
@@ -52,6 +52,7 @@ extension TradeHistoryCoordinator: TradeHistoryStateManagerProtocol {
   func fetchData(_ pair:Pair) {
     store.dispatch(creator.fetchFillOrders(with: pair, callback: {[weak self] (data) in
       guard let `self` = self else { return }
+      
       if let data = data as? [JSON] {
         self.store.dispatch(FetchedFillOrderData(data:data))
       }

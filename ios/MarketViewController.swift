@@ -32,6 +32,8 @@ class MarketViewController: BaseViewController {
     }
   }
   
+  var resetKLinePosition:Bool = true
+  
   var indicator:indicator = .ma {
     didSet {
       switch indicator {
@@ -56,12 +58,12 @@ class MarketViewController: BaseViewController {
   var curIndex:Int = 0
   var coordinator: (MarketCoordinatorProtocol & MarketStateManagerProtocol)?
   
-  var pair:Pair {
+  lazy var pair:Pair = {
     let markets = app_data.data.value
     let market = markets[self.curIndex]
     
     return Pair(base: market.base, quote: market.quote)
-  }
+  }()
 
 	override func viewDidLoad() {
     super.viewDidLoad()
@@ -72,6 +74,10 @@ class MarketViewController: BaseViewController {
 
     configLeftNavButton(nil)
     setupPageView()
+
+    startLoading()
+    refreshDetailView()
+    fetchKlineData()
   }
   
   func setupPageView() {
@@ -105,8 +111,6 @@ class MarketViewController: BaseViewController {
   
     let childViewControllers: [BaseViewController] = coordinator!.setupChildViewControllers(pair)
     
-    self.coordinator?.refreshChildViewController(childViewControllers, pair: pair)
-    
     // 对contentView进行设置
     pageContentView.childViewControllers = childViewControllers
     pageContentView.startIndex = startIndex
@@ -129,25 +133,25 @@ class MarketViewController: BaseViewController {
     pairListView.data = [self.curIndex, markets]
   }
   
-  func refreshView() {
+  func refreshView(_ hiddenKLine:Bool = true) {
     self.refreshDetailView()
-    fetchKlineData()
+    fetchKlineData(hiddenKLine)
     
-    let markets = app_data.data.value
-    let market = markets[self.curIndex]
     
     self.coordinator?.refreshChildViewController(pageContentView.childViewControllers as! [BaseViewController], pair: pair)
   }
   
-  func fetchKlineData() {
-    let markets = app_data.data.value
+  func fetchKlineData(_ hiddenKLine:Bool = true) {
+    self.kLineView.isHidden = hiddenKLine
 
-    let bucket = markets[self.curIndex]
-    
-    self.startLoading()
-    self.kLineView.isHidden = true
-
-    UIApplication.shared.coordinator().requestKlineDetailData(pair:Pair(base: bucket.base, quote: bucket.quote), gap: timeGap, vc: self, selector: #selector(refreshKLine))
+    resetKLinePosition = hiddenKLine
+    UIApplication.shared.coordinator().requestKlineDetailData(pair: pair, gap: timeGap, vc: self, selector: #selector(refreshKLine))
+  }
+  
+  func updateIndex() {
+    let markets = app_data.data.value.map( { Pair(base: $0.base, quote: $0.quote) })
+    self.curIndex = markets.index(of: pair)!
+    pair = markets[self.curIndex]
   }
   
   @objc func refreshKLine() {
@@ -160,7 +164,7 @@ class MarketViewController: BaseViewController {
       return
     }
     
-    if let klineDatas = app_data.detailData, let klineData = klineDatas[Pair(base:bucket.base, quote:bucket.quote)] {
+    if let klineDatas = app_data.detailData, let klineData = klineDatas[pair] {
      
       guard let response = klineData[timeGap] else {
         endLoading()
@@ -222,7 +226,7 @@ class MarketViewController: BaseViewController {
           }
         }
       }
-      self.kLineView.drawKLineView(klineModels: dataArray)
+      self.kLineView.drawKLineView(klineModels: dataArray, initialize: resetKLinePosition)
     }
   }
   
@@ -244,9 +248,11 @@ class MarketViewController: BaseViewController {
     commonObserveState()
     
     app_data.data.asObservable().distinctUntilChanged()
-      .filter({$0.count == AssetConfiguration.shared.asset_ids.count})
-      .subscribe(onNext: { (s) in
-        self.refreshView()
+      .filter({$0.count == AssetConfiguration.shared.asset_ids.count}).skip(1)
+      .subscribe(onNext: {[weak self] (s) in
+        guard let `self` = self else { return }
+        self.updateIndex()
+        self.refreshView(false)
       }, onError: nil, onCompleted: nil, onDisposed: nil).disposed(by: disposeBag)
     
   }
@@ -261,6 +267,10 @@ extension MarketViewController {
     if let index = data["index"] as? Int {
       self.curIndex = index
       
+      let markets = app_data.data.value.map( { Pair(base: $0.base, quote: $0.quote) })
+      pair = markets[self.curIndex]
+      
+      startLoading()
       refreshView()
     }
   }
@@ -268,6 +278,8 @@ extension MarketViewController {
   @objc func timeClicked(_ data:[String: Any]) {
     if let candlestick = data["candlestick"] as? candlesticks {
       self.timeGap = candlestick
+      
+      startLoading()
       fetchKlineData()
     }
   }
@@ -277,6 +289,7 @@ extension MarketViewController {
       self.indicator = indicator
       self.kLineView.indicator = indicator
       
+      startLoading()
       fetchKlineData()
     }
   }

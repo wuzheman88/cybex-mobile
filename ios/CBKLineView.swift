@@ -44,9 +44,9 @@ class CBKLineView: UIView {
     loadSubView()
   }
  
-  public func drawKLineView(klineModels: [CBKLineModel]) {
+  public func drawKLineView(klineModels: [CBKLineModel], initialize: Bool = true) {
     configuration.dataSource.klineModels = klineModels
-    klineDrawView.drawKLineView(true)
+    klineDrawView.drawKLineView(initialize)
   }
   
   func loadSubView() {

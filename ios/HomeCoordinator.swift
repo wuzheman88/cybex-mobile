@@ -21,8 +21,7 @@ protocol HomeStateManagerProtocol {
 }
 
 class HomeCoordinator: HomeRootCoordinator {
-    
-    lazy var creator = HomePropertyActionCreate(vc: self.rootVC.topViewController as? BaseViewController)
+    lazy var creator = HomePropertyActionCreate()
     
     var store = Store<HomeState>(
         reducer: HomeReducer,

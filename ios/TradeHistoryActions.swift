@@ -9,6 +9,8 @@
 import Foundation
 import ReSwift
 import SwiftyJSON
+import RxCocoa
+import RxSwift
 
 //MARK: - State
 struct TradeHistoryState: StateType {
@@ -19,7 +21,7 @@ struct TradeHistoryState: StateType {
 }
 
 struct TradeHistoryPropertyState {
-  var data:[JSON]?
+  var data:BehaviorRelay<[JSON]> = BehaviorRelay(value: [])
 }
 
 struct FetchedFillOrderData:Action {

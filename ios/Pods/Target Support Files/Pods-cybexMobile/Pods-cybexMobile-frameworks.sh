@@ -193,7 +193,6 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/TinyConstraints/TinyConstraints.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Typist/Typist.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/UIFontComplete/UIFontComplete.framework"
-  install_framework "${PODS_ROOT}/WoodPeckeriOS/WoodPeckeriOS.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ZLaunchAd/ZLaunchAd.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Zephyr/Zephyr.framework"
 fi

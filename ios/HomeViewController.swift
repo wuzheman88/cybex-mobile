@@ -28,6 +28,8 @@ class HomeViewController: BaseViewController, UINavigationControllerDelegate, UI
     handlerUpdateVersion(nil)
     
     requestData()
+    
+    BitShareCoordinator.callMethod("{\"method\": \"abc\", \"params\": [ \"def\", \"hij\", 0, 3 , \"xxx\" ]}")
   }
   
   func setupUI() {    

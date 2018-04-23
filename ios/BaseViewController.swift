@@ -50,9 +50,7 @@ class BaseViewController: UIViewController {
     }
     
     self.view.theme_backgroundColor = [#colorLiteral(red: 0.1176470588, green: 0.1529411765, blue: 0.2196078431, alpha: 1).hexString(true), #colorLiteral(red: 0.9750029445, green: 0.9783667922, blue: 0.9844790101, alpha: 1).hexString(true)]
-//    configLeftNavButton()
-//    configRightNavButton()
-   
+
     configureObserveState()
 
   }
@@ -84,6 +82,7 @@ class BaseViewController: UIViewController {
   func changeNavBar(isUserInteractionEnabled: Bool) {
     self.navigationController?.navigationBar.rx.observe(Bool.self, "isUserInteractionEnabled").subscribe(onNext: { [weak self] (enabled) in
       guard let `self` = self else { return }
+      
       if self.navigationController?.visibleViewController != self {
         return
       }
@@ -149,5 +148,6 @@ class BaseViewController: UIViewController {
   }
   
   deinit {
+    print("dealloc: \(self)")
   }
 }

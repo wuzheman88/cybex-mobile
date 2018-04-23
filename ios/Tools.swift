@@ -53,7 +53,10 @@ public struct Version : Equatable, Comparable {
 }
 
 func requestMarketList(_ completion: @escaping (_ pairs: [Pair]) -> Void) {
-  Alamofire.request(AppConfiguration.SERVER_MARKETLIST_URLString).responseJSON { (response) in
+  var request = URLRequest(url: URL(string: AppConfiguration.SERVER_MARKETLIST_URLString)!)
+  request.cachePolicy = .reloadIgnoringCacheData
+  
+  Alamofire.request(request).responseJSON { (response) in
     guard let value = response.result.value else {
       completion([])
       return
@@ -66,7 +69,10 @@ func requestMarketList(_ completion: @escaping (_ pairs: [Pair]) -> Void) {
 }
 
 func checkVersion(_ completion: @escaping (_ update:Bool, _ url:String, _ force:Bool) -> Void) {
-  Alamofire.request(AppConfiguration.SERVER_VERSION_URLString).responseJSON { (response) in
+  var request = URLRequest(url: URL(string: AppConfiguration.SERVER_VERSION_URLString)!)
+  request.cachePolicy = .reloadIgnoringCacheData
+  
+  Alamofire.request(request).responseJSON { (response) in
     guard let value = response.result.value else {
       completion(false, "", false)
       return

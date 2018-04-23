@@ -21,7 +21,7 @@ protocol AccountStateManagerProtocol {
 
 class AccountCoordinator: NavCoordinator {
     
-    lazy var creator = AccountPropertyActionCreate(vc: self.rootVC.topViewController as? BaseViewController)
+    lazy var creator = AccountPropertyActionCreate()
     
     var store = Store<AccountState>(
         reducer: AccountReducer,

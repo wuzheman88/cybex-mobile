@@ -9,6 +9,8 @@
 import Foundation
 import ReSwift
 import SwiftyJSON
+import RxCocoa
+import RxSwift
 
 //MARK: - State
 struct OrderBookState: StateType {
@@ -19,11 +21,11 @@ struct OrderBookState: StateType {
 }
 
 struct OrderBookPropertyState {
-  var data:OrderBook?
+  var data:BehaviorRelay<OrderBook> = BehaviorRelay(value: OrderBook(bids: [], asks: []))
 }
 
-struct OrderBook {
-  struct Order {
+struct OrderBook:Equatable {
+  struct Order:Equatable {
     let price:String
     let volume:String
     

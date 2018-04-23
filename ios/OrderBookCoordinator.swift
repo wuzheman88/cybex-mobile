@@ -25,7 +25,7 @@ protocol OrderBookStateManagerProtocol {
 
 class OrderBookCoordinator: HomeRootCoordinator {
     
-    lazy var creator = OrderBookPropertyActionCreate(vc: self.rootVC.topViewController as? BaseViewController)
+    lazy var creator = OrderBookPropertyActionCreate()
     
     var store = Store<OrderBookState>(
         reducer: OrderBookReducer,
@@ -50,8 +50,10 @@ extension OrderBookCoordinator: OrderBookStateManagerProtocol {
     }
   
   func fetchData(_ pair:Pair) {
+    store.dispatch(StartLoading(vc: self.rootVC.topViewController as? BaseViewController))
     store.dispatch(creator.fetchLimitOrders(with: pair, callback: {[weak self] (data) in
       guard let `self` = self else { return }
+
       if let data = data as? [LimitOrder] {
         self.store.dispatch(FetchedLimitData(data:data, pair:pair))
       }

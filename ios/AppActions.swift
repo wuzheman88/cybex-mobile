@@ -46,11 +46,6 @@ struct Pair:Hashable {
 }
 
 class LoadingActionCreator {
-  var viewController: BaseViewController?
-  
-  init(vc: BaseViewController?) {
-    self.viewController = vc
-  }
 }
 
 // MARK: - Common Actions
@@ -190,8 +185,8 @@ class AppPropertyActionCreate: LoadingActionCreator {
   
   func cycleFetch(_ asset:Bucket, params:AssetPairQueryParams, callback:CommonAnyCallback?) {
     var re_params = params
-    re_params.startTime = Date(timeIntervalSince1970: asset.open - 86400)
-    re_params.endTime = Date(timeIntervalSince1970: asset.open - 3600)
+    re_params.startTime = params.startTime.addingTimeInterval(-24 * 3600)
+    re_params.endTime = params.startTime
     self.fetchingMarketList(re_params, callback: {[weak self] (o_res) in
       guard let `self` = self else { return }
       if let o_response = o_res as? [[Bucket?]], let o_assets = o_response[0] as? [Bucket] {
@@ -201,7 +196,7 @@ class AppPropertyActionCreate: LoadingActionCreator {
           }
         }
         else if o_assets.count > 0 {
-          self.cycleFetch(asset, params: params, callback: callback)
+          self.cycleFetch(asset, params: re_params, callback: callback)
         }
         else {
           if let callback = callback {

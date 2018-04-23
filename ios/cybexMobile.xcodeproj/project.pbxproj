@@ -147,6 +147,8 @@
 		73E49E50207A08BE003B14D2 /* OrderBookCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E49E4F207A08BE003B14D2 /* OrderBookCellView.swift */; };
 		73E49E52207A08CB003B14D2 /* OrderBookCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73E49E51207A08CB003B14D2 /* OrderBookCellView.xib */; };
 		73E49E54207A12E4003B14D2 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 73E49E53207A12E4003B14D2 /* Launch Screen.storyboard */; };
+		73E6B2B9208D911D00B015E5 /* test_boost_json.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 73E6B28E208D911A00B015E5 /* test_boost_json.cpp */; };
+		73E6B2BE208D92AB00B015E5 /* BitShareCoordinator.mm in Sources */ = {isa = PBXBuildFile; fileRef = 73E6B2BD208D92AB00B015E5 /* BitShareCoordinator.mm */; };
 		73EA6D942085C3AC0045A88B /* Demo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73EA6D932085C3AC0045A88B /* Demo.swift */; };
 		73EAC8B02086F8720045A88B /* cassert in Resources */ = {isa = PBXBuildFile; fileRef = 73EA9FB92086F8320045A88B /* cassert */; };
 		73EAC8B12086F8720045A88B /* cctype in Resources */ = {isa = PBXBuildFile; fileRef = 73EA9FBA2086F8320045A88B /* cctype */; };
@@ -248,7 +250,6 @@
 		73EAC9112086F8750045A88B /* valarray in Resources */ = {isa = PBXBuildFile; fileRef = 73EAC4DD2086F8660045A88B /* valarray */; };
 		73EAC9122086F8750045A88B /* vector in Resources */ = {isa = PBXBuildFile; fileRef = 73EAC4DE2086F8660045A88B /* vector */; };
 		73EAC9132086F8750045A88B /* boost.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 73EAC8AF2086F8700045A88B /* boost.a */; };
-		73EAC9172086FD1E0045A88B /* test.mm in Sources */ = {isa = PBXBuildFile; fileRef = 73EAC9162086FD1E0045A88B /* test.mm */; };
 		78F9F85527183B9AAEBF202D /* Pods_cybexMobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72C4E6233ACD8199E4F2C647 /* Pods_cybexMobile.framework */; };
 		CE30796C487547D28F3ECD4B /* libRNRandomBytes.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93A9B6B48D4C42D0A2AC4F77 /* libRNRandomBytes.a */; };
 /* End PBXBuildFile section */
@@ -705,6 +706,10 @@
 		73E49E4F207A08BE003B14D2 /* OrderBookCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderBookCellView.swift; sourceTree = "<group>"; };
 		73E49E51207A08CB003B14D2 /* OrderBookCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OrderBookCellView.xib; sourceTree = "<group>"; };
 		73E49E53207A12E4003B14D2 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		73E6B28E208D911A00B015E5 /* test_boost_json.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = test_boost_json.cpp; sourceTree = "<group>"; };
+		73E6B2B8208D911B00B015E5 /* test_boost_json.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = test_boost_json.hpp; sourceTree = "<group>"; };
+		73E6B2BC208D91C100B015E5 /* BitShareCoordinator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BitShareCoordinator.h; sourceTree = "<group>"; };
+		73E6B2BD208D92AB00B015E5 /* BitShareCoordinator.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = BitShareCoordinator.mm; sourceTree = "<group>"; };
 		73EA6D932085C3AC0045A88B /* Demo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Demo.swift; sourceTree = "<group>"; };
 		73EA9BB22086F8300045A88B /* accumulators.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = accumulators.hpp; sourceTree = "<group>"; };
 		73EA9BB32086F8300045A88B /* accumulators_fwd.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = accumulators_fwd.hpp; sourceTree = "<group>"; };
@@ -11308,8 +11313,6 @@
 		73EAC8AC2086F8700045A88B /* xpressive_static.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = xpressive_static.hpp; sourceTree = "<group>"; };
 		73EAC8AD2086F8700045A88B /* xpressive_typeof.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = xpressive_typeof.hpp; sourceTree = "<group>"; };
 		73EAC8AF2086F8700045A88B /* boost.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = boost.a; sourceTree = "<group>"; };
-		73EAC9152086FCF40045A88B /* test.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = test.h; sourceTree = "<group>"; };
-		73EAC9162086FD1E0045A88B /* test.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = test.mm; sourceTree = "<group>"; };
 		7737CAD813E24B48AB77F79A /* TcpSockets.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = TcpSockets.xcodeproj; path = "../node_modules/react-native-tcp/ios/TcpSockets.xcodeproj"; sourceTree = "<group>"; };
 		93A9B6B48D4C42D0A2AC4F77 /* libRNRandomBytes.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNRandomBytes.a; sourceTree = "<group>"; };
 		9C552212B96C45B4B188510E /* libTcpSockets.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libTcpSockets.a; sourceTree = "<group>"; };
@@ -29980,8 +29983,10 @@
 		73EAC9142086FCD50045A88B /* bitshare-core */ = {
 			isa = PBXGroup;
 			children = (
-				73EAC9152086FCF40045A88B /* test.h */,
-				73EAC9162086FD1E0045A88B /* test.mm */,
+				73E6B28E208D911A00B015E5 /* test_boost_json.cpp */,
+				73E6B2B8208D911B00B015E5 /* test_boost_json.hpp */,
+				73E6B2BC208D91C100B015E5 /* BitShareCoordinator.h */,
+				73E6B2BD208D92AB00B015E5 /* BitShareCoordinator.mm */,
 			);
 			path = "bitshare-core";
 			sourceTree = "<group>";
@@ -30067,6 +30072,7 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				18570DA782C9578569D5A4D5 /* [CP] Embed Pods Frameworks */,
 				73D9776E20562E3400CB7DE1 /* R.swift */,
+				73E6B2BF208DBF5600B015E5 /* fabric */,
 			);
 			buildRules = (
 			);
@@ -30691,7 +30697,6 @@
 				"${BUILT_PRODUCTS_DIR}/TinyConstraints/TinyConstraints.framework",
 				"${BUILT_PRODUCTS_DIR}/Typist/Typist.framework",
 				"${BUILT_PRODUCTS_DIR}/UIFontComplete/UIFontComplete.framework",
-				"${PODS_ROOT}/WoodPeckeriOS/WoodPeckeriOS.framework",
 				"${BUILT_PRODUCTS_DIR}/ZLaunchAd/ZLaunchAd.framework",
 				"${BUILT_PRODUCTS_DIR}/Zephyr/Zephyr.framework",
 			);
@@ -30747,7 +30752,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TinyConstraints.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Typist.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIFontComplete.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WoodPeckeriOS.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ZLaunchAd.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Zephyr.framework",
 			);
@@ -30787,6 +30791,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"$PODS_ROOT/R.swift/rswift\" generate \"$SRCROOT\"\n";
+		};
+		73E6B2BF208DBF5600B015E5 /* fabric */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = fabric;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Fabric/run\" a0bbb6d623feca529afaf6ed110e62a77f47b16a 3b264ff6cab506aaf14bce576c156ea66229ad7b6dfb666b4fbb91089deb17e2";
 		};
 		E6B3BD6C1A9EC6EF7C9638E7 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -30854,6 +30872,7 @@
 				7320D6B7205FA93600C3F579 /* CBKLineAccessoryView.swift in Sources */,
 				73E49E50207A08BE003B14D2 /* OrderBookCellView.swift in Sources */,
 				7324FDCB206CFC37004296E7 /* SettingCell.swift in Sources */,
+				73E6B2BE208D92AB00B015E5 /* BitShareCoordinator.mm in Sources */,
 				73BDCA21206266CE009E67A3 /* HistoryApi.swift in Sources */,
 				73D97802205660F200CB7DE1 /* HomeReducers.swift in Sources */,
 				73D34E4D2063A697008C7507 /* SettingReducers.swift in Sources */,
@@ -30911,12 +30930,12 @@
 				7320D6B1205BB14800C3F579 /* CBMACDModel.swift in Sources */,
 				73E49E292078C17A003B14D2 /* AccessoryCollectionView.swift in Sources */,
 				73D977E220565E9700CB7DE1 /* ExplorerRootCoordinator.swift in Sources */,
+				73E6B2B9208D911D00B015E5 /* test_boost_json.cpp in Sources */,
 				73A0CC41206A3DDA00463ADE /* AssetInfo.swift in Sources */,
 				73D9789F20579EE200CB7DE1 /* MarketViewController.swift in Sources */,
 				73E49E4C207A0865003B14D2 /* TradeHistoryCellView.swift in Sources */,
 				7320D6A3205B9BAF00C3F579 /* CBKLineDrawView.swift in Sources */,
 				73E49E44207A0294003B14D2 /* OrderBookCell.swift in Sources */,
-				73EAC9172086FD1E0045A88B /* test.mm in Sources */,
 				7341BB39205A5E11007387FE /* UIColor+Cybexblack.swift in Sources */,
 				73D34E3120639E47008C7507 /* EventEmitter.swift in Sources */,
 				73ACD80A20721B5E00592E69 /* SettingDetailViewController.swift in Sources */,

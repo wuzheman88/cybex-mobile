@@ -34,7 +34,7 @@ class NetWorkService {
   var autoConnectCount = 0
   var isConnecting:Bool = false
 
-  var socket:WebSocket!
+  var socket:WebSocket?
   var testsockets:[WebSocket]!
 
   var batchFactory:BatchFactory!
@@ -44,15 +44,9 @@ class NetWorkService {
   var currentNode:NodeURLString?
   
   private init() {
-    currentNode = NodeURLString.shanghai
-    var request = URLRequest(url: URL(string:currentNode!.rawValue)!)
-    request.timeoutInterval = 25
-    
-    socket = WebSocket(request: request)
-    socket.delegate = self
-    socket.connect()
-    isConnecting = true
-    batchFactory = BatchFactory(version: "2.0", idGenerator:idGenerator)
+    self.batchFactory = BatchFactory(version: "2.0", idGenerator:self.idGenerator)
+
+    switchFastNode()
   }
   
   static let shared = NetWorkService()
@@ -78,7 +72,7 @@ class NetWorkService {
     }
     
     ez.runThisAfterDelay(seconds: 10, after: {
-      if !self.socket.isConnected, self.autoConnectCount <= 5 {
+      if let socket = self.socket, !socket.isConnected, self.autoConnectCount <= 5 {
         self.autoConnectCount += 1
         self.autoConnect()
       }
@@ -91,9 +85,9 @@ class NetWorkService {
     var request = URLRequest(url: URL(string:node.rawValue)!)
     request.timeoutInterval = 25
 
-    socket.request = request
-    socket.delegate = self
-    socket.connect()
+    socket = WebSocket(request: request)
+    socket?.delegate = self
+    socket?.connect()
     isConnecting = true
   }
   
@@ -111,7 +105,7 @@ class NetWorkService {
     }
     
     print("post Data:", data)
-    socket.write(data: jsonData) {[weak self] in
+    socket?.write(data: jsonData) {[weak self] in
       guard let `self` = self, let callback = callback else { return }
       
       if self.callbacks.count > 1000 {
@@ -123,7 +117,7 @@ class NetWorkService {
   }
   
   func checkNetworAndConnect() {
-    if !socket.isConnected {
+    if let socket = self.socket, !socket.isConnected {
       self.autoConnectCount = 0
       self.autoConnect()
     }
@@ -149,7 +143,7 @@ extension NetWorkService {
       
       JsonRPCService.shared.addRetryRequest((digest, request, callback))
 
-      if socket.isConnected {
+      if let socket = self.socket, socket.isConnected {
         JsonRPCService.shared.requestIDs(request)
       }
       else {

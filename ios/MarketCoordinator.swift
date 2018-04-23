@@ -25,7 +25,7 @@ protocol MarketStateManagerProtocol {
 
 class MarketCoordinator: HomeRootCoordinator {
     
-    lazy var creator = MarketPropertyActionCreate(vc: self.rootVC.topViewController as? BaseViewController)
+    lazy var creator = MarketPropertyActionCreate()
     
     var store = Store<MarketState>(
         reducer: MarketReducer,

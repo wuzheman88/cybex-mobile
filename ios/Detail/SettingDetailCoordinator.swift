@@ -22,7 +22,7 @@ protocol SettingDetailStateManagerProtocol {
 
 class SettingDetailCoordinator: SettingRootCoordinator {
     
-    lazy var creator = SettingDetailPropertyActionCreate(vc: self.rootVC.topViewController as? BaseViewController)
+    lazy var creator = SettingDetailPropertyActionCreate()
     
     var store = Store<SettingDetailState>(
         reducer: SettingDetailReducer,

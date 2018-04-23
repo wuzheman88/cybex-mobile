@@ -22,7 +22,7 @@ protocol SettingStateManagerProtocol {
 
 class SettingCoordinator: SettingRootCoordinator {
     
-    lazy var creator = SettingPropertyActionCreate(vc: self.rootVC.topViewController as? BaseViewController)
+    lazy var creator = SettingPropertyActionCreate()
     
     var store = Store<SettingState>(
         reducer: SettingReducer,

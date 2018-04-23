@@ -13,22 +13,6 @@ import ReSwift
 import EZSwiftExtensions
 
 class TradeHistoryViewController: BaseViewController {
-  private lazy var dataSubscriber: BlockSubscriber<([Any]?)> = BlockSubscriber {[weak self] s in
-    guard let `self` = self else { return }
-    
-    self.data = []
-
-    self.convertToData()
-    
-    self.tableView.reloadData()
-    self.tableView.layoutIfNeeded()
-    
-    DispatchQueue.main.async {
-      self.coordinator?.updateMarketListHeight(500)
-      self.tableView.isHidden = false
-    }
-  }
-
   @IBOutlet weak var tableView: UITableView!
   
     @IBOutlet weak var quote_name: UILabel!
@@ -82,15 +66,25 @@ class TradeHistoryViewController: BaseViewController {
     override func configureObserveState() {
         commonObserveState()
       
-      coordinator?.subscribe(dataSubscriber) { sub in
-        return sub.select { state in (state.property.data) }.skipRepeats({ (old, new) -> Bool in
-          return false
-        })
-      }
+      self.coordinator!.state.property.data.asObservable()
+        .subscribe(onNext: {[weak self] (s) in
+          guard let `self` = self else { return }
+         
+          self.convertToData()
+          
+          self.tableView.reloadData()
+          self.tableView.layoutIfNeeded()
+          
+          self.coordinator?.updateMarketListHeight(500)
+          self.tableView.isHidden = false
+          
+          }, onError: nil, onCompleted: nil, onDisposed: nil).disposed(by: disposeBag)
+      
+      
     }
   
   func convertToData() {
-    if let data = self.coordinator?.state.property.data {
+    if let data = self.coordinator?.state.property.data.value {
       var showData:[(Bool, String, String, String, String)] = []
 
       for d in data {
@@ -125,6 +119,10 @@ class TradeHistoryViewController: BaseViewController {
       self.data = showData
 
     }
+  }
+  
+  deinit {
+    print("trade history dealloc")
   }
 }
 

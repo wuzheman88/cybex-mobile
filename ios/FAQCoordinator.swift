@@ -21,7 +21,7 @@ protocol FAQStateManagerProtocol {
 
 class FAQCoordinator: FAQRootCoordinator {
     
-    lazy var creator = FAQPropertyActionCreate(vc: self.rootVC.topViewController as? BaseViewController)
+    lazy var creator = FAQPropertyActionCreate()
     
     var store = Store<FAQState>(
         reducer: FAQReducer,

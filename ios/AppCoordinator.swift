@@ -22,7 +22,7 @@ protocol AppStateManagerProtocol {
 }
 
 class AppCoordinator {
-  lazy var creator = AppPropertyActionCreate(vc: nil)
+  lazy var creator = AppPropertyActionCreate()
   
   var store = Store<AppState> (
     reducer: AppReducer,

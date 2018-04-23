@@ -9,6 +9,8 @@ PODS:
   - BiometricAuthentication (1.0.5)
   - Cache (4.2.0)
   - ChainableAnimations (3.0.1)
+  - Crashlytics (3.10.1):
+    - Fabric (~> 1.7.5)
   - CryptoSwift (0.9.0)
   - DNSPageView (1.0.1)
   - EasyAnimation (2.0.2)
@@ -81,7 +83,6 @@ PODS:
   - TinyConstraints (3.1.0)
   - Typist (1.2.1)
   - UIFontComplete (3.0.0)
-  - WoodPeckeriOS (1.0.3)
   - Zephyr (3.1.0)
   - ZLaunchAd (2.0.0):
     - SwiftHash (~> 2.0.1)
@@ -95,6 +96,7 @@ DEPENDENCIES:
   - BiometricAuthentication
   - Cache
   - ChainableAnimations
+  - Crashlytics
   - CryptoSwift
   - DNSPageView
   - EasyAnimation
@@ -134,7 +136,6 @@ DEPENDENCIES:
   - TinyConstraints
   - Typist
   - UIFontComplete
-  - WoodPeckeriOS
   - Zephyr
   - ZLaunchAd
 
@@ -147,6 +148,7 @@ SPEC REPOS:
     - BiometricAuthentication
     - Cache
     - ChainableAnimations
+    - Crashlytics
     - CryptoSwift
     - DNSPageView
     - EasyAnimation
@@ -190,7 +192,6 @@ SPEC REPOS:
     - TinyConstraints
     - Typist
     - UIFontComplete
-    - WoodPeckeriOS
     - Zephyr
     - ZLaunchAd
 
@@ -218,6 +219,7 @@ SPEC CHECKSUMS:
   BiometricAuthentication: e80e99bf1fe871ab624172eb91f1ddbbc47499b5
   Cache: f28f8dd64b632155aabf9b3906b036a659048251
   ChainableAnimations: 12e0a88e72fb554ad4cda38c40474e4d65c972a2
+  Crashlytics: aee1a064cbbf99b32efa3f056a5f458d846bc8ff
   CryptoSwift: bca8c5b653dcc2d9734409242a070ff53bafac86
   DNSPageView: 93b0f9c9ab0e2f8c1d9aa5b0d44740bd2d775d78
   EasyAnimation: 977ef673efe8ce62447807eedb380a77b189dc80
@@ -262,10 +264,9 @@ SPEC CHECKSUMS:
   TinyConstraints: 4721a4b303c799328867078ade6560e152df54d1
   Typist: 88b462c1c5adc6d4e8601773fcb0b7d7113d18af
   UIFontComplete: 5b0f59a83308816c610164b79a2540b3520f9b72
-  WoodPeckeriOS: 5c258da5be87bbb88b1f244f18dede25f749b48b
   Zephyr: 2574069fd7879147b64ac74349dfabb1c78099c9
   ZLaunchAd: 877d9f43b6f389e2ed192ed10fe92767c0f18124
 
-PODFILE CHECKSUM: 33c71adcfb253278cd6517dc6bad24dae96a4cea
+PODFILE CHECKSUM: f4f8387cbbd736e20d2ec7a4475c2cac0a308453
 
 COCOAPODS: 1.5.0

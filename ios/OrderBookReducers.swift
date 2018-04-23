@@ -19,7 +19,7 @@ func OrderBookPropertyReducer(_ state: OrderBookPropertyState?, action: Action) 
   switch action {
   case let action as FetchedLimitData:
     
-    state.data = limitOrders_to_OrderBook(orders: action.data, pair: action.pair)
+    state.data.accept(limitOrders_to_OrderBook(orders: action.data, pair: action.pair))
     
     default:
         break
