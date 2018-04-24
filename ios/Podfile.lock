@@ -1,6 +1,6 @@
 PODS:
-  - Alamofire (4.7.1)
-  - Atributika (4.4.1)
+  - Alamofire (4.7.2)
+  - Atributika (4.4.2)
   - AwaitKit (5.0.0):
     - PromiseKit (~> 6)
   - BeareadToast (0.0.3)
@@ -17,6 +17,7 @@ PODS:
   - ESTabBarController-swift (2.6.2)
   - EZSwiftExtensions (1.11)
   - Fabric (1.7.6)
+  - FBRetainCycleDetector (0.1.4)
   - GRDB.swift (2.10.0)
   - Hero (1.2.0)
   - IHKeyboardAvoiding (4.2)
@@ -25,9 +26,12 @@ PODS:
   - KeychainAccess (3.1.1)
   - Kingfisher (4.7.0)
   - KMNavigationBarTransition (1.1.5)
+  - LifetimeTracker (1.4.0)
   - Localize-Swift (2.0.0)
   - Locksmith (4.0.0)
   - MJRefresh (3.1.15.3)
+  - MLeaksFinder (1.0.0):
+    - FBRetainCycleDetector
   - Moya (11.0.2):
     - Moya/Core (= 11.0.2)
   - Moya/Core (11.0.2):
@@ -37,14 +41,14 @@ PODS:
     - NVActivityIndicatorView/Presenter (= 4.2.0)
   - NVActivityIndicatorView/Presenter (4.2.0)
   - ObjectMapper (3.1.0)
-  - PromiseKit (6.2.4):
-    - PromiseKit/CorePromise (= 6.2.4)
-    - PromiseKit/Foundation (= 6.2.4)
-    - PromiseKit/UIKit (= 6.2.4)
-  - PromiseKit/CorePromise (6.2.4)
-  - PromiseKit/Foundation (6.2.4):
+  - PromiseKit (6.2.5):
+    - PromiseKit/CorePromise (= 6.2.5)
+    - PromiseKit/Foundation (= 6.2.5)
+    - PromiseKit/UIKit (= 6.2.5)
+  - PromiseKit/CorePromise (6.2.5)
+  - PromiseKit/Foundation (6.2.5):
     - PromiseKit/CorePromise
-  - PromiseKit/UIKit (6.2.4):
+  - PromiseKit/UIKit (6.2.5):
     - PromiseKit/CorePromise
   - Proposer (1.2.0)
   - R.swift (4.0.0):
@@ -72,20 +76,20 @@ PODS:
   - RxSwift (4.1.2)
   - SDCAlertView (8.0.2)
   - SipHash (1.2.0)
-  - Siren (3.3.0)
+  - Siren (3.3.1)
   - Starscream (3.0.5)
   - SwiftHash (2.0.1)
   - SwiftTheme (0.4.1)
-  - SwiftyJSON (4.0.0)
+  - SwiftyJSON (4.1.0)
   - SwiftyUserDefaults (3.0.1)
   - TableFlip (1.2)
   - TextFieldEffects (1.4.0)
   - TinyConstraints (3.1.0)
   - Typist (1.2.1)
   - UIFontComplete (3.0.0)
-  - Zephyr (3.1.0)
-  - ZLaunchAd (2.0.0):
-    - SwiftHash (~> 2.0.1)
+  - Zephyr (3.1.2)
+  - ZLaunchAd (2.0.1):
+    - SwiftHash (>= 2.0.1)
 
 DEPENDENCIES:
   - Alamofire
@@ -110,9 +114,11 @@ DEPENDENCIES:
   - KeychainAccess
   - Kingfisher
   - KMNavigationBarTransition
+  - LifetimeTracker
   - Localize-Swift
   - Locksmith
   - MJRefresh
+  - MLeaksFinder
   - Moya
   - NVActivityIndicatorView
   - ObjectMapper
@@ -154,6 +160,7 @@ SPEC REPOS:
     - EasyAnimation
     - ESTabBarController-swift
     - Fabric
+    - FBRetainCycleDetector
     - GRDB.swift
     - Hero
     - IHKeyboardAvoiding
@@ -161,9 +168,11 @@ SPEC REPOS:
     - KeychainAccess
     - Kingfisher
     - KMNavigationBarTransition
+    - LifetimeTracker
     - Localize-Swift
     - Locksmith
     - MJRefresh
+    - MLeaksFinder
     - Moya
     - NVActivityIndicatorView
     - ObjectMapper
@@ -204,15 +213,15 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   BeareadToast:
-    :commit: 713dcccfd32494bdf2c1e6a26248f5d8584b682b
+    :commit: 1e82fc7338e9ab176168af234900f5fc61ade947
     :git: https://github.com/phpmaple/BeareadToast
   EZSwiftExtensions:
     :commit: 2daa79e708df5793d191c95ad4fae6d7f9347533
     :git: https://github.com/Steven-Cheung/EZSwiftExtensions
 
 SPEC CHECKSUMS:
-  Alamofire: 68d7d521118d49c615a8d2214d87cdf525599d30
-  Atributika: 6c4d2a789a18ed64f2f5e7fe696da22973d8af0d
+  Alamofire: e4fa87002c137ba2d8d634d2c51fabcda0d5c223
+  Atributika: 61cf7794646bd033cd19aad1b8f7e1cae8daa877
   AwaitKit: d8a6e30eeb2da916630270b44636b31033388bd8
   BeareadToast: 17ff7f5ac9609b186543d6a45df8f15f78c9ca7a
   BigInt: 8e8a52161c745cd3ab78e3dc346a9fbee51e6cf6
@@ -226,6 +235,7 @@ SPEC CHECKSUMS:
   ESTabBarController-swift: f0a8679e43df1e60b7b36bbcaf1dc98ba6273c7d
   EZSwiftExtensions: 9d3dc8a51818e2fbfd11099b38a2c47d0ca693d0
   Fabric: f8d42c893bb187326a7968b62abe55c36a987a46
+  FBRetainCycleDetector: 46f8179bbb1c587deee3ea838a1a3ee02acf5015
   GRDB.swift: 9859cab1b990eac62ee550d3d2208ec1b44f76af
   Hero: 33dadf2cd1c98af71e213dcbc2902e6e03622a4e
   IHKeyboardAvoiding: 9fbf816b7c3c84911964802ff110d12caf40ebef
@@ -233,13 +243,15 @@ SPEC CHECKSUMS:
   KeychainAccess: 7bd430028059754a3debab3cfc0bd1fc7fb85df3
   Kingfisher: da6b005aa96d37698e3e4f1ccfe96a5b9bbf27d6
   KMNavigationBarTransition: 7a52c9bc25b39b6e3343e980b453facee1591b82
+  LifetimeTracker: 51b52d559ffd4570584996b4b94b8779e525ee62
   Localize-Swift: c798ec9286494866f7068f85f7c71283ac5bdab4
   Locksmith: e9bebbaaa4cee3c511bc358a44f843c3fe00e21f
   MJRefresh: b48380ae2b927b46c4ef000de9adb8dc748e1df7
+  MLeaksFinder: 8c435bd2f6d070af18cff082b503b21adc130fc0
   Moya: a725035953bc1c0eb1be505ab903984501d82440
   NVActivityIndicatorView: 75c9634073e03b31d7e2748cd2417feab1206195
   ObjectMapper: 20505058f54e5c3ca69e1d6de9897d152a5369a6
-  PromiseKit: 625b1fc69944fc839503748101c5968cf54b527b
+  PromiseKit: a26828b0a8d5874960dfdb575b57a70790ec36f1
   Proposer: 722fe61822b89f551ae10afe8314067f98c39c28
   R.swift: d6a5ec2f55a8441dc0ed9f1f8b37d7d11ae85c66
   R.swift.Library: c3af34921024333546e23b70e70d0b4e0cffca75
@@ -253,20 +265,20 @@ SPEC CHECKSUMS:
   RxSwift: e49536837d9901277638493ea537394d4b55f570
   SDCAlertView: 289481e983c60abc5b4b5f4c7241fec9c7a853d5
   SipHash: c6e9e43e9c531b5bc6602545130c26194a6d31ce
-  Siren: e7183967550b986736103f24ca6c74896a475145
+  Siren: 355787d3cdbe7164561e13bfaf235a0b81f13580
   Starscream: faf918b2f2eff7d5dd21180646bf015a669673bd
   SwiftHash: c805de5a434eacfa0dac7210745a50c55d7fe33d
   SwiftTheme: 36d71c4eed4b2c401c782cf036e4586c749a8173
-  SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
+  SwiftyJSON: c29297daf073d2aa016295d5809cdd68045c39b3
   SwiftyUserDefaults: 3d273b1739b68ada3145dc754a70ec775bc5c8be
   TableFlip: 2ae22773412b295a7cbc54d95b44085bb28092f6
   TextFieldEffects: 4ee41b5216e674d55fb6ac25107bf1af7629176f
   TinyConstraints: 4721a4b303c799328867078ade6560e152df54d1
   Typist: 88b462c1c5adc6d4e8601773fcb0b7d7113d18af
   UIFontComplete: 5b0f59a83308816c610164b79a2540b3520f9b72
-  Zephyr: 2574069fd7879147b64ac74349dfabb1c78099c9
-  ZLaunchAd: 877d9f43b6f389e2ed192ed10fe92767c0f18124
+  Zephyr: 7a3c2678c6bb935a13d7215ec9154956e8b4d209
+  ZLaunchAd: 5695590e0e8dad68193b9f9493bab01f532231de
 
-PODFILE CHECKSUM: f4f8387cbbd736e20d2ec7a4475c2cac0a308453
+PODFILE CHECKSUM: 350c0887151516e624f5fde3e83877d8374dace1
 
 COCOAPODS: 1.5.0

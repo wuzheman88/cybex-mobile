@@ -167,7 +167,8 @@ class BucketMatrix {
     self.high = high.toString.formatCurrency(digitNum: base_info.precision)
     self.low = low.toString.formatCurrency(digitNum: base_info.precision)
     
-    self.price = lastClose_price.toString.formatCurrency(digitNum: base_info.precision)
+    let isCYB = homebucket.base == "1.3.0"
+    self.price = lastClose_price.toString.formatCurrency(digitNum: isCYB ? 5 : 8)
     
     let change = (lastClose_price - firseOpen_price) * 100 / firseOpen_price
     var percent = round(change * 100) / 100.0

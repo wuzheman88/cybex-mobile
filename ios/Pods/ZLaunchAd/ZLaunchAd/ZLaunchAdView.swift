@@ -49,8 +49,10 @@ public class ZLaunchAdView: UIView {
         return imgView
     }()
     fileprivate func launchAdTapAction() {
-        launchAdVCRemove() {
-            if self.adTapAction != nil { self.adTapAction!() }
+        if adTapAction != nil {
+            launchAdVCRemove() {
+                self.adTapAction!()
+            }
         }
     }
     init(frame: CGRect, showEnterForeground: Bool) {
@@ -89,7 +91,10 @@ public class ZLaunchAdView: UIView {
 extension ZLaunchAdView {
     fileprivate func addAdImageView() {
         guard let imageResource = imageResource,
-            let imageNameOrImageURL = imageResource.imageNameOrImageURL else { return }
+            let imageNameOrImageURL = imageResource.imageNameOrImageURL,
+            imageNameOrImageURL != "" else {
+                return
+        }
         launchAdImgView.frame = imageResource.imageFrame
         addSubview(launchAdImgView)
         if imageNameOrImageURL.contains("http://") || imageNameOrImageURL.contains("https://") {

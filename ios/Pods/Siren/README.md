@@ -2,7 +2,9 @@
 
 ### Notify users when a new version of your app is available and prompt them to upgrade.
 
-![Swift Support](https://img.shields.io/badge/Swift-2.3%2C%203.1%2C%203.2%2C%204.0-orange.svg)
+![Travis CI Status](https://travis-ci.org/ArtSabintsev/Siren.svg?branch=master) 
+
+![Swift Support](https://img.shields.io/badge/Swift-2.3%2C%203.1%2C%203.2%2C%204.1-orange.svg)
 
 [![CocoaPods](https://img.shields.io/cocoapods/v/Siren.svg)](https://cocoapods.org/pods/Siren)  [![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) [![SwiftPM Compatible](https://img.shields.io/badge/SwiftPM-Compatible-brightgreen.svg)](https://swift.org/package-manager/) [![CocoaPods](https://img.shields.io/cocoapods/dt/Siren.svg)](https://cocoapods.org/pods/Siren) [![CocoaPods](https://img.shields.io/cocoapods/dm/Siren.svg)](https://cocoapods.org/pods/Siren)
 ---
@@ -62,7 +64,7 @@ If a new version is available, an alert can be presented to the user informing t
 
 | Swift Version |  Branch Name  | Will Continue to Receive Updates?
 | ------------- | ------------- |  -------------
-| 4.0  | master   | **Yes**
+| 4.1  | master   | **Yes**
 | 3.2  | swift3.2 | No
 | 3.1  | swift3.1 | No
 | 2.3  | swift2.3 | No  

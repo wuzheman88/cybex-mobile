@@ -29,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
     Fabric.with([Crashlytics.self, Answers.self])
     EasyAnimation.enable()
-
+    
     self.window = UIWindow.init(frame: UIScreen.main.bounds)
     self.window?.theme_backgroundColor = [#colorLiteral(red: 0.1178231761, green: 0.1536857784, blue: 0.2179759443, alpha: 1).hexString(true), #colorLiteral(red: 0.9750029445, green: 0.9783667922, blue: 0.9844790101, alpha: 1).hexString(true)]
 

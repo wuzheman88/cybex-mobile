@@ -136,8 +136,8 @@ class MarketViewController: BaseViewController {
   func refreshView(_ hiddenKLine:Bool = true) {
     self.refreshDetailView()
     fetchKlineData(hiddenKLine)
-    
-    
+
+
     self.coordinator?.refreshChildViewController(pageContentView.childViewControllers as! [BaseViewController], pair: pair)
   }
   

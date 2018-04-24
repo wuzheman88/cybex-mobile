@@ -16,9 +16,11 @@ import TableFlip
 import SwiftyJSON
 
 class HomeViewController: BaseViewController, UINavigationControllerDelegate, UIScrollViewDelegate {
+  
   var coordinator: (HomeCoordinatorProtocol & HomeStateManagerProtocol)?
 
   @IBOutlet weak var tableView: UITableView!
+  
   
   override func viewDidLoad() {
     super.viewDidLoad()

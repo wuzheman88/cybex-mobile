@@ -14,6 +14,7 @@ import RxCocoa
 import RxSwift
 
 class BaseViewController: UIViewController {
+
   lazy var errorSubscriber: BlockSubscriber<String?> = BlockSubscriber {[weak self] s in
     guard let `self` = self else { return }
     
@@ -23,7 +24,7 @@ class BaseViewController: UIViewController {
     guard let `self` = self else { return }
   }
   
-  var toast: BeareadToast?
+  weak var toast: BeareadToast?
   var table:UITableView?
   var leftNavButton: UIButton?
   var rightNavButton: UIButton?
@@ -37,6 +38,15 @@ class BaseViewController: UIViewController {
     }
   }
   
+  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    
+  }
+
+  required init?(coder aDswicoder: NSCoder) {
+    super.init(coder: aDswicoder)
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
     

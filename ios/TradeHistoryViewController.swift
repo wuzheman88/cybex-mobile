@@ -104,14 +104,16 @@ class TradeHistoryViewController: BaseViewController {
           let base_volume = pay["amount"].stringValue.toDouble()! / base_precision
           
           let price = base_volume / quote_volume
-          showData.append((false, price.toString.formatCurrency(digitNum: base_info.precision), quote_volume.toString.suffixNumber(), base_volume.toString.suffixNumber(), time.dateFromISO8601!.toString(format: "MM/dd HH:mm:ss")))
+          let isCYB = base_info.id == "3.1.0"
+          showData.append((false, price.toString.formatCurrency(digitNum: isCYB ? 5 : 8), quote_volume.toString.suffixNumber(digitNum:quote_info.precision), base_volume.toString.suffixNumber(digitNum: base_info.precision), time.dateFromISO8601!.toString(format: "MM/dd HH:mm:ss")))
         }
         else {
           let quote_volume = pay["amount"].stringValue.toDouble()! / quote_precision
           let base_volume = receive["amount"].stringValue.toDouble()! / base_precision
           
           let price = base_volume / quote_volume
-          showData.append((true, price.toString.formatCurrency(digitNum: base_info.precision), quote_volume.toString.suffixNumber(), base_volume.toString.suffixNumber(), time.dateFromISO8601!.toString(format: "MM/dd HH:mm:ss")))
+          let isCYB = base_info.id == "3.1.0"
+          showData.append((true, price.toString.formatCurrency(digitNum: isCYB ? 5 : 8), quote_volume.toString.suffixNumber(digitNum: quote_info.precision), base_volume.toString.suffixNumber(digitNum: base_info.precision), time.dateFromISO8601!.toString(format: "MM/dd HH:mm:ss")))
         }
         
       }

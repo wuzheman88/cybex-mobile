@@ -50,7 +50,6 @@ extension OrderBookCoordinator: OrderBookStateManagerProtocol {
     }
   
   func fetchData(_ pair:Pair) {
-    store.dispatch(StartLoading(vc: self.rootVC.topViewController as? BaseViewController))
     store.dispatch(creator.fetchLimitOrders(with: pair, callback: {[weak self] (data) in
       guard let `self` = self else { return }
 
