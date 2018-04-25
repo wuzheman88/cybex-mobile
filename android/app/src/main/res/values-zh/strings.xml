@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CybexDex</string>
+
+    <!-- Bottom Navigation Title -->
+    <string name="title_watchlist">行情</string>
+    <string name="title_explorer">探索</string>
+    <string name="title_setting">设置</string>
+    <string name="title_faq">申请</string>
+
+    <!-- Watch List Page -->
+    <string name="popular_title">最热</string>
+
+    <!-- Markets Page -->
+    <string name="markets_title">交易中心</string>
+    <string name="market_page_order_book">买卖单</string>
+    <string name="market_page_trade_history">交易历史</string>
+
+    <!-- Setting page -->
+    <string name="setting_language">语言</string>
+    <string name="language_select">选择</string>
+    <string name="setting_theme">主题</string>
+    <string name="setting_version">版本</string>
+    <string name="setting_theme_dark">夜晚 ></string>
+    <string name="setting_theme_light">白天 ></string>
+    <string name="select_theme">选择主题</string>
+</resources>
