@@ -35,7 +35,7 @@ class NetWorkService {
   var isConnecting:Bool = false
 
   var socket:WebSocket?
-  var testsockets:[WebSocket]!
+  var testsockets:[WebSocket] = []
 
   var batchFactory:BatchFactory!
   var idGenerator:JsonIdGenerator = JsonIdGenerator()
@@ -54,12 +54,17 @@ class NetWorkService {
   func switchFastNode() {
     currentNode = nil
     
-    testsockets = []
-    for node in NodeURLString.all {
-      
-      let testsocket = WebSocket(url: URL(string:node.rawValue)!)
-      testsockets.append(testsocket)
-      
+    for (idx, node) in NodeURLString.all.enumerated() {
+      var testsocket:WebSocket!
+
+      if idx < testsockets.count {
+        testsocket = testsockets[idx]
+      }
+      else {
+        testsocket = WebSocket(url: URL(string:node.rawValue)!)
+        testsockets.append(testsocket)
+      }
+
       //websocketDidConnect
       testsocket.onConnect = {
         if self.currentNode == nil {
@@ -67,10 +72,10 @@ class NetWorkService {
           self.changeNode(node: node)
         }
       }
-   
+
       testsocket.connect()
     }
-    
+
     ez.runThisAfterDelay(seconds: 10, after: {
       if let socket = self.socket, !socket.isConnected, self.autoConnectCount <= 5 {
         self.autoConnectCount += 1
@@ -82,8 +87,7 @@ class NetWorkService {
   private func changeNode(node: NodeURLString) {
     print("switch node is \(node.rawValue)")
     currentNode = node
-    var request = URLRequest(url: URL(string:node.rawValue)!)
-    request.timeoutInterval = 25
+    let request = URLRequest(url: URL(string:node.rawValue)!)
 
     socket = WebSocket(request: request)
     socket?.delegate = self
@@ -104,7 +108,7 @@ class NetWorkService {
       return
     }
     
-    print("post Data:", data)
+//    print("post Data:", data)
     socket?.write(data: jsonData) {[weak self] in
       guard let `self` = self, let callback = callback else { return }
       
@@ -119,6 +123,10 @@ class NetWorkService {
   func checkNetworAndConnect() {
     if let socket = self.socket, !socket.isConnected {
       self.autoConnectCount = 0
+      if let vc = app_coodinator.curDisplayingCoordinator().rootVC.topViewController as? BaseViewController {
+        vc.startLoading()
+      }
+      
       self.autoConnect()
     }
   }
@@ -217,18 +225,22 @@ extension NetWorkService: WebSocketDelegate {
   }
   
   func websocketDidDisconnect(socket: WebSocketClient, error: Error?) {
-    if let e = error as? WSError {
-      print("websocket is disconnected: \(e.message)")
-    } else if let e = error {
-      print("websocket is disconnected: \(e.localizedDescription)")
-    } else {
-      print("websocket disconnected")
-    }
     self.isConnecting = false
     JsonRPCService.shared.removeIDs()
     idGenerator = JsonIdGenerator()
     batchFactory.idGenerator = idGenerator
 
+    if let e = error as? WSError {
+      print("websocket is disconnected: \(e.message)")
+      if e.code == 1000 {
+        return
+      }
+    } else if let e = error {
+      print("websocket is disconnected: \(e.localizedDescription)")
+    } else {
+      print("websocket disconnected")
+    }
+    
     autoConnect()
   }
   
@@ -244,8 +256,9 @@ extension NetWorkService: WebSocketDelegate {
       if let method = data["method"].string, method == "notice", let params = data["params"].array, let mID = params[0].int {
         if let ids = app_data.subscribeIds, ids.values.contains(mID) {
           let index = ids.values.index(of: mID)!
+          let pair = ids.keys[index]
           
-          UIApplication.shared.coordinator().request24hMarkets([ids.keys[index]], sub: false)
+          UIApplication.shared.coordinator().request24hMarkets([pair], sub: false)
         }
       }
       return
@@ -256,7 +269,7 @@ extension NetWorkService: WebSocketDelegate {
       callbacks.removeValue(forKey: id)
     }
     
-    print("Received text: \(data)")
+//    print("Received text: \(data)")
   }
   
   func websocketDidReceiveData(socket: WebSocketClient, data: Data) {

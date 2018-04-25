@@ -38,10 +38,10 @@ func limitOrders_to_OrderBook(orders: [LimitOrder], pair:Pair) -> OrderBook {
   for order in orders {
     let sellPrice_base = order.sellPrice.base
     if sellPrice_base.assetID == pair.base {
-      bids_total_amount.append(order.forSale.toDouble()!)
+      bids_total_amount.append(Double(order.forSale)!)
     }
     else {
-      asks_total_amount.append(order.forSale.toDouble()!)
+      asks_total_amount.append(Double(order.forSale)!)
     }
   }
   
@@ -52,19 +52,19 @@ func limitOrders_to_OrderBook(orders: [LimitOrder], pair:Pair) -> OrderBook {
       
       let precision_ratio = pow(10, order.sellPrice.base.info().precision.toDouble) / pow(10, order.sellPrice.quote.info().precision.toDouble)
 
-      let quote_forSale = order.forSale.toDouble()! / (precision_ratio * order.sellPrice.toReal())
+      let quote_forSale = Double(order.forSale)! / (precision_ratio * order.sellPrice.toReal())
       let quote_volume = quote_forSale / pow(10, order.sellPrice.quote.info().precision.toDouble)
       
-      let isCYB = order.sellPrice.base.assetID == "3.1.0"
+      let isCYB = order.sellPrice.base.assetID == AssetConfiguration.CYB
       let price_precision = isCYB ? 5 : 8
       let bid = OrderBook.Order(price: order.sellPrice.toReal().toString.formatCurrency(digitNum: price_precision), volume: quote_volume.toString.suffixNumber(digitNum: 10 - price_precision), volume_percent: percent)
       bids.append(bid)
     }
     else {
       let percent = asks_total_amount[0...asks.count].reduce(0, +) / asks_total_amount.reduce(0, +)
-      let quote_volume = order.forSale.toDouble()! / pow(10, sellPrice_base.info().precision.toDouble)
+      let quote_volume = Double(order.forSale)! / pow(10, sellPrice_base.info().precision.toDouble)
       
-      let isCYB = order.sellPrice.quote.assetID == "3.1.0"
+      let isCYB = order.sellPrice.quote.assetID == AssetConfiguration.CYB
       let price_precision = isCYB ? 5 : 8
       let ask = OrderBook.Order(price: (1.0 / order.sellPrice.toReal()).toString.formatCurrency(digitNum: price_precision), volume: quote_volume.toString.suffixNumber(digitNum: 10 - price_precision), volume_percent: percent)
       asks.append(ask)

@@ -100,19 +100,19 @@ class TradeHistoryViewController: BaseViewController {
         let quote_precision = pow(10, quote_info.precision.toDouble)
         
         if pay["asset_id"].stringValue == pair!.base {
-          let quote_volume = receive["amount"].stringValue.toDouble()! / quote_precision
-          let base_volume = pay["amount"].stringValue.toDouble()! / base_precision
+          let quote_volume = Double(receive["amount"].stringValue)! / quote_precision
+          let base_volume = Double(pay["amount"].stringValue)! / base_precision
           
           let price = base_volume / quote_volume
-          let isCYB = base_info.id == "3.1.0"
+          let isCYB = base_info.id == AssetConfiguration.CYB
           showData.append((false, price.toString.formatCurrency(digitNum: isCYB ? 5 : 8), quote_volume.toString.suffixNumber(digitNum:quote_info.precision), base_volume.toString.suffixNumber(digitNum: base_info.precision), time.dateFromISO8601!.toString(format: "MM/dd HH:mm:ss")))
         }
         else {
-          let quote_volume = pay["amount"].stringValue.toDouble()! / quote_precision
-          let base_volume = receive["amount"].stringValue.toDouble()! / base_precision
+          let quote_volume = Double(pay["amount"].stringValue)! / quote_precision
+          let base_volume = Double(receive["amount"].stringValue)! / base_precision
           
           let price = base_volume / quote_volume
-          let isCYB = base_info.id == "3.1.0"
+          let isCYB = base_info.id == AssetConfiguration.CYB
           showData.append((true, price.toString.formatCurrency(digitNum: isCYB ? 5 : 8), quote_volume.toString.suffixNumber(digitNum: quote_info.precision), base_volume.toString.suffixNumber(digitNum: base_info.precision), time.dateFromISO8601!.toString(format: "MM/dd HH:mm:ss")))
         }
         

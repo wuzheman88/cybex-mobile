@@ -53,6 +53,8 @@ extension AppCoordinator:AppStateManagerProtocol {
 extension AppCoordinator {
   func request24hMarkets(_ pairs:[Pair], sub:Bool = true) {
     let now = Date()
+    let curTime = now.timeIntervalSince1970
+
     var start = now.addingTimeInterval(-3600*24)
     
     let timePassed = (-start.minute * 60 - start.second).toDouble
@@ -60,7 +62,14 @@ extension AppCoordinator {
     
 
     for pair in pairs {
-        UIApplication.shared.coordinator().fetchData(AssetPairQueryParams(firstAssetId: pair.base, secondAssetId: pair.quote, timeGap: 60 * 60, startTime: start, endTime: now), sub: sub)
+      if let refreshTimes = app_data.pairsRefreshTimes, let oldTime = refreshTimes[pair] {
+        if curTime - oldTime < 5 {
+          continue
+        }
+      
+      }
+      
+      UIApplication.shared.coordinator().fetchData(AssetPairQueryParams(firstAssetId: pair.base, secondAssetId: pair.quote, timeGap: 60 * 60, startTime: start, endTime: now), sub: sub)
     }
     
   }
@@ -82,7 +91,9 @@ extension AppCoordinator {
       }
     }
     else {
-      fetchAsset()
+      if app_data.assetInfo.count != AssetConfiguration.shared.asset_ids.count {
+        fetchAsset()
+      }
       request24hMarkets(AssetConfiguration.shared.asset_ids)
     }
    

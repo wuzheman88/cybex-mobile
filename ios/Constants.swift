@@ -91,6 +91,8 @@ enum objectID:String {
 class AssetConfiguration {  
   var asset_ids:[Pair] = []
   
+  static let CYB = "1.3.0"
+  
   var unique_ids:[String] {
     return asset_ids.map({[$0.base, $0.quote]}).flatMap({ $0 }).unique()
   }

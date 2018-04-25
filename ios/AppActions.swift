@@ -19,7 +19,8 @@ struct AppPropertyState {
   var detailData:[Pair:[candlesticks:[Bucket]]]?
 
   var subscribeIds:[Pair:Int]?
-  
+  var pairsRefreshTimes:[Pair:Double]?
+
   var assetInfo:[String:AssetInfo] = [:]
 }
 
@@ -123,7 +124,7 @@ class AppPropertyActionCreate: LoadingActionCreator {
                   let quote_close = o_asset.close_quote
                   let addAsset = asset.copy() as! Bucket
                   
-                  let gapCount = ceil((asset.open - params.startTime.timeIntervalSince1970) / asset.seconds.toDouble()!)
+                  let gapCount = ceil((asset.open - params.startTime.timeIntervalSince1970) / Double(asset.seconds)!)
                   addAsset.close_base = close
                   addAsset.close_quote = quote_close
                   addAsset.open_base = close
@@ -134,7 +135,7 @@ class AppPropertyActionCreate: LoadingActionCreator {
                   addAsset.low_quote = quote_close
                   addAsset.base_volume = "0"
                   addAsset.quote_volume = "0"
-                  addAsset.open = asset.open - gapCount * asset.seconds.toDouble()!
+                  addAsset.open = asset.open - gapCount * Double(asset.seconds)!
                   assets.insertFirst(addAsset)
                   
       

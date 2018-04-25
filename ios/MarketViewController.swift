@@ -183,12 +183,12 @@ class MarketViewController: BaseViewController {
         let quote_info = app_data.assetInfo[quote_assetid]!
         let quote_precision = pow(10, quote_info.precision.toDouble)
 
-        let open_price = (data.open_base.toDouble()! / base_precision)  / (data.open_quote.toDouble()! / quote_precision)
-        let close_price = (data.close_base.toDouble()! / base_precision)  / (data.close_quote.toDouble()! / quote_precision)
-        let high_price = (data.high_base.toDouble()! / base_precision)  / (data.high_quote.toDouble()! / quote_precision)
-        let low_price = (data.low_base.toDouble()! / base_precision)  / (data.low_quote.toDouble()! / quote_precision)
+        let open_price = (Double(data.open_base)! / base_precision)  / (Double(data.open_quote)! / quote_precision)
+        let close_price = (Double(data.close_base)! / base_precision)  / (Double(data.close_quote)! / quote_precision)
+        let high_price = (Double(data.high_base)! / base_precision)  / (Double(data.high_quote)! / quote_precision)
+        let low_price = (Double(data.low_base)! / base_precision)  / (Double(data.low_quote)! / quote_precision)
 
-        let model = CBKLineModel(date: data.open, open: open_price, close: close_price, high: high_price, low: low_price, volume: data.base_volume.toDouble()! / base_precision)
+        let model = CBKLineModel(date: data.open, open: open_price, close: close_price, high: high_price, low: low_price, volume: Double(data.base_volume)! / base_precision)
         
         
         let last_idx = dataArray.count - 1

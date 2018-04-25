@@ -24,7 +24,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   
   var window: UIWindow?
   var appCoordinator: AppCoordinator!
-  var enteredBackground:Bool = false
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
     Fabric.with([Crashlytics.self, Answers.self])
@@ -61,20 +60,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   }
   
   func applicationWillResignActive(_ application: UIApplication) {
+    if let socket = NetWorkService.shared.socket, socket.isConnected {
+      socket.disconnect()
+    }
   }
   
   func applicationDidEnterBackground(_ application: UIApplication) {
-    self.enteredBackground = true
+   
   }
   
   func applicationWillEnterForeground(_ application: UIApplication) {
   }
   
   func applicationDidBecomeActive(_ application: UIApplication) {
-    if self.enteredBackground {
-      NetWorkService.shared.checkNetworAndConnect()
-    }
-    self.enteredBackground = false
   }
   
   func applicationWillTerminate(_ application: UIApplication) {

@@ -236,23 +236,25 @@ extension Date {
 }
 
 extension String {
+  static let numberformatter = NumberFormatter()
+
   var dateFromISO8601: Date? {
     return Formatter.iso8601.date(from: self)   // "Mar 22, 2017, 10:22 AM"
   }
   
   func formatCurrency(digitNum:Int) -> String {
-    let formatter = NumberFormatter()
-    formatter.numberStyle = .currency
-    formatter.currencySymbol = ""
-    formatter.maximumFractionDigits = digitNum
-    formatter.minimumFractionDigits = digitNum
+    String.numberformatter.numberStyle = .currency
+    String.numberformatter.currencySymbol = ""
+    String.numberformatter.usesGroupingSeparator = true
+    String.numberformatter.maximumFractionDigits = digitNum
+    String.numberformatter.minimumFractionDigits = digitNum
 
-    let result = formatter.string(from: NumberFormatter().number(from: self)!)
+    let result = String.numberformatter.string(from: NSNumber(value:Double(self)!))
     return result!
   }
   
   func suffixNumber(digitNum:Int = 5) -> String {
-    var num:Double = self.toDouble()!
+    var num:Double = Double(self)!
     let sign = ((num < 0) ? "-" : "" )
     num = fabs(num)
     if (num < 1000.0) {

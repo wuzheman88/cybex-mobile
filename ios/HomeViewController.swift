@@ -21,7 +21,6 @@ class HomeViewController: BaseViewController, UINavigationControllerDelegate, UI
 
   @IBOutlet weak var tableView: UITableView!
   
-  
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -29,6 +28,7 @@ class HomeViewController: BaseViewController, UINavigationControllerDelegate, UI
     
     handlerUpdateVersion(nil)
     
+    self.startLoading()
     requestData()
     
     BitShareCoordinator.callMethod("{\"method\": \"abc\", \"params\": [ \"def\", \"hij\", 0, 3 , \"xxx\" ]}")
@@ -52,8 +52,14 @@ class HomeViewController: BaseViewController, UINavigationControllerDelegate, UI
   }
 
   func requestData() {
-    self.startLoading()
+//    self.tableView.isHidden = true
     UIApplication.shared.coordinator().getLatestData()
+  }
+  
+  @objc func refreshTableView() {
+    if let socket = NetWorkService.shared.socket, !socket.isConnected {
+        self.requestData()
+    }
   }
   
   func commonObserveState() {
@@ -73,11 +79,17 @@ class HomeViewController: BaseViewController, UINavigationControllerDelegate, UI
   override func configureObserveState() {
     commonObserveState()
     
+    NotificationCenter.default.addObserver(
+      self, selector: #selector(refreshTableView), name: .UIApplicationDidBecomeActive, object: nil)
+
     app_data.data.asObservable().distinctUntilChanged()
       .filter({$0.count == AssetConfiguration.shared.asset_ids.count})
       .subscribe(onNext: { (s) in
         self.endLoading()
-        self.tableView.reloadData()
+        DispatchQueue.main.async {
+          self.tableView.reloadData()
+          self.tableView.isHidden = false
+        }
     }, onError: nil, onCompleted: nil, onDisposed: nil).disposed(by: disposeBag)
   }
   

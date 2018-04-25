@@ -99,16 +99,22 @@ func AppPropertyReducer(_ state: AppPropertyState?, action: Action) -> AppProper
   var state = state ?? AppPropertyState()
 
   var ids = state.subscribeIds ?? [:]
+  var refreshTimes = state.pairsRefreshTimes ?? [:]
   var klineDatas = state.detailData ?? [:]
   
   switch action {
   case let action as MarketsFetched:
     let data = applyMarketsToState(state, action: action)
     state.data.accept(data)
+    refreshTimes[Pair(base:action.pair.firstAssetId, quote:action.pair.secondAssetId)] = Date().timeIntervalSince1970
+    state.pairsRefreshTimes = refreshTimes
 
   case let action as SubscribeSuccess:
     ids[action.pair] = action.id
+    refreshTimes[action.pair] = Date().timeIntervalSince1970
     state.subscribeIds = ids
+    state.pairsRefreshTimes = refreshTimes
+    
   case let action as AssetInfoAction:
     state.assetInfo[action.assetID] = action.info
   case let action as kLineFetched:

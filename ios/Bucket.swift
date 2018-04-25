@@ -92,21 +92,21 @@ enum changeScope {
 }
 
 class BucketMatrix {
-  var price:String
+  var price:String = ""
   
   var asset:[Bucket]
   
-  var base_volume_origin:Double
+  var base_volume_origin:Double = 0
 
-  var base_volume:String
-  var quote_volume:String
+  var base_volume:String = ""
+  var quote_volume:String = ""
   
-  var high:String
-  var low:String
+  var high:String = ""
+  var low:String = ""
   
-  var change:String
+  var change:String = ""
   
-  var incre:changeScope
+  var incre:changeScope = .equal
   
 
   init(_ homebucket:HomeBucket) {
@@ -116,33 +116,33 @@ class BucketMatrix {
     let first = self.asset.first!
 
     let flip = homebucket.base != last.base
-    
-    let last_closebase_amount = flip ? last.close_quote.toDouble()! : last.close_base.toDouble()!
-    let last_closequote_amount = flip ? last.close_base.toDouble()! : last.close_quote.toDouble()!
 
-    let first_openbase_amount = flip ? first.open_quote.toDouble()! : first.open_base.toDouble()!
-    let first_openquote_amount = flip ? first.open_base.toDouble()! : first.open_quote.toDouble()!
-    
-    
+    let last_closebase_amount = flip ? Double(last.close_quote)! : Double(last.close_base)!
+    let last_closequote_amount = flip ? Double(last.close_base)! : Double(last.close_quote)!
+
+    let first_openbase_amount = flip ? Double(first.open_quote)! : Double(first.open_base)!
+    let first_openquote_amount = flip ? Double(first.open_base)! : Double(first.open_quote)!
+
+
     let base_info = homebucket.base_info
     let quote_info = homebucket.quote_info
-    
+
     let base_precision = pow(10, base_info.precision.toDouble)
     let quote_precision = pow(10, quote_info.precision.toDouble)
-    
+
     let lastClose_price = (last_closebase_amount / base_precision) / (last_closequote_amount / quote_precision)
     let firseOpen_price = (first_openbase_amount / base_precision) / (first_openquote_amount / quote_precision)
-    
-   
+
+
     let high_price_collection = self.asset.map { (bucket) -> Double in
-      let high_base = flip ? (bucket.high_quote.toDouble()! / base_precision) : (bucket.high_base.toDouble()! / base_precision)
-      let quote_base = flip ? (bucket.high_base.toDouble()! / quote_precision) : (bucket.high_quote.toDouble()! / quote_precision)
+      let high_base = flip ? (Double(bucket.high_quote)! / base_precision) : (Double(bucket.high_base)! / base_precision)
+      let quote_base = flip ? (Double(bucket.high_base)! / quote_precision) : (Double(bucket.high_quote)! / quote_precision)
       return high_base / quote_base
     }
-    
+
     let low_price_collection = self.asset.map { (bucket) -> Double in
-      let low_base = flip ? (bucket.low_quote.toDouble()! / base_precision) : (bucket.low_base.toDouble()! / base_precision)
-      let low_quote = flip ? (bucket.low_base.toDouble()! / quote_precision) : (bucket.low_quote.toDouble()! / quote_precision)
+      let low_base = flip ? (Double(bucket.low_quote)! / base_precision) : (Double(bucket.low_base)! / base_precision)
+      let low_quote = flip ? (Double(bucket.low_base)! / quote_precision) : (Double(bucket.low_quote)! / quote_precision)
       return low_base / low_quote
     }
 
@@ -150,32 +150,32 @@ class BucketMatrix {
     let low = low_price_collection.min()!
 
     let now = Date().addingTimeInterval(-24 * 3600).timeIntervalSince1970
-    
+
     let base_volume = self.asset.filter({$0.open > now}).map{flip ? $0.quote_volume : $0.base_volume}.reduce(0) { (last, cur) -> Double in
-      last + cur.toDouble()!
+      last + Double(cur)!
     } / base_precision
-    
+
     let quote_volume = self.asset.filter({$0.open > now}).map{flip ? $0.base_volume: $0.quote_volume}.reduce(0) { (last, cur) -> Double in
-      last + cur.toDouble()!
+      last + Double(cur)!
       } / quote_precision
 
-    
+
     self.base_volume_origin = base_volume
     self.base_volume = base_volume.toString.suffixNumber()
     self.quote_volume = quote_volume.toString.suffixNumber()
-    
+
     self.high = high.toString.formatCurrency(digitNum: base_info.precision)
     self.low = low.toString.formatCurrency(digitNum: base_info.precision)
-    
-    let isCYB = homebucket.base == "1.3.0"
+
+    let isCYB = homebucket.base == AssetConfiguration.CYB
     self.price = lastClose_price.toString.formatCurrency(digitNum: isCYB ? 5 : 8)
-    
+
     let change = (lastClose_price - firseOpen_price) * 100 / firseOpen_price
     var percent = round(change * 100) / 100.0
-    
+
     self.change = percent.toString.formatCurrency(digitNum: 2)
-    percent = self.change.toDouble()!
-    
+    percent = Double(self.change)!
+
     if percent == 0 {
       self.incre = .equal
     }
@@ -220,8 +220,14 @@ class ToStringTransform: TransformType {
   public init() {}
   
   open func transformFromJSON(_ value: Any?) -> String? {
-    if let v = value {
+    if let v = value as? Double {
       return String(describing: v)
+    }
+    else if let v = value as? String {
+      return v
+    }
+    else if let v = value as? Int {
+      return v.toString
     }
     
     return nil

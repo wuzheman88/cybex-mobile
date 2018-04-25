@@ -44,7 +44,7 @@ class Asset : Mappable {
   func volume() -> Double {
     let info = app_data.assetInfo[assetID]!
     
-    return amount.toDouble()! / pow(10, info.precision.toDouble)
+    return Double(amount)! / pow(10, info.precision.toDouble)
   }
   
   func info() -> AssetInfo {
@@ -76,7 +76,7 @@ class Price : ImmutableMappable {
     let base_info = base.info()
     let quote_info = quote.info()
     
-    let price_ratio =  base.amount.toDouble()! / quote.amount.toDouble()!
+    let price_ratio =  Double(base.amount)! / Double(quote.amount)!
     let precision_ratio = pow(10, base_info.precision.toDouble) / pow(10, quote_info.precision.toDouble)
     
     return price_ratio / precision_ratio
