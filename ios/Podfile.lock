@@ -78,12 +78,28 @@ PODS:
   - SipHash (1.2.0)
   - Siren (3.3.1)
   - Starscream (3.0.5)
+  - SwifterSwift (4.3.0):
+    - SwifterSwift/AppKit (= 4.3.0)
+    - SwifterSwift/CoreGraphics (= 4.3.0)
+    - SwifterSwift/CoreLocation (= 4.3.0)
+    - SwifterSwift/Foundation (= 4.3.0)
+    - SwifterSwift/MapKit (= 4.3.0)
+    - SwifterSwift/SwiftStdlib (= 4.3.0)
+    - SwifterSwift/UIKit (= 4.3.0)
+  - SwifterSwift/AppKit (4.3.0)
+  - SwifterSwift/CoreGraphics (4.3.0)
+  - SwifterSwift/CoreLocation (4.3.0)
+  - SwifterSwift/Foundation (4.3.0)
+  - SwifterSwift/MapKit (4.3.0)
+  - SwifterSwift/SwiftStdlib (4.3.0)
+  - SwifterSwift/UIKit (4.3.0)
   - SwiftHash (2.0.1)
   - SwiftTheme (0.4.1)
   - SwiftyJSON (4.1.0)
   - SwiftyUserDefaults (3.0.1)
   - TableFlip (1.2)
   - TextFieldEffects (1.4.0)
+  - Then (2.3.0)
   - TinyConstraints (3.1.0)
   - Typist (1.2.1)
   - UIFontComplete (3.0.0)
@@ -92,7 +108,6 @@ PODS:
     - SwiftHash (>= 2.0.1)
 
 DEPENDENCIES:
-  - Alamofire
   - Atributika
   - AwaitKit
   - BeareadToast (from `https://github.com/phpmaple/BeareadToast`)
@@ -134,11 +149,13 @@ DEPENDENCIES:
   - SDCAlertView
   - Siren
   - Starscream
+  - SwifterSwift
   - SwiftTheme
   - SwiftyJSON
   - SwiftyUserDefaults
   - TableFlip
   - TextFieldEffects
+  - Then
   - TinyConstraints
   - Typist
   - UIFontComplete
@@ -192,12 +209,14 @@ SPEC REPOS:
     - SipHash
     - Siren
     - Starscream
+    - SwifterSwift
     - SwiftHash
     - SwiftTheme
     - SwiftyJSON
     - SwiftyUserDefaults
     - TableFlip
     - TextFieldEffects
+    - Then
     - TinyConstraints
     - Typist
     - UIFontComplete
@@ -267,18 +286,20 @@ SPEC CHECKSUMS:
   SipHash: c6e9e43e9c531b5bc6602545130c26194a6d31ce
   Siren: 355787d3cdbe7164561e13bfaf235a0b81f13580
   Starscream: faf918b2f2eff7d5dd21180646bf015a669673bd
+  SwifterSwift: f3fce2b9fc5b9d8fda6eec33825e5243c60aebba
   SwiftHash: c805de5a434eacfa0dac7210745a50c55d7fe33d
   SwiftTheme: 36d71c4eed4b2c401c782cf036e4586c749a8173
   SwiftyJSON: c29297daf073d2aa016295d5809cdd68045c39b3
   SwiftyUserDefaults: 3d273b1739b68ada3145dc754a70ec775bc5c8be
   TableFlip: 2ae22773412b295a7cbc54d95b44085bb28092f6
   TextFieldEffects: 4ee41b5216e674d55fb6ac25107bf1af7629176f
+  Then: ee21c97b85ff6062b9b0080c9abb1eea46743345
   TinyConstraints: 4721a4b303c799328867078ade6560e152df54d1
   Typist: 88b462c1c5adc6d4e8601773fcb0b7d7113d18af
   UIFontComplete: 5b0f59a83308816c610164b79a2540b3520f9b72
   Zephyr: 7a3c2678c6bb935a13d7215ec9154956e8b4d209
   ZLaunchAd: 5695590e0e8dad68193b9f9493bab01f532231de
 
-PODFILE CHECKSUM: 350c0887151516e624f5fde3e83877d8374dace1
+PODFILE CHECKSUM: 427966051200ee60460489bca794818ef1964301
 
 COCOAPODS: 1.5.0

@@ -162,7 +162,7 @@ class AppPropertyActionCreate: LoadingActionCreator {
       if sub {
         let subRequest = SubscribeMarketRequest(ids: [params.firstAssetId, params.secondAssetId])
      
-        NetWorkService.shared.send(request: [subRequest], callback: { response in
+        WebsocketService.shared.send(request: [subRequest], callback: { response in
           if let id = response[0] as? Int {
             store.dispatch(SubscribeSuccess(pair: Pair(base: params.firstAssetId, quote: params.secondAssetId), id: id))
           }
@@ -177,7 +177,7 @@ class AppPropertyActionCreate: LoadingActionCreator {
   func fetchingMarketList(_  params:AssetPairQueryParams, callback:CommonAnyCallback?) {
     let request = GetMarketHistoryRequest(queryParams: params)
     
-    NetWorkService.shared.send(request: [request]) { (response) in
+    WebsocketService.shared.send(request: [request]) { (response) in
       if let callback = callback {
         callback(response)
       }

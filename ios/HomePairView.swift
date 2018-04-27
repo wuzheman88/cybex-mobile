@@ -54,13 +54,18 @@ class HomePairView: UIView {
         return
       }
       
-      let matrix = BucketMatrix(markets)
-      self.volume.text = "V: " + matrix.base_volume
-      self.high_low.text = "H: " + matrix.high + " L: " + matrix.low
-      self.price.text = matrix.price
-      self.bulking.text = (matrix.incre == .greater ? "+" : "") + matrix.change + "%"
-      self.bulking.textColor = matrix.incre.color()
-      self.bulkingIcon.image = matrix.incre.icon()
+      DispatchQueue.global().async {
+        let matrix = BucketMatrix(markets)
+        
+        DispatchQueue.main.async {
+          self.volume.text = "V: " + matrix.base_volume
+          self.high_low.text = "H: " + matrix.high + " L: " + matrix.low
+          self.price.text = matrix.price
+          self.bulking.text = (matrix.incre == .greater ? "+" : "") + matrix.change + "%"
+          self.bulking.textColor = matrix.incre.color()
+          self.bulkingIcon.image = matrix.incre.icon()
+        }
+      }
     }
   }
   

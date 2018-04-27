@@ -34,17 +34,23 @@ class PairDetailView: UIView {
         return
       }
       
-      let matrix = BucketMatrix(markets)
-      
-      self.baseVolume.text = "Vol: " + matrix.base_volume
-      self.quoteVolume.text = matrix.quote_volume
-      self.highLabel.text = "High: " + matrix.high
-      self.lowLabel.text = "Low: " + matrix.low
-      
-      self.price.text = matrix.price
-      self.bulking.text = (matrix.incre == .greater ? "+" : "") + matrix.change + "%"
-      self.bulking.textColor = matrix.incre.color()
-      self.bulkingIcon.image = matrix.incre.icon()
+      DispatchQueue.global().async {
+        let matrix = BucketMatrix(markets)
+        
+        DispatchQueue.main.async {
+          self.baseVolume.text = "Vol: " + matrix.base_volume
+          self.quoteVolume.text = matrix.quote_volume
+          self.highLabel.text = "High: " + matrix.high
+          self.lowLabel.text = "Low: " + matrix.low
+          
+          self.price.text = matrix.price
+          self.bulking.text = (matrix.incre == .greater ? "+" : "") + matrix.change + "%"
+          self.bulking.textColor = matrix.incre.color()
+          self.bulkingIcon.image = matrix.incre.icon()
+        }
+        
+      }      
+     
     }
   }
   

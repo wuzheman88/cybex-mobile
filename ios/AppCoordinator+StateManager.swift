@@ -8,6 +8,7 @@
 
 import Foundation
 import ReSwift
+import AwaitKit
 
 extension AppCoordinator:AppStateManagerProtocol {
   func subscribe<SelectedState, S: StoreSubscriber>(
@@ -39,7 +40,7 @@ extension AppCoordinator:AppStateManagerProtocol {
     guard AssetConfiguration.shared.asset_ids.count > 0 else { return }
     
     let request = GetAssetRequest(ids: AssetConfiguration.shared.unique_ids)
-    NetWorkService.shared.send(request: [request]) { response in
+    WebsocketService.shared.send(request: [request]) { response in
       if let assetinfo = response[0] as? [AssetInfo] {
         for info in assetinfo {
           self.store.dispatch(AssetInfoAction(assetID: info.id, info: info))
@@ -81,14 +82,13 @@ extension AppCoordinator {
     UIApplication.shared.coordinator().fetchKline(AssetPairQueryParams(firstAssetId: pair.base, secondAssetId: pair.quote, timeGap: gap.rawValue.toInt, startTime: start, endTime: now), gap:gap, vc:vc, selector: selector)
   }
   
-  
   func getLatestData() {
     if AssetConfiguration.shared.asset_ids.isEmpty {
-      requestMarketList { (pairs) in
-        AssetConfiguration.shared.asset_ids = pairs
-        self.fetchAsset()
-        self.request24hMarkets(pairs)
-      }
+      let pairs = try! SimpleHTTPService.await(SimpleHTTPService.requestMarketList())
+      
+      AssetConfiguration.shared.asset_ids = pairs
+      self.fetchAsset()
+      self.request24hMarkets(pairs)
     }
     else {
       if app_data.assetInfo.count != AssetConfiguration.shared.asset_ids.count {

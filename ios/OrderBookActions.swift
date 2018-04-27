@@ -57,7 +57,7 @@ class OrderBookPropertyActionCreate: LoadingActionCreator {
      
       let request = getLimitOrdersRequest(pair: pair)
       
-      NetWorkService.shared.send(request: [request]) { (response) in
+      WebsocketService.shared.send(request: [request]) { (response) in
         if let callback = callback {
           callback(response[0])
         }

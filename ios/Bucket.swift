@@ -171,10 +171,9 @@ class BucketMatrix {
     self.price = lastClose_price.toString.formatCurrency(digitNum: isCYB ? 5 : 8)
 
     let change = (lastClose_price - firseOpen_price) * 100 / firseOpen_price
-    var percent = round(change * 100) / 100.0
+    let percent = round(change * 100) / 100.0
 
     self.change = percent.toString.formatCurrency(digitNum: 2)
-    percent = Double(self.change)!
 
     if percent == 0 {
       self.incre = .equal

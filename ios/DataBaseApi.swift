@@ -25,7 +25,7 @@ struct GetChainIDRequest: JSONRPCKit.Request {
   }
   
   var parameters: Any? {
-    return [JsonRPCService.shared.ids[apiCategory.database] ?? 0, dataBaseCatogery.get_chain_id.rawValue, []]
+    return [JsonRPCGenerator.shared.ids[apiCategory.database] ?? 0, dataBaseCatogery.get_chain_id.rawValue, []]
   }
   
   func response(from resultObject: Any) throws -> Response {
@@ -47,7 +47,7 @@ struct GetAssetRequest: JSONRPCKit.Request {
   }
   
   var parameters: Any? {
-    return [JsonRPCService.shared.ids[apiCategory.database] ?? 0, dataBaseCatogery.get_objects.rawValue, [ids]]
+    return [JsonRPCGenerator.shared.ids[apiCategory.database] ?? 0, dataBaseCatogery.get_objects.rawValue, [ids]]
   }
   
   func response(from resultObject: Any) throws -> Response {
@@ -73,7 +73,7 @@ struct SubscribeMarketRequest: JSONRPCKit.Request {
   }
   
   var parameters: Any? {
-    return [JsonRPCService.shared.ids[apiCategory.database] ?? 0, dataBaseCatogery.subscribe_to_market.rawValue, [NetWorkService.shared.idGenerator.currentId + 1, ids[0], ids[1]]]
+    return [JsonRPCGenerator.shared.ids[apiCategory.database] ?? 0, dataBaseCatogery.subscribe_to_market.rawValue, [WebsocketService.shared.idGenerator.currentId + 1, ids[0], ids[1]]]
   }
   
   func response(from resultObject: Any) throws -> Response {
@@ -91,7 +91,7 @@ struct getLimitOrdersRequest: JSONRPCKit.Request {
   }
   
   var parameters: Any? {
-    return [JsonRPCService.shared.ids[apiCategory.database] ?? 0, dataBaseCatogery.get_limit_orders.rawValue, [pair.base, pair.quote, 20]]
+    return [JsonRPCGenerator.shared.ids[apiCategory.database] ?? 0, dataBaseCatogery.get_limit_orders.rawValue, [pair.base, pair.quote, 20]]
   }
   
   func response(from resultObject: Any) throws -> Response {

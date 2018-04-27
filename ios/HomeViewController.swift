@@ -57,7 +57,7 @@ class HomeViewController: BaseViewController, UINavigationControllerDelegate, UI
   }
   
   @objc func refreshTableView() {
-    if let socket = NetWorkService.shared.socket, !socket.isConnected {
+    if WebsocketService.shared.socket.isConnected {
         self.requestData()
     }
   }

@@ -71,7 +71,7 @@
 		73D34E4E2063A697008C7507 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D34E4A2063A697008C7507 /* SettingViewController.swift */; };
 		73D34E502063C4C5008C7507 /* Optional+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D34E4F2063C4C5008C7507 /* Optional+Extensions.swift */; };
 		73D634692062009C000EB324 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D634682062009C000EB324 /* NetworkService.swift */; };
-		73D63496206208D8000EB324 /* JsonRPCService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D63495206208D8000EB324 /* JsonRPCService.swift */; };
+		73D63496206208D8000EB324 /* JsonRPCGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D63495206208D8000EB324 /* JsonRPCGenerator.swift */; };
 		73D8B0B0207CB6EC001A2232 /* OrderBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D8B0AF207CB6EC001A2232 /* OrderBook.swift */; };
 		73D8B0DC207E1354001A2232 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 73D8B0DE207E1354001A2232 /* InfoPlist.strings */; };
 		73D977072052831E00CB7DE1 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 73D976C2205280E500CB7DE1 /* libRCTBlob.a */; };
@@ -149,6 +149,7 @@
 		73E49E54207A12E4003B14D2 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 73E49E53207A12E4003B14D2 /* Launch Screen.storyboard */; };
 		73E6B2B9208D911D00B015E5 /* test_boost_json.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 73E6B28E208D911A00B015E5 /* test_boost_json.cpp */; };
 		73E6B2BE208D92AB00B015E5 /* BitShareCoordinator.mm in Sources */ = {isa = PBXBuildFile; fileRef = 73E6B2BD208D92AB00B015E5 /* BitShareCoordinator.mm */; };
+		73E6B3B42091A81F00B015E5 /* SimpleHTTPService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E6B3B32091A81F00B015E5 /* SimpleHTTPService.swift */; };
 		73EA6D942085C3AC0045A88B /* Demo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73EA6D932085C3AC0045A88B /* Demo.swift */; };
 		73EAC8B02086F8720045A88B /* cassert in Resources */ = {isa = PBXBuildFile; fileRef = 73EA9FB92086F8320045A88B /* cassert */; };
 		73EAC8B12086F8720045A88B /* cctype in Resources */ = {isa = PBXBuildFile; fileRef = 73EA9FBA2086F8320045A88B /* cctype */; };
@@ -629,7 +630,7 @@
 		73D34E4A2063A697008C7507 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		73D34E4F2063C4C5008C7507 /* Optional+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Optional+Extensions.swift"; sourceTree = "<group>"; };
 		73D634682062009C000EB324 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
-		73D63495206208D8000EB324 /* JsonRPCService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JsonRPCService.swift; sourceTree = "<group>"; };
+		73D63495206208D8000EB324 /* JsonRPCGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JsonRPCGenerator.swift; sourceTree = "<group>"; };
 		73D8B0AF207CB6EC001A2232 /* OrderBook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderBook.swift; sourceTree = "<group>"; };
 		73D8B0DD207E1354001A2232 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		73D8B0DF207E1356001A2232 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
@@ -710,6 +711,7 @@
 		73E6B2B8208D911B00B015E5 /* test_boost_json.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = test_boost_json.hpp; sourceTree = "<group>"; };
 		73E6B2BC208D91C100B015E5 /* BitShareCoordinator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BitShareCoordinator.h; sourceTree = "<group>"; };
 		73E6B2BD208D92AB00B015E5 /* BitShareCoordinator.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = BitShareCoordinator.mm; sourceTree = "<group>"; };
+		73E6B3B32091A81F00B015E5 /* SimpleHTTPService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleHTTPService.swift; sourceTree = "<group>"; };
 		73EA6D932085C3AC0045A88B /* Demo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Demo.swift; sourceTree = "<group>"; };
 		73EA9BB22086F8300045A88B /* accumulators.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = accumulators.hpp; sourceTree = "<group>"; };
 		73EA9BB32086F8300045A88B /* accumulators_fwd.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = accumulators_fwd.hpp; sourceTree = "<group>"; };
@@ -11439,9 +11441,10 @@
 		7320D669205B7DED00C3F579 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				73E6B3892091A33E00B015E5 /* HTTPNetwork */,
 				7373AE0220720B7D002DC01F /* UserDefaults */,
 				733402222067D9BC000F78B3 /* Cache */,
-				733401F82067D9AE000F78B3 /* Network */,
+				733401F82067D9AE000F78B3 /* Websocket */,
 			);
 			name = Services;
 			sourceTree = "<group>";
@@ -11542,15 +11545,14 @@
 			name = Cells;
 			sourceTree = "<group>";
 		};
-		733401F82067D9AE000F78B3 /* Network */ = {
+		733401F82067D9AE000F78B3 /* Websocket */ = {
 			isa = PBXGroup;
 			children = (
 				73D634682062009C000EB324 /* NetworkService.swift */,
-				73D63495206208D8000EB324 /* JsonRPCService.swift */,
-				733CD33020623F47002AD0E0 /* DataBaseApi.swift */,
-				73BDCA20206266CE009E67A3 /* HistoryApi.swift */,
+				73D63495206208D8000EB324 /* JsonRPCGenerator.swift */,
+				73E6B42E209328C800B015E5 /* API */,
 			);
-			name = Network;
+			name = Websocket;
 			sourceTree = "<group>";
 		};
 		733402222067D9BC000F78B3 /* Cache */ = {
@@ -12009,6 +12011,23 @@
 				73E49E51207A08CB003B14D2 /* OrderBookCellView.xib */,
 			);
 			name = Views;
+			sourceTree = "<group>";
+		};
+		73E6B3892091A33E00B015E5 /* HTTPNetwork */ = {
+			isa = PBXGroup;
+			children = (
+				73E6B3B32091A81F00B015E5 /* SimpleHTTPService.swift */,
+			);
+			path = HTTPNetwork;
+			sourceTree = "<group>";
+		};
+		73E6B42E209328C800B015E5 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				733CD33020623F47002AD0E0 /* DataBaseApi.swift */,
+				73BDCA20206266CE009E67A3 /* HistoryApi.swift */,
+			);
+			name = API;
 			sourceTree = "<group>";
 		};
 		73EA6E1E2086F3220045A88B /* addons */ = {
@@ -30693,10 +30712,12 @@
 				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftHash/SwiftHash.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftTheme/SwiftTheme.framework",
+				"${BUILT_PRODUCTS_DIR}/SwifterSwift/SwifterSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyUserDefaults/SwiftyUserDefaults.framework",
 				"${BUILT_PRODUCTS_DIR}/TableFlip/TableFlip.framework",
 				"${BUILT_PRODUCTS_DIR}/TextFieldEffects/TextFieldEffects.framework",
+				"${BUILT_PRODUCTS_DIR}/Then/Then.framework",
 				"${BUILT_PRODUCTS_DIR}/TinyConstraints/TinyConstraints.framework",
 				"${BUILT_PRODUCTS_DIR}/Typist/Typist.framework",
 				"${BUILT_PRODUCTS_DIR}/UIFontComplete/UIFontComplete.framework",
@@ -30751,10 +30772,12 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftHash.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftTheme.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwifterSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyUserDefaults.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TableFlip.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TextFieldEffects.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Then.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TinyConstraints.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Typist.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIFontComplete.framework",
@@ -30907,7 +30930,7 @@
 				7320D69D205B8C1E00C3F579 /* KLineConfiguration.swift in Sources */,
 				73D978A52057A45500CB7DE1 /* PairCardCell.swift in Sources */,
 				73BDCA4C206269A7009E67A3 /* Tools.swift in Sources */,
-				73D63496206208D8000EB324 /* JsonRPCService.swift in Sources */,
+				73D63496206208D8000EB324 /* JsonRPCGenerator.swift in Sources */,
 				73A0CC2F2068EB5E00463ADE /* AppCoordinator+StateManager.swift in Sources */,
 				73D34E452063A675008C7507 /* AccountViewController.swift in Sources */,
 				73D977E020565E6900CB7DE1 /* HomeRootCoordinator.swift in Sources */,
@@ -30935,6 +30958,7 @@
 				739B6166207F325A00B61152 /* Collection+Extensions.swift in Sources */,
 				7320D6B1205BB14800C3F579 /* CBMACDModel.swift in Sources */,
 				73E49E292078C17A003B14D2 /* AccessoryCollectionView.swift in Sources */,
+				73E6B3B42091A81F00B015E5 /* SimpleHTTPService.swift in Sources */,
 				73D977E220565E9700CB7DE1 /* ExplorerRootCoordinator.swift in Sources */,
 				73E6B2B9208D911D00B015E5 /* test_boost_json.cpp in Sources */,
 				73A0CC41206A3DDA00463ADE /* AssetInfo.swift in Sources */,

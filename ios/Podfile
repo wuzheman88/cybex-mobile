@@ -6,7 +6,6 @@ def network
     pod 'Starscream'
     pod 'JSONRPCKit'
     pod 'Moya'
-    pod 'Alamofire'
     pod 'Kingfisher'
 end
 
@@ -21,6 +20,7 @@ def data
     pod 'Zephyr'
     pod 'Cache'
     pod 'Locksmith'
+    pod 'Then'
 end
 
 def resource
@@ -52,6 +52,7 @@ end
 def extension
     pod 'EZSwiftExtensions', :git => 'https://github.com/Steven-Cheung/EZSwiftExtensions', :branch => 'swift4'
     pod 'KeychainAccess'
+    pod 'SwifterSwift'
 end
 
 def ui

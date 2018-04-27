@@ -25,8 +25,7 @@ enum NodeURLString:String {
   }
 }
 
-
-class NetWorkService {
+class WebsocketService {
   typealias RPCResponse = ([Any?]) -> ()
   typealias RPCSingleResponse = (Any) -> ()
 
@@ -34,7 +33,7 @@ class NetWorkService {
   var autoConnectCount = 0
   var isConnecting:Bool = false
 
-  var socket:WebSocket?
+  var socket = WebSocket(url: URL(string: NodeURLString.all[0].rawValue)!)
   var testsockets:[WebSocket] = []
 
   var batchFactory:BatchFactory!
@@ -49,7 +48,7 @@ class NetWorkService {
     switchFastNode()
   }
   
-  static let shared = NetWorkService()
+  static let shared = WebsocketService()
   
   func switchFastNode() {
     currentNode = nil
@@ -77,7 +76,7 @@ class NetWorkService {
     }
 
     ez.runThisAfterDelay(seconds: 10, after: {
-      if let socket = self.socket, !socket.isConnected, self.autoConnectCount <= 5 {
+      if !self.socket.isConnected, self.autoConnectCount <= 5 {
         self.autoConnectCount += 1
         self.autoConnect()
       }
@@ -89,9 +88,9 @@ class NetWorkService {
     currentNode = node
     let request = URLRequest(url: URL(string:node.rawValue)!)
 
-    socket = WebSocket(request: request)
-    socket?.delegate = self
-    socket?.connect()
+    socket.request = request
+    socket.delegate = self
+    socket.connect()
     isConnecting = true
   }
   
@@ -109,7 +108,7 @@ class NetWorkService {
     }
     
 //    print("post Data:", data)
-    socket?.write(data: jsonData) {[weak self] in
+    socket.write(data: jsonData) {[weak self] in
       guard let `self` = self, let callback = callback else { return }
       
       if self.callbacks.count > 1000 {
@@ -121,7 +120,7 @@ class NetWorkService {
   }
   
   func checkNetworAndConnect() {
-    if let socket = self.socket, !socket.isConnected {
+    if !socket.isConnected {
       self.autoConnectCount = 0
       if let vc = app_coodinator.curDisplayingCoordinator().rootVC.topViewController as? BaseViewController {
         vc.startLoading()
@@ -132,9 +131,9 @@ class NetWorkService {
   }
 }
 
-extension NetWorkService {
+extension WebsocketService {
   private func validMainID() -> Bool {
-    return JsonRPCService.shared.existAllIDs()
+    return JsonRPCGenerator.shared.existAllIDs()
   }
   
   func send<Request: JSONRPCKit.Request>(_ valid:Bool = true, request: [Request], callback:RPCResponse?) {
@@ -149,16 +148,16 @@ extension NetWorkService {
         return last + "\(cur)"
       })
       
-      JsonRPCService.shared.addRetryRequest((digest, request, callback))
+      JsonRPCGenerator.shared.addRetryRequest((digest, request, callback))
 
-      if let socket = self.socket, socket.isConnected {
-        JsonRPCService.shared.requestIDs(request)
+      if socket.isConnected {
+        JsonRPCGenerator.shared.requestIDs(request)
       }
       else {
-        JsonRPCService.shared.requestIDs(request)
+        JsonRPCGenerator.shared.requestIDs(request)
         self.retry = {[weak self] in
           guard let `self` = self else { return }
-          JsonRPCService.shared.requestIDs(request)
+          JsonRPCGenerator.shared.requestIDs(request)
           self.retry = nil
         }
         if !self.isConnecting {
@@ -197,7 +196,7 @@ extension NetWorkService {
         }
       }
       
-      NetWorkService.shared.write(data: batch.requestObject, callback: block)
+      WebsocketService.shared.write(data: batch.requestObject, callback: block)
     }
 
   }
@@ -207,7 +206,7 @@ extension NetWorkService {
       guard let `self` = self else { return }
       
       UIApplication.shared.coordinator().getLatestData()
-      JsonRPCService.shared.requestIDs([LoginRequest(username: "", password: "")])
+      JsonRPCGenerator.shared.requestIDs([LoginRequest(username: "", password: "")])
       self.retry = nil
     }
     switchFastNode()
@@ -215,10 +214,10 @@ extension NetWorkService {
 }
 
 
-extension NetWorkService: WebSocketDelegate {
+extension WebsocketService: WebSocketDelegate {
   func websocketDidConnect(socket: WebSocketClient) {
     print("websocket is connected")
-    JsonRPCService.shared.isFetchingID = false
+    JsonRPCGenerator.shared.isFetchingID = false
     self.autoConnectCount = 0
     self.isConnecting = false
     self.retry?()
@@ -226,7 +225,7 @@ extension NetWorkService: WebSocketDelegate {
   
   func websocketDidDisconnect(socket: WebSocketClient, error: Error?) {
     self.isConnecting = false
-    JsonRPCService.shared.removeIDs()
+    JsonRPCGenerator.shared.removeIDs()
     idGenerator = JsonIdGenerator()
     batchFactory.idGenerator = idGenerator
 

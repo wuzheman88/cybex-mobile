@@ -65,17 +65,22 @@ class PairCardView : UIView {
         return
       }
       
-      let matrix = BucketMatrix(markets)
-      self.change.text = (matrix.incre == .greater ? "+" : "") + matrix.change + "%"
-      
-      switch matrix.incre {
-      case .greater:
-        self.arrowIcon.transform = CGAffineTransform.identity
-      case .less:
-        self.arrowIcon.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
-
-      case .equal:
-        self.arrowIcon.transform = CGAffineTransform(rotationAngle: CGFloat.pi / 2.0)
+      DispatchQueue.global().async {
+        let matrix = BucketMatrix(markets)
+        
+        DispatchQueue.main.async {
+          self.change.text = (matrix.incre == .greater ? "+" : "") + matrix.change + "%"
+          
+          switch matrix.incre {
+          case .greater:
+            self.arrowIcon.transform = CGAffineTransform.identity
+          case .less:
+            self.arrowIcon.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
+            
+          case .equal:
+            self.arrowIcon.transform = CGAffineTransform(rotationAngle: CGFloat.pi / 2.0)
+          }
+        }
 
       }
     }

@@ -36,7 +36,7 @@ public struct JsonIdGenerator: IdGenerator {
   }
 }
 
-class JsonRPCService {
+class JsonRPCGenerator {
   typealias RPCResponse = ([Any?]) -> ()
 
   var ids:[apiCategory:Int] = [:]
@@ -54,7 +54,7 @@ class JsonRPCService {
     let retry:()->() = {
       for operation in self.retryRequests where self.ids.count == 3 {
         if  let request = operation.1 as? [Request] {
-          NetWorkService.shared.send(request: request, callback: operation.2)
+          WebsocketService.shared.send(request: request, callback: operation.2)
           let digests = self.retryRequests.map { $0.0 }
           
           let params = request.flatMap({ (request) -> [Any] in
@@ -76,15 +76,15 @@ class JsonRPCService {
     }
     self.allrequestRetry.append(retry)
     
-    guard !JsonRPCService.shared.isFetchingID else {
+    guard !JsonRPCGenerator.shared.isFetchingID else {
       
       return
     }
 
     self.isFetchingID = true
     
-    NetWorkService.shared.send(false, request: [LoginRequest(username: "", password: "")]) {_ in}
-    NetWorkService.shared.send(false, request: [RegisterIDRequest(api: .database), RegisterIDRequest(api: .network_broadcast), RegisterIDRequest(api: .history)]) { response in
+    WebsocketService.shared.send(false, request: [LoginRequest(username: "", password: "")]) {_ in}
+    WebsocketService.shared.send(false, request: [RegisterIDRequest(api: .database), RegisterIDRequest(api: .network_broadcast), RegisterIDRequest(api: .history)]) { response in
       if let databaseID = response[0] as? Int, let broad = response[1] as? Int, let history = response[2] as? Int {
         self.ids[.database] = databaseID
         self.ids[.network_broadcast] = broad
@@ -116,7 +116,7 @@ class JsonRPCService {
     self.retryRequests.removeAll()
   }
   
-  static let shared = JsonRPCService()
+  static let shared = JsonRPCGenerator()
 
 }
 

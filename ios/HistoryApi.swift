@@ -34,7 +34,7 @@ struct GetMarketHistoryRequest: JSONRPCKit.Request {
   }
   
   var parameters: Any? {
-    return [JsonRPCService.shared.ids[apiCategory.history] ?? 0, historyCatogery.get_market_history.rawValue, [queryParams.firstAssetId, queryParams.secondAssetId, queryParams.timeGap, queryParams.startTime.iso8601, queryParams.endTime.iso8601]]
+    return [JsonRPCGenerator.shared.ids[apiCategory.history] ?? 0, historyCatogery.get_market_history.rawValue, [queryParams.firstAssetId, queryParams.secondAssetId, queryParams.timeGap, queryParams.startTime.iso8601, queryParams.endTime.iso8601]]
   }
   
   func response(from resultObject: Any) throws -> Response {
@@ -60,7 +60,7 @@ struct GetFillOrderHistoryRequest: JSONRPCKit.Request {
   }
   
   var parameters: Any? {
-    return [JsonRPCService.shared.ids[apiCategory.history] ?? 0, historyCatogery.get_fill_order_history.rawValue, [pair.base, pair.quote, 40]]
+    return [JsonRPCGenerator.shared.ids[apiCategory.history] ?? 0, historyCatogery.get_fill_order_history.rawValue, [pair.base, pair.quote, 40]]
   }
   
   func response(from resultObject: Any) throws -> Response {
