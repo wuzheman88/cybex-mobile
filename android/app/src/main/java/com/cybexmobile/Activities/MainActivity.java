@@ -1,4 +1,4 @@
-package com.cybexmobile;
+package com.cybexmobile.Activities;
 
 import com.facebook.react.ReactActivity;
 
