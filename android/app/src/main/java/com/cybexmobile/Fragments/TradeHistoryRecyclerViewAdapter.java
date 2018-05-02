@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.cybexmobile.Fragments.Data.WatchListData;
 import com.cybexmobile.Fragments.MarketTradeHistoryFragment.OnListFragmentInteractionListener;
 import com.cybexmobile.Fragments.dummy.DummyContent.DummyItem;
 import com.cybexmobile.R;
@@ -43,10 +44,11 @@ public class TradeHistoryRecyclerViewAdapter extends RecyclerView.Adapter<TradeH
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        NumberFormat formatter = new DecimalFormat("#,###0.00000");
+        holder.mItem = mValues.get(position);
+        NumberFormat formatter = MyUtils.getSuitableDecimalFormat(holder.mItem != null ? holder.mItem.quote : "");
         holder.mPriceView.setText(String.valueOf(formatter.format(mValues.get(position).price)));
-        holder.mBaseView.setText(String.valueOf(MyUtils.format(mValues.get(position).baseAmount)));
-        holder.mQuoteView.setText(String.valueOf(MyUtils.format(mValues.get(position).quoteAmount)));
+        holder.mBaseView.setText(String.valueOf(MyUtils.getNumberKMGExpressionFormat(mValues.get(position).baseAmount)));
+        holder.mQuoteView.setText(String.valueOf(MyUtils.getNumberKMGExpressionFormat(mValues.get(position).quoteAmount)));
         holder.mDateView.setText(mValues.get(position).date);
         if(mValues.get(position).showRed.equals("showRed")) {
             holder.mPriceView.setTextColor(mContext.getResources().getColor(R.color.decreasing_color));
@@ -61,6 +63,7 @@ public class TradeHistoryRecyclerViewAdapter extends RecyclerView.Adapter<TradeH
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
+        MarketTrade mItem;
         final View mView;
         final TextView mPriceView;
         final TextView mQuoteView;

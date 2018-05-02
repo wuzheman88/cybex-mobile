@@ -1,9 +1,8 @@
 package com.cybexmobile.Fragments;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,9 +16,12 @@ import com.cybexmobile.Fragments.Data.WatchListData;
 import com.cybexmobile.R;
 import com.cybexmobile.Market.MarketStat;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * A fragment representing a list of Items.
@@ -30,24 +32,15 @@ import java.util.concurrent.TimeUnit;
 public class WatchLIstFragment extends Fragment implements MarketStat.OnMarketStatUpdateListener, MarketStat.getResultListener {
 
     private static final String TAG = "WatchListFragment";
-    private static final long MARKET_STAT_INTERVAL_MILLIS = TimeUnit.SECONDS.toMillis(30);
-    private static final long TICKER_STAT_INTERVAL_MILLIS = TimeUnit.SECONDS.toMillis(10);
-
     private MarketStat marketStat;
-
-    private String baseAsset;
-    private String quoteAsset;
     private List<WatchListData> watchListDataList = new ArrayList<>();
     protected RecyclerView mRecyclerView;
     private Context mContext;
     private View view;
     private ProgressBar mProgressBar;
-
-
-    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
     private int mColumnCount = 1;
+    private Handler mHandler;
 
     private WatchListRecyclerViewAdapter mWatchListRecyclerViewAdapter;
     private OnListFragmentInteractionListener mListener;
@@ -78,11 +71,13 @@ public class WatchLIstFragment extends Fragment implements MarketStat.OnMarketSt
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -92,10 +87,11 @@ public class WatchLIstFragment extends Fragment implements MarketStat.OnMarketSt
         mContext = view.getContext();
         mRecyclerView = (RecyclerView) view.findViewById(R.id.list);
         mProgressBar = (ProgressBar) view.findViewById(R.id.watch_list_progress_bar);
-        if (marketStat.getWatchListData().size() == 0) {
+        if (marketStat.getWatchListDataList().size() == 0) {
             mProgressBar.setVisibility(View.VISIBLE);
         }
-        mWatchListRecyclerViewAdapter = new WatchListRecyclerViewAdapter(marketStat.getWatchListData(), mListener, getContext());
+        watchListDataList.addAll(marketStat.getWatchListDataList());
+        mWatchListRecyclerViewAdapter = new WatchListRecyclerViewAdapter(watchListDataList, mListener, getContext());
         if (mColumnCount <= 1) {
             RecyclerView.LayoutManager layoutManager = new GridLayoutManager(mContext, 1);
             mRecyclerView.setHasFixedSize(true);
@@ -118,9 +114,41 @@ public class WatchLIstFragment extends Fragment implements MarketStat.OnMarketSt
         mProgressBar.setVisibility(View.GONE);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(String string) {
+        for (int i = 0; i < watchListDataList.size(); i++) {
+            if (string.equals(watchListDataList.get(i).getSubscribeId())) {
+                updateWatchListData(watchListDataList.get(i), i);
+            }
+        }
+    }
+
+    private void updateWatchListData(final WatchListData watchListData, final int i) {
+        final Handler handler = new Handler();
+        Thread mThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final WatchListData newWatchListData = marketStat.getWatchLIstData(watchListData.getBaseId(), watchListData.getQuoteId(), watchListData.getSubscribeId());
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mWatchListRecyclerViewAdapter.setItemToPosition(newWatchListData, i);
+                    }
+                });
+            }
+        });
+        mThread.start();
+
+    }
+
     @Override
     public void onMarketStatUpdate(MarketStat.Stat stat) {
+    }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -139,6 +167,8 @@ public class WatchLIstFragment extends Fragment implements MarketStat.OnMarketSt
         super.onDetach();
         mListener = null;
     }
+
+
 
     /**
      * This interface must be implemented by activities that contain this
