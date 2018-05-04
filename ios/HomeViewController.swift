@@ -52,13 +52,12 @@ class HomeViewController: BaseViewController, UINavigationControllerDelegate, UI
   }
 
   func requestData() {
-//    self.tableView.isHidden = true
-    UIApplication.shared.coordinator().getLatestData()
+    WebsocketService.shared.connect()
   }
   
   @objc func refreshTableView() {
-    if WebsocketService.shared.socket.isConnected {
-        self.requestData()
+    if !WebsocketService.shared.checkNetworConnected() {
+        WebsocketService.shared.reConnect()
     }
   }
   

@@ -11,6 +11,8 @@ import Starscream
 import JSONRPCKit
 import SwiftyJSON
 import EZSwiftExtensions
+import PromiseKit
+import AwaitKit
 
 enum NodeURLString:String {
   case shanghai = "wss://shanghai.51nebula.com"
@@ -26,61 +28,101 @@ enum NodeURLString:String {
 }
 
 class WebsocketService {
-  typealias RPCResponse = ([Any?]) -> ()
-  typealias RPCSingleResponse = (Any) -> ()
+  private var autoConnectCount = 0
+  private var isConnecting:Bool = false
+  private var isFetchingID:Bool = false
 
-  var retry:(()->())?
-  var autoConnectCount = 0
-  var isConnecting:Bool = false
+  private var requests:[(String, Any, ()->())] = []
+  private var requesting:[String: (String, Any, ()->())] = [:]
 
-  var socket = WebSocket(url: URL(string: NodeURLString.all[0].rawValue)!)
-  var testsockets:[WebSocket] = []
+  private var socket = WebSocket(url: URL(string: NodeURLString.all[0].rawValue)!)
+  private var testsockets:[WebSocket] = []
 
-  var batchFactory:BatchFactory!
-  var idGenerator:JsonIdGenerator = JsonIdGenerator()
-  var callbacks:[Int: RPCSingleResponse] = [:]
+  private var batchFactory:BatchFactory!
+  private(set) var idGenerator:JsonIdGenerator = JsonIdGenerator()
 
-  var currentNode:NodeURLString?
+  private var currentNode:NodeURLString?
   
+  var needAutoConnect = true
+  var ids:[apiCategory:Int] = [:] {
+    didSet {
+      if ids.count == 3 {
+        self.isFetchingID = false
+        
+        refreshData()
+        handlerRequestPool()
+      }
+    }
+  }
+
   private init() {
     self.batchFactory = BatchFactory(version: "2.0", idGenerator:self.idGenerator)
 
-    switchFastNode()
+//    connect()
   }
   
   static let shared = WebsocketService()
   
-  func switchFastNode() {
-    currentNode = nil
-    
+  private func detectFastNode() -> Promise<NodeURLString> {
+    let (promise, seal) = Promise<NodeURLString>.pending()
+
     for (idx, node) in NodeURLString.all.enumerated() {
       var testsocket:WebSocket!
-
+      
       if idx < testsockets.count {
         testsocket = testsockets[idx]
       }
       else {
         testsocket = WebSocket(url: URL(string:node.rawValue)!)
+        testsocket.callbackQueue = Await.Queue.await
         testsockets.append(testsocket)
       }
-
+      
       //websocketDidConnect
       testsocket.onConnect = {
-        if self.currentNode == nil {
-          self.currentNode = node
-          self.changeNode(node: node)
-        }
-      }
+        seal.fulfill(node)
 
+        self.testsockets.forEach({ (s) in
+          s.disconnect()
+        })
+      }
+      
+      /*
+       error NSError  domain: "NSPOSIXErrorDomain" - code: 50 网络断开
+       error WSError writeTimeoutError 超时 网络延迟
+       error nil socket断开
+       */
+      testsocket.onDisconnect = { error in
+        guard let error = error else { return }
+        
+        seal.reject(error)
+      }
+    
+      
       testsocket.connect()
     }
+    
+    return promise
+  }
+  
+  func connect() {
+    currentNode = nil
+    isConnecting = true
 
-    ez.runThisAfterDelay(seconds: 10, after: {
-      if !self.socket.isConnected, self.autoConnectCount <= 5 {
-        self.autoConnectCount += 1
-        self.autoConnect()
+    async {
+      do {
+        let node = try await(self.detectFastNode())
+        self.currentNode = node
+        self.changeNode(node: node)
       }
-    })
+      catch {
+        ez.runThisAfterDelay(seconds: 10, after: {
+          if !self.checkNetworConnected(), self.autoConnectCount <= 5 {
+            self.autoConnect()
+          }
+        })
+      }
+    }
   }
   
   private func changeNode(node: NodeURLString) {
@@ -91,125 +133,187 @@ class WebsocketService {
     socket.request = request
     socket.delegate = self
     socket.connect()
-    isConnecting = true
   }
   
-  private func write(data:Any, callback:RPCSingleResponse?) {
-    var data = JSON(data)
-    
-    if var params = data["params"].array, let id = data["id"].int , let event = params[1].string, event == dataBaseCatogery.subscribe_to_market.rawValue, var subParams = params[2].array {
-      subParams[0] = JSON(id)
-      params[2] = JSON(subParams)
-      data["params"] = JSON(params)
-    }
-    
-    guard let jsonData = try? data.rawData(), let id = data["id"].int else {
-      return
-    }
-    
-//    print("post Data:", data)
-    socket.write(data: jsonData) {[weak self] in
-      guard let `self` = self, let callback = callback else { return }
-      
-      if self.callbacks.count > 1000 {
-        self.callbacks.removeAll()
-      }
-      
-      self.callbacks[id] = callback
-    }
-  }
-  
-  func checkNetworAndConnect() {
+  func checkNetworConnected() -> Bool {
     if !socket.isConnected {
-      self.autoConnectCount = 0
-      if let vc = app_coodinator.curDisplayingCoordinator().rootVC.topViewController as? BaseViewController {
-        vc.startLoading()
-      }
-      
-      self.autoConnect()
+      return false
     }
+    
+    return true
   }
+  
+  func reConnect() {
+    needAutoConnect = true
+    autoConnectCount = 0
+    connect()
+  }
+  
+  func disConnect() {
+    socket.disconnect()
+  }
+  
+  private func autoConnect() {
+    guard needAutoConnect else { return }
+    autoConnectCount += 1
+    
+    connect()
+  }
+
+  private func preFetchID() {
+    ids = [:]
+    isFetchingID = false
+  }
+  
+  private func existAllIDs() -> Bool {
+    return self.ids.count == 3
+  }
+  
+  private func removeIDs() {
+    self.ids.removeAll()
+  }
+  
 }
 
 extension WebsocketService {
-  private func validMainID() -> Bool {
-    return JsonRPCGenerator.shared.existAllIDs()
-  }
-  
-  func send<Request: JSONRPCKit.Request>(_ valid:Bool = true, request: [Request], callback:RPCResponse?) {
-    if valid, !validMainID() {
-      
-      let params = request.flatMap({ (request) -> [Any] in
-         var data = request.parameters as! [Any]
-         data.removeFirst()
-        return data
-      })
-      let digest = params.reduce("", { (last, cur) -> String in
-        return last + "\(cur)"
-      })
-      
-      JsonRPCGenerator.shared.addRetryRequest((digest, request, callback))
-
-      if socket.isConnected {
-        JsonRPCGenerator.shared.requestIDs(request)
-      }
-      else {
-        JsonRPCGenerator.shared.requestIDs(request)
-        self.retry = {[weak self] in
-          guard let `self` = self else { return }
-          JsonRPCGenerator.shared.requestIDs(request)
-          self.retry = nil
-        }
-        if !self.isConnecting {
-          switchFastNode()
-        }
-      }
-
+  private func fetchIDs() {
+    guard !isFetchingID else {
       return
     }
     
-    var i = 0
-    var responses:[Any?] = Array(repeatElement(nil, count: request.count))
+    self.isFetchingID = true
     
-    for (idx, re) in request.enumerated() {
-      let batch = batchFactory.create(re)
-      
-      let block:(Any) -> () = { (result) in
-        i += 1
-        guard let response = try? batch.responses(from: result) else {
-          return
-        }
-        
-        responses[idx] = response
-        
-        let filt = responses.filter { $0 != nil }
-        
-        if let callback = callback, i == request.count, filt.count == request.count {
-          var data = JSON(batch.batchElement.body)
-          
-          if var params = data["params"].array, let id = data["id"].int , let event = params[1].string, event == dataBaseCatogery.subscribe_to_market.rawValue {
-            callback([id])
-            return
-          }
-          
-          callback(responses)
-        }
+    let login_re = LoginRequest(username: "", password: "") { _ in
+    }
+    
+    let registerID_re = [RegisterIDRequest(api: .database) { re_id in
+      if let re_id = re_id as? Int {
+        var n_ids = self.ids
+        n_ids[.database] = re_id
+        self.ids = n_ids
       }
       
-      WebsocketService.shared.write(data: batch.requestObject, callback: block)
+      }, RegisterIDRequest(api: .network_broadcast) { re_id in
+        if let re_id = re_id as? Int {
+          var n_ids = self.ids
+          n_ids[.network_broadcast] = re_id
+          self.ids = n_ids
+        }
+        
+      }, RegisterIDRequest(api: .history) { re_id in
+        if let re_id = re_id as? Int {
+          var n_ids = self.ids
+          n_ids[.history] = re_id
+          self.ids = n_ids
+        }
+        
+      }]
+    
+    constructSendRequest(request: login_re)()
+    
+    for request in registerID_re {
+      constructSendRequest(request: request)()
     }
-
   }
   
-  func autoConnect() {
-    self.retry = {[weak self] in
+  private func preSendAndDetect() -> Bool {
+    if !checkNetworConnected() {
+      guard !isConnecting else {
+        return false
+      }
+      
+      reConnect()
+    }
+    else {
+      guard !existAllIDs() else  {
+        return true
+      }
+      
+      guard !isFetchingID else  {
+        return false
+      }
+      
+      preFetchID()
+      fetchIDs()
+    }
+    
+    return false
+  }
+  
+  private func saveRequest<Request: JSONRPCKit.Request>(request: Request) {
+    var exist = false
+    
+    for re in requests {
+      if re.0 == request.digist {
+        exist = true
+        break
+      }
+    }
+    
+    if !exist {
+      requests.append((request.digist, request, constructSendRequest(request: request)))
+    }
+  }
+  
+  private func constructSendRequest<Request: JSONRPCKit.Request>(request: Request) -> (()->()) {
+    return {[weak self] in
       guard let `self` = self else { return }
       
-      UIApplication.shared.coordinator().getLatestData()
-      JsonRPCGenerator.shared.requestIDs([LoginRequest(username: "", password: "")])
-      self.retry = nil
+      let batch = self.batchFactory.create(request)
+      
+      var writeJSON:JSON
+      if let revision_request = request as? RevisionRequest {
+        writeJSON = JSON(revision_request.revisionParameters(batch.requestObject))
+      }
+      else {
+        writeJSON = JSON(batch.requestObject)
+      }
+      
+      self.socket.write(data: try! writeJSON.rawData())
+      
+      let id = writeJSON["id"].stringValue
+      self.requesting[id] = (request.digist, request, self.constructSendRequest(request: request))
+      
+      if let index = self.requests.index(where: { (value) -> Bool in
+        let (digist, _, _) = value
+        
+        return digist == request.digist
+      }) {
+        self.requests.remove(at: index)
+      }
+
     }
-    switchFastNode()
+  }
+  
+  private func restoreToRequestList() {
+    let filterRegister = requesting.filter { (value) -> Bool in
+      let (_, requestObject) = value
+      return requestObject.0 != ""
+    }
+    
+    requests += Array(filterRegister.values)
+    requesting.removeAll()
+  }
+  
+  private func handlerRequestPool() {
+    let requestQueue = requests
+    
+    for request in requestQueue {
+      let retry = request.2
+      
+      retry()
+    }
+  }
+  
+  func send<Request: JSONRPCKit.Request>(request: Request) {
+    saveRequest(request: request)
+    if preSendAndDetect() {
+      handlerRequestPool()
+    }
+  }
+  
+  private func refreshData() {
+    UIApplication.shared.coordinator().getLatestData()
   }
 }
 
@@ -217,18 +321,20 @@ extension WebsocketService {
 extension WebsocketService: WebSocketDelegate {
   func websocketDidConnect(socket: WebSocketClient) {
     print("websocket is connected")
-    JsonRPCGenerator.shared.isFetchingID = false
-    self.autoConnectCount = 0
-    self.isConnecting = false
-    self.retry?()
+    isConnecting = false
+    
+    preFetchID()
+    fetchIDs()
   }
   
   func websocketDidDisconnect(socket: WebSocketClient, error: Error?) {
-    self.isConnecting = false
-    JsonRPCGenerator.shared.removeIDs()
+    isConnecting = false
+    
+    removeIDs()
     idGenerator = JsonIdGenerator()
     batchFactory.idGenerator = idGenerator
-
+    restoreToRequestList()
+    
     if let e = error as? WSError {
       print("websocket is disconnected: \(e.message)")
       if e.code == 1000 {
@@ -240,7 +346,6 @@ extension WebsocketService: WebSocketDelegate {
       print("websocket disconnected")
     }
     
-    autoConnect()
   }
   
   func websocketDidReceiveMessage(socket: WebSocketClient, text: String) {
@@ -263,12 +368,23 @@ extension WebsocketService: WebSocketDelegate {
       return
     }
     
-    if let callback = callbacks[id] {
-      callback(data.object)
-      callbacks.removeValue(forKey: id)
+    if let requestData = requesting[id.toString], let request = requestData.1 as? JSONRPCResponse {
+      if requestData.1 is SubscribeMarketRequest {
+        request.response(id)
+        requesting.removeValue(forKey: id.toString)
+        return
+      }
+      
+      if let object = try? request.transferResponse(from: data["result"].object) {
+        request.response(object)
+        requesting.removeValue(forKey: id.toString)
+      }
+      else {
+        request.response(data.object)
+        requesting.removeValue(forKey: id.toString)
+      }
     }
     
-//    print("Received text: \(data)")
   }
   
   func websocketDidReceiveData(socket: WebSocketClient, data: Data) {

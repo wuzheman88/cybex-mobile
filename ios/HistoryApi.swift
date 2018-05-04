@@ -23,24 +23,21 @@ struct AssetPairQueryParams {
   var endTime:Date
 }
 
-struct GetMarketHistoryRequest: JSONRPCKit.Request {
-  typealias Response = [Bucket]
-  
+struct GetMarketHistoryRequest: JSONRPCKit.Request, JSONRPCResponse {
   var queryParams:AssetPairQueryParams
-  
+  var response:RPCSResponse
 
   var method: String {
     return "call"
   }
   
   var parameters: Any? {
-    return [JsonRPCGenerator.shared.ids[apiCategory.history] ?? 0, historyCatogery.get_market_history.rawValue, [queryParams.firstAssetId, queryParams.secondAssetId, queryParams.timeGap, queryParams.startTime.iso8601, queryParams.endTime.iso8601]]
+    return [WebsocketService.shared.ids[apiCategory.history] ?? 0, historyCatogery.get_market_history.rawValue, [queryParams.firstAssetId, queryParams.secondAssetId, queryParams.timeGap, queryParams.startTime.iso8601, queryParams.endTime.iso8601]]
   }
   
-  func response(from resultObject: Any) throws -> Response {
+  func transferResponse(from resultObject: Any) throws -> Any {
     if let response = resultObject as? [[String: Any]] {
       return response.map { data in
-    
         return Bucket(JSON:data)!
       }
     } else {
@@ -50,20 +47,19 @@ struct GetMarketHistoryRequest: JSONRPCKit.Request {
 }
 
 
-struct GetFillOrderHistoryRequest: JSONRPCKit.Request {
-  typealias Response = [JSON]
-  
+struct GetFillOrderHistoryRequest: JSONRPCKit.Request, JSONRPCResponse {
   var pair:Pair
+  var response:RPCSResponse
   
   var method: String {
     return "call"
   }
   
   var parameters: Any? {
-    return [JsonRPCGenerator.shared.ids[apiCategory.history] ?? 0, historyCatogery.get_fill_order_history.rawValue, [pair.base, pair.quote, 40]]
+    return [WebsocketService.shared.ids[apiCategory.history] ?? 0, historyCatogery.get_fill_order_history.rawValue, [pair.base, pair.quote, 40]]
   }
   
-  func response(from resultObject: Any) throws -> Response {
+  func transferResponse(from resultObject: Any) throws -> Any {
     let result = JSON(resultObject).arrayValue
    
     var data:[JSON] = []

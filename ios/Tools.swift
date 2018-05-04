@@ -84,7 +84,7 @@ extension UIViewController {
 
 
   func handlerUpdateVersion(_ completion: CommonCallback?, showNoUpdate: Bool = false) {
-    let (update, url, force) = try! SimpleHTTPService.await(SimpleHTTPService.checkVersion())
+    let (update, url, force) = try! await(SimpleHTTPService.checkVersion())
     if let completion = completion {
       completion()
     }

@@ -51,7 +51,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       if status == .RealStatusNotReachable {
         BeareadToast.showError(text: "network is not available.", inView: self.window!, hide:2)
       }
-      WebsocketService.shared.checkNetworAndConnect()
+      
+      let connected = WebsocketService.shared.checkNetworConnected()
+      if !connected {
+        WebsocketService.shared.reConnect()
+      }
     }
     
     configApplication()
@@ -60,8 +64,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   }
   
   func applicationWillResignActive(_ application: UIApplication) {
-    if WebsocketService.shared.socket.isConnected {
-      WebsocketService.shared.socket.disconnect()
+    if WebsocketService.shared.checkNetworConnected() {
+      WebsocketService.shared.needAutoConnect = false
+      WebsocketService.shared.disConnect()
     }
   }
   

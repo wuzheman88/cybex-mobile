@@ -107,12 +107,12 @@ class AppPropertyActionCreate: LoadingActionCreator {
     _ actionCreatorCallback: @escaping ((ActionCreator) -> Void)
     ) -> Void
   
-  func fetchAssets(with sub:Bool = true, params:AssetPairQueryParams, callback:MarketDataCallback?) -> ActionCreator {
+  func fetchMarket(with sub:Bool = true, params:AssetPairQueryParams, callback:MarketDataCallback?) -> ActionCreator {
     return { state, store in
       self.fetchingMarketList(params, callback: {[weak self] (res) in
         guard let `self` = self else { return }
         
-        if let response = res as? [[Bucket?]], var assets = response[0] as? [Bucket] {
+        if var assets = res as? [Bucket] {
           if assets.count > 0 {
             let asset = assets[0]
             
@@ -155,18 +155,20 @@ class AppPropertyActionCreate: LoadingActionCreator {
             callback?([])
           }
         }
+        else {
+          
+        }
       })
       
  
       
       if sub {
-        let subRequest = SubscribeMarketRequest(ids: [params.firstAssetId, params.secondAssetId])
-     
-        WebsocketService.shared.send(request: [subRequest], callback: { response in
-          if let id = response[0] as? Int {
+        let subRequest = SubscribeMarketRequest(ids: [params.firstAssetId, params.secondAssetId]) { response in
+          if let id = response as? Int {
             store.dispatch(SubscribeSuccess(pair: Pair(base: params.firstAssetId, quote: params.secondAssetId), id: id))
           }
-        })
+        }
+        WebsocketService.shared.send(request: subRequest)
       }
       
       return nil
@@ -175,13 +177,13 @@ class AppPropertyActionCreate: LoadingActionCreator {
   }
   
   func fetchingMarketList(_  params:AssetPairQueryParams, callback:CommonAnyCallback?) {
-    let request = GetMarketHistoryRequest(queryParams: params)
-    
-    WebsocketService.shared.send(request: [request]) { (response) in
+    let request = GetMarketHistoryRequest(queryParams: params) { response in
       if let callback = callback {
         callback(response)
       }
     }
+    
+    WebsocketService.shared.send(request: request)
   }
   
   func cycleFetch(_ asset:Bucket, params:AssetPairQueryParams, callback:CommonAnyCallback?) {
@@ -190,7 +192,7 @@ class AppPropertyActionCreate: LoadingActionCreator {
     re_params.endTime = params.startTime
     self.fetchingMarketList(re_params, callback: {[weak self] (o_res) in
       guard let `self` = self else { return }
-      if let o_response = o_res as? [[Bucket?]], let o_assets = o_response[0] as? [Bucket] {
+      if let o_assets = o_res as? [Bucket] {
         if o_assets.count > 0, let o_asset = o_assets.last {
           if let callback = callback {
             callback(o_asset)

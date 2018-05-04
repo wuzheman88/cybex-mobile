@@ -17,19 +17,18 @@ enum dataBaseCatogery:String {
   case get_limit_orders
 }
 
-struct GetChainIDRequest: JSONRPCKit.Request {
-  typealias Response = String
-  
+struct GetChainIDRequest: JSONRPCKit.Request, JSONRPCResponse {
   var method: String {
     return "call"
   }
+  var response:RPCSResponse
   
   var parameters: Any? {
-    return [JsonRPCGenerator.shared.ids[apiCategory.database] ?? 0, dataBaseCatogery.get_chain_id.rawValue, []]
+    return [WebsocketService.shared.ids[apiCategory.database] ?? 0, dataBaseCatogery.get_chain_id.rawValue, []]
   }
   
-  func response(from resultObject: Any) throws -> Response {
-    if let response = resultObject as? Response {
+  func transferResponse(from resultObject: Any) throws -> Any {
+    if let response = resultObject as? String {
       return response
     } else {
       throw CastError(actualValue: resultObject, expectedType: Response.self)
@@ -37,20 +36,19 @@ struct GetChainIDRequest: JSONRPCKit.Request {
   }
 }
 
-struct GetAssetRequest: JSONRPCKit.Request {
-  typealias Response = [AssetInfo]
-  
+struct GetAssetRequest: JSONRPCKit.Request, JSONRPCResponse {
   var ids:[String]
+  var response:RPCSResponse
   
   var method: String {
     return "call"
   }
   
   var parameters: Any? {
-    return [JsonRPCGenerator.shared.ids[apiCategory.database] ?? 0, dataBaseCatogery.get_objects.rawValue, [ids]]
+    return [WebsocketService.shared.ids[apiCategory.database] ?? 0, dataBaseCatogery.get_objects.rawValue, [ids]]
   }
   
-  func response(from resultObject: Any) throws -> Response {
+  func transferResponse(from resultObject: Any) throws -> Any {
     if let response = resultObject as? [[String: Any]] {
       return response.map { data in
         
@@ -63,38 +61,49 @@ struct GetAssetRequest: JSONRPCKit.Request {
   }
 }
 
-struct SubscribeMarketRequest: JSONRPCKit.Request {
-  typealias Response = Any
-  
+struct SubscribeMarketRequest: JSONRPCKit.Request, RevisionRequest, JSONRPCResponse {
   var ids:[String]
   
   var method: String {
     return "call"
   }
   
+  var response:RPCSResponse
+
   var parameters: Any? {
-    return [JsonRPCGenerator.shared.ids[apiCategory.database] ?? 0, dataBaseCatogery.subscribe_to_market.rawValue, [WebsocketService.shared.idGenerator.currentId + 1, ids[0], ids[1]]]
+    return [WebsocketService.shared.ids[apiCategory.database] ?? 0, dataBaseCatogery.subscribe_to_market.rawValue, [WebsocketService.shared.idGenerator.currentId + 1, ids[0], ids[1]]]
   }
   
-  func response(from resultObject: Any) throws -> Response {
-    return response
+  func revisionParameters(_ data:Any) -> Any {
+    var data = JSON(data)
+    
+    if var params = data["params"].array, let id = data["id"].int , let event = params[1].string, event == dataBaseCatogery.subscribe_to_market.rawValue, var subParams = params[2].array {
+      subParams[0] = JSON(id)
+      params[2] = JSON(subParams)
+      data["params"] = JSON(params)
+    }
+
+    return data
+  }
+  
+  func transferResponse(from resultObject: Any) throws -> Any {
+      return resultObject
   }
 }
 
-struct getLimitOrdersRequest: JSONRPCKit.Request {
-  typealias Response = [LimitOrder]
-  
+struct getLimitOrdersRequest: JSONRPCKit.Request, JSONRPCResponse {
   var pair:Pair
+  var response:RPCSResponse
   
   var method: String {
     return "call"
   }
   
   var parameters: Any? {
-    return [JsonRPCGenerator.shared.ids[apiCategory.database] ?? 0, dataBaseCatogery.get_limit_orders.rawValue, [pair.base, pair.quote, 20]]
+    return [WebsocketService.shared.ids[apiCategory.database] ?? 0, dataBaseCatogery.get_limit_orders.rawValue, [pair.base, pair.quote, 20]]
   }
   
-  func response(from resultObject: Any) throws -> Response {
+  func transferResponse(from resultObject: Any) throws -> Any {
     let result = JSON(resultObject).arrayValue
     if result.count > 1 {
       var data:[LimitOrder] = []

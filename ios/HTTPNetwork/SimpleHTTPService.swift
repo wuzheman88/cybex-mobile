@@ -16,20 +16,32 @@ enum SimpleHttpError: Error {
   case NotExistData
 }
 
-class SimpleHTTPService {
+struct Await {
   struct Queue {
     static let await = DispatchQueue(label: "com.nbltrsut.awaitqueue", attributes: .concurrent)
+    static let async = DispatchQueue(label: "com.nbltrsut.asyncqueue", attributes: .concurrent)
   }
+}
 
-  @discardableResult
-  static func await<T>(_ promise: Promise<T>) throws -> T {
-    return try Queue.await.ak.await(promise)
-  }
-  
-  @discardableResult
-  static func await<T>(_ body: @escaping () throws -> T) throws -> T {
-    return try Queue.await.ak.await(body)
-  }
+@discardableResult
+func await<T>(_ promise: Promise<T>) throws -> T {
+  return try Await.Queue.await.ak.await(promise)
+}
+
+@discardableResult
+func await<T>(_ body: @escaping () throws -> T) throws -> T {
+  return try Await.Queue.await.ak.await(body)
+}
+
+func async<T>(_ body: @escaping () throws -> T) -> Promise<T> {
+  return Await.Queue.async.async(.promise, execute: body)
+}
+
+func async(_ body: @escaping () throws -> Void) {
+  Await.Queue.async.ak.async(body)
+}
+
+class SimpleHTTPService {
 
 }
 
@@ -39,7 +51,7 @@ extension SimpleHTTPService {
       var request = URLRequest(url: URL(string: AppConfiguration.SERVER_MARKETLIST_URLString)!)
       request.cachePolicy = .reloadIgnoringCacheData
       
-      Alamofire.request(request).responseJSON(queue: Queue.await, options: .allowFragments, completionHandler: { (response) in
+      Alamofire.request(request).responseJSON(queue: Await.Queue.await, options: .allowFragments, completionHandler: { (response) in
         guard let value = response.result.value else {
           seal.fulfill([])
           return
@@ -63,7 +75,7 @@ extension SimpleHTTPService {
     
     let (promise, seal) = Promise<(update: Bool, url: String, force: Bool)>.pending()
     
-    Alamofire.request(request).responseJSON(queue: Queue.await, options: .allowFragments, completionHandler: { (response) in
+    Alamofire.request(request).responseJSON(queue: Await.Queue.await, options: .allowFragments, completionHandler: { (response) in
       guard let value = response.result.value else {
         seal.fulfill((false, "", false))
         return
