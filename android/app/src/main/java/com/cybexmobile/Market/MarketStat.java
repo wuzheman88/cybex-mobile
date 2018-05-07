@@ -20,6 +20,9 @@ import com.cybexmobile.graphene.chain.price;
 import com.cybexmobile.graphene.chain.utils;
 import com.google.gson.internal.LinkedTreeMap;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -69,6 +72,7 @@ public class MarketStat {
         if (!isDeserializerRegistered) {
             isDeserializerRegistered = true;
         }
+        EventBus.getDefault().register(this);
 
     }
 
@@ -102,22 +106,27 @@ public class MarketStat {
             public void continueGetWebSocketConnect() {
                 Log.e("shefeng", mCoinPairList.toString());
                 wraper.build_connect();
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        startFirstActivityListener.startToRunFirstActivity();
-                    }
-                });
+                if(startFirstActivityListener != null) {
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            startFirstActivityListener.startToRunFirstActivity();
+                        }
+                    });
+                }
             }
         });
+    }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(String string) {
+        switch (string) {
+            case "onReconnect":
+                getWebSocketConnect(null);
+                startRun(null);
+                break;
+        }
 
-//        try {
-//            wraper.set_subscribe_market(true);
-//            startFirstActivityListener.startToRunFirstActivity();
-//        } catch (NetworkStatusException e) {
-//            e.printStackTrace();
-//        }
     }
 
     private void getCoinPairConfiguration(final callBackListener listener) {
@@ -178,24 +187,30 @@ public class MarketStat {
 
         @Override
         public void run() {
-            mWatchListDateList.add(getWatchLIstData(mBase, mQuote));
-            if (mWatchListDateList.size() == mCoinPairList.size()) {
-                Collections.sort(mWatchListDateList, new Comparator<WatchListData>() {
-                    @Override
-                    public int compare(WatchListData o1, WatchListData o2) {
-                        return o1.getVol() > o2.getVol() ? -1 : 1;
-                    }
-                });
-
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (mListener != null) {
-                            mListener.getResultListener(mWatchListDateList);
+            try {
+                String subscribeId = wraper.subscribe_to_market(mBase, mQuote);
+                mWatchListDateList.add(getWatchLIstData(mBase, mQuote, subscribeId));
+                if (mWatchListDateList.size() == mCoinPairList.size()) {
+                    Collections.sort(mWatchListDateList, new Comparator<WatchListData>() {
+                        @Override
+                        public int compare(WatchListData o1, WatchListData o2) {
+                            return o1.getVol() > o2.getVol() ? -1 : 1;
                         }
-                    }
-                });
+                    });
+
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (mListener != null) {
+                                mListener.getResultListener(mWatchListDateList);
+                            }
+                        }
+                    });
+                }
+            } catch (NetworkStatusException e) {
+                e.printStackTrace();
             }
+
         }
     }
 
@@ -647,11 +662,10 @@ public class MarketStat {
         }
     }
 
-    private WatchListData getWatchLIstData(String base, String quote) {
+    public WatchListData getWatchLIstData(String base, String quote, String subscribeId) {
         try {
             asset_object baseAssetLocal = wraper.get_objects(base);
             asset_object quoteAssetLocal = wraper.get_objects(quote);
-            String subscribeId = wraper.subscribe_to_market(base, quote);
             MarketTicker marketTicker;
             List<HistoryPrice> historyPriceList = requestFor24HoursMarketHistory(baseAssetLocal, quoteAssetLocal);
             marketTicker = wraper.get_ticker(base, quote);
@@ -839,7 +853,7 @@ public class MarketStat {
         }
     }
 
-    public List<WatchListData> getWatchListData() {
+    public List<WatchListData> getWatchListDataList() {
         return mWatchListDateList;
     }
 }

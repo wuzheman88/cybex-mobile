@@ -60,7 +60,6 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
-import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -169,7 +168,7 @@ public class MarketsActivity extends AppCompatActivity implements MarketStat.OnM
 
         mRecyeclerViewLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
         mRecyclerView.setLayoutManager(mRecyeclerViewLayoutManager);
-        mCoinPairRecyclerViewAdapter = new CoinPairRecyclerViewAdapter(this, mMarketStat.getWatchListData(), id, this);
+        mCoinPairRecyclerViewAdapter = new CoinPairRecyclerViewAdapter(this, mMarketStat.getWatchListDataList(), id, this);
         mRecyclerView.setAdapter(mCoinPairRecyclerViewAdapter);
         mRecyclerView.scrollToPosition(id);
 
@@ -295,19 +294,18 @@ public class MarketsActivity extends AppCompatActivity implements MarketStat.OnM
     }
 
     private void addContentToView(WatchListData watchListData) {
-
-        NumberFormat formatter = new DecimalFormat("##,##0.00000");
+        NumberFormat formatter = MyUtils.getSuitableDecimalFormat(watchListData.getQuote());
         NumberFormat formatter2 = new DecimalFormat("0.00");
         mCurrentPriceView.setText(watchListData.getCurrentPrice() == 0.f ? "-" : String.valueOf(formatter.format(watchListData.getCurrentPrice())));
         mHighPriceView.setText(watchListData.getHigh() == 0.f ? "-" : String.format("High:%s", String.valueOf(formatter.format(watchListData.getHigh()))));
         mLowPriceView.setText(watchListData.getLow() == 0.f ? "-" : String.format("Low:%s", String.valueOf(formatter.format(watchListData.getLow()))));
-        mVolumeBaseView.setText(watchListData.getVol() == 0.f ? "-" : String.format("Vol:%s", MyUtils.format(watchListData.getVol())));
+        mVolumeBaseView.setText(watchListData.getVol() == 0.f ? "-" : String.format("Vol:%s", MyUtils.getNumberKMGExpressionFormat(watchListData.getVol())));
 
         double volQuote = 0.f;
         if (watchListData.getCurrentPrice() != 0.f) {
             volQuote = watchListData.getVol() / watchListData.getCurrentPrice();
         }
-        mVolumeQuoteView.setText(volQuote == 0.f ? "-" : MyUtils.format(watchListData.getQuoteVol()));
+        mVolumeQuoteView.setText(volQuote == 0.f ? "-" : MyUtils.getNumberKMGExpressionFormat(watchListData.getQuoteVol()));
 
         double change = 0.f;
         if (watchListData.getChange() != null) {

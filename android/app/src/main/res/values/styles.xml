@@ -1,13 +1,4 @@
 <resources>
-
-    <!-- Base application theme. -->
-    <!--<style name="AppTheme" parent="android:Theme.Holo">-->
-    <!--&lt;!&ndash; Customize your theme here. &ndash;&gt;-->
-    <!--&lt;!&ndash;<item name="colorPrimary">@color/colorPrimary</item>&ndash;&gt;-->
-    <!--&lt;!&ndash;<item name="colorPrimaryDark">@color/colorPrimaryDark</item>&ndash;&gt;-->
-    <!--&lt;!&ndash;<item name="colorAccent">@color/colorAccent</item>&ndash;&gt;-->
-    <!--</style>-->
-
     <style name="AppTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
         <!-- Dark theme base colours -->
         <item name="colorPrimary">@color/darkColorPrimary</item>

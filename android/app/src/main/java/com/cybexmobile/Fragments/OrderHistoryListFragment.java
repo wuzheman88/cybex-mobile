@@ -88,7 +88,7 @@ public class OrderHistoryListFragment extends Fragment implements MarketStat.OnM
         } else {
             recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         }
-        mOrderHistoryItemRecycerViewAdapter = new OrderHistoryItemRecyclerViewAdapter(mOrderBook, mListener, getContext());
+        mOrderHistoryItemRecycerViewAdapter = new OrderHistoryItemRecyclerViewAdapter(mQuoteName, mOrderBook, mListener, getContext());
         recyclerView.setAdapter(mOrderHistoryItemRecycerViewAdapter);
         return view;
     }

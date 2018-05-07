@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
@@ -27,7 +26,6 @@ import com.cybexmobile.Fragments.FaqFragment;
 import com.cybexmobile.Fragments.SettingFragment;
 import com.cybexmobile.Fragments.WatchLIstFragment;
 import com.cybexmobile.HelperClass.ActionBarTitleHelper;
-import com.cybexmobile.HelperClass.BottomNavigationBehavior;
 import com.cybexmobile.HelperClass.BottomNavigationViewHelper;
 import com.cybexmobile.HelperClass.StoreLanguageHelper;
 import com.cybexmobile.R;
@@ -89,7 +87,7 @@ public class NavButtonActivity extends AppCompatActivity implements WatchLIstFra
         setContentView(R.layout.activity_nav_button);
         initFragments(savedInstanceState);
         if (mWatchListFragment != null) {
-            if (MarketStat.getInstance().getWatchListData().size() == 0)
+            if (MarketStat.getInstance().getWatchListDataList().size() == 0)
                 MarketStat.getInstance().startRun(mWatchListFragment);
         }
         mBottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
@@ -326,17 +324,4 @@ public class NavButtonActivity extends AppCompatActivity implements WatchLIstFra
     public void onFragmentInteraction(Uri uri) {
 
     }
-
-//    private void changeAppLanguage() {
-//        String sta = StoreLanguageHelper.getLanguageLocal(this);
-//        if (sta != null && !"".equals(sta)) {
-//            Locale myLocale = new Locale(sta);
-//            Resources res = getResources();
-//            DisplayMetrics dm = res.getDisplayMetrics();
-//            Configuration conf = res.getConfiguration();
-//            conf.locale = myLocale;
-////            res.updateConfiguration(conf, dm);
-//            this.createConfigurationContext(conf);
-//        }
-//    }
 }

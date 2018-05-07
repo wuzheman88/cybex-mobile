@@ -28,12 +28,14 @@ import java.util.List;
 public class OrderHistoryItemRecyclerViewAdapter extends RecyclerView.Adapter<OrderHistoryItemRecyclerViewAdapter.ViewHolder> {
 
     private OrderBook mValues;
+    private String mQuoteName;
     private final OnListFragmentInteractionListener mListener;
     private Context mContext;
 
 
-    public OrderHistoryItemRecyclerViewAdapter(OrderBook orderBook, OnListFragmentInteractionListener listener, Context context) {
+    public OrderHistoryItemRecyclerViewAdapter(String quoteName, OrderBook orderBook, OnListFragmentInteractionListener listener, Context context) {
         mValues = orderBook;
+        mQuoteName = quoteName;
         mListener = listener;
         mContext = context;
     }
@@ -47,14 +49,14 @@ public class OrderHistoryItemRecyclerViewAdapter extends RecyclerView.Adapter<Or
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        NumberFormat formatter = new DecimalFormat("#,##0.00000");
+        NumberFormat formatter = MyUtils.getSuitableDecimalFormat(mQuoteName);
         if(position < mValues.bids.size()) {
             holder.mBuyPrice.setText(String.valueOf(formatter.format(mValues.bids.get(position).price)));
-            holder.mVolume.setText(String.valueOf(MyUtils.format(mValues.bids.get(position).quote)));
+            holder.mVolume.setText(String.valueOf(MyUtils.getNumberKMGExpressionFormat(mValues.bids.get(position).quote)));
         }
         if(position < mValues.asks.size()) {
             holder.mSellPrice.setText(String.valueOf(formatter.format(mValues.asks.get(position).price)));
-            holder.mSellVolume.setText(String.valueOf(MyUtils.format(mValues.asks.get(position).quote)));
+            holder.mSellVolume.setText(String.valueOf(MyUtils.getNumberKMGExpressionFormat(mValues.asks.get(position).quote)));
         }
 
         float percentageBids = 0f;

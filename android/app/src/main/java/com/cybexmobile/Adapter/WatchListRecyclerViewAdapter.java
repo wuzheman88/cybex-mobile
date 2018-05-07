@@ -40,16 +40,16 @@ public class WatchListRecyclerViewAdapter extends RecyclerView.Adapter<WatchList
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        NumberFormat formatter = new DecimalFormat("##,##0.00000");
+        holder.mItem = mValues.get(position);
+        NumberFormat formatter = MyUtils.getSuitableDecimalFormat(holder.mItem != null ? holder.mItem.getQuote() : "");
         NumberFormat formatter2 = new DecimalFormat("0.00");
         holder.mItem = mValues.get(position);
         holder.mBaseCurrency.setText(mValues.get(position).getBase());
         holder.mQuoteCurrency.setText(String.format("/%s", mValues.get(position).getQuote()));
-        holder.mVolume.setText(holder.mItem.getVol() == 0.f ? "-" : String.format("V:%s", MyUtils.format(mValues.get(position).getVol())));
+        holder.mVolume.setText(holder.mItem.getVol() == 0.f ? "-" : String.format("V:%s", MyUtils.getNumberKMGExpressionFormat(mValues.get(position).getVol())));
         holder.mCurrentPrice.setText(holder.mItem.getCurrentPrice() == 0.f ? "-" : String.valueOf(formatter.format(mValues.get(position).getCurrentPrice())));
         holder.mHighPrice.setText(holder.mItem.getHigh() == 0.f ? "-" : String.format("H:%s", String.valueOf(formatter.format(mValues.get(position).getHigh()))));
         holder.mLowPrice.setText(holder.mItem.getLow() == 0.f ? "-" : String.format("/L:%s", String.valueOf(formatter.format(mValues.get(position).getLow()))));
-//        holder.mCoinSymbol.setImageDrawable(getCoinIcon(holder.mItem.getQuote()));
         loadImage(holder.mItem.getQuoteId(), holder.mCoinSymbol);
 
         double change = 0.f;
@@ -158,5 +158,10 @@ public class WatchListRecyclerViewAdapter extends RecyclerView.Adapter<WatchList
     private void loadImage(String quoteId, ImageView mCoinSymbol) {
         String quoteIdWithUnderLine = quoteId.replaceAll("\\.", "_");
         Picasso.get().load("https://cybex.io/icons/" + quoteIdWithUnderLine +"_grey.png").into(mCoinSymbol);
+    }
+
+    public void setItemToPosition(WatchListData watchListData, int position) {
+        mValues.set(position, watchListData);
+        notifyItemChanged(position);
     }
 }

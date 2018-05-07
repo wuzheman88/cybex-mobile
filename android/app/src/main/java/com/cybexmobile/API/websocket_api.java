@@ -233,8 +233,7 @@ public class websocket_api extends WebSocketListener {
                 mHashMapIdToProcess.clear();
             }
             connect();
-            MarketStat.getInstance().startRun(null);
-//            EventBus.getDefault().post("get_message");
+            //EventBus.getDefault().post("onReconnect");
         }
     }
 
@@ -918,7 +917,7 @@ public class websocket_api extends WebSocketListener {
 
     private <T> Reply<T> sendForReplyImpl(Call callObject,
                                           ReplyObjectProcess<Reply<T>> replyObjectProcess) throws NetworkStatusException {
-        Log.e("send","sendMessage");
+        Log.e("send", "sendMessage");
         Gson gson = global_config_object.getInstance().getGsonBuilder().create();
         String strMessage = gson.toJson(callObject);
 

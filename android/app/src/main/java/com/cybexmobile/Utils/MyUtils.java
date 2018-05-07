@@ -1,6 +1,8 @@
 package com.cybexmobile.Utils;
 
 
+import com.cybexmobile.Fragments.Data.WatchListData;
+
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -9,7 +11,7 @@ public class MyUtils {
     /**
      * Prevent class instantiation.
      */
-    private   MyUtils() {
+    private MyUtils() {
     }
 
     public static String getVolUnit(float num) {
@@ -54,15 +56,23 @@ public class MyUtils {
 
     public static String getDecimalFormatVol(float vol) {
         DecimalFormat decimalFormat = new DecimalFormat("#0.00");//构造方法的字符格式这里如果小数不足2位,会以0补足.
-        return decimalFormat.format(vol);//format 返回的是字符串
+        return decimalFormat.format(vol);//getNumberKMGExpressionFormat 返回的是字符串
     }
 
-    public static String format(double number) {
+    public static NumberFormat getSuitableDecimalFormat(String quoteSymbol) {
+        if (quoteSymbol.equals("JADE.MT")) {
+            return new DecimalFormat("##,##0.00000000");
+        } else {
+            return new DecimalFormat("##,##0.00000");
+        }
+    }
+
+    public static String getNumberKMGExpressionFormat(double number) {
 
         String result = null;
         int e = (int) Math.floor(Math.log10(number));
 
-        if(e >= 3) {
+        if (e >= 3) {
 
             if (e >= 3) {
                 number = number / Math.pow(10, 3);
