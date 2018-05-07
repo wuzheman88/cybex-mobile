@@ -27,10 +27,7 @@ class HomeViewController: BaseViewController, UINavigationControllerDelegate, UI
     setupUI()
     
     handlerUpdateVersion(nil)
-    
-    self.startLoading()
-    requestData()
-    
+        
     BitShareCoordinator.callMethod("{\"method\": \"abc\", \"params\": [ \"def\", \"hij\", 0, 3 , \"xxx\" ]}")
   }
   
@@ -50,16 +47,6 @@ class HomeViewController: BaseViewController, UINavigationControllerDelegate, UI
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
   }
-
-  func requestData() {
-    WebsocketService.shared.connect()
-  }
-  
-  @objc func refreshTableView() {
-    if !WebsocketService.shared.checkNetworConnected() {
-        WebsocketService.shared.reConnect()
-    }
-  }
   
   func commonObserveState() {
     coordinator?.subscribe(errorSubscriber) { sub in
@@ -78,13 +65,9 @@ class HomeViewController: BaseViewController, UINavigationControllerDelegate, UI
   override func configureObserveState() {
     commonObserveState()
     
-    NotificationCenter.default.addObserver(
-      self, selector: #selector(refreshTableView), name: .UIApplicationDidBecomeActive, object: nil)
-
     app_data.data.asObservable().distinctUntilChanged()
       .filter({$0.count == AssetConfiguration.shared.asset_ids.count})
       .subscribe(onNext: { (s) in
-        self.endLoading()
         DispatchQueue.main.async {
           self.tableView.reloadData()
           self.tableView.isHidden = false

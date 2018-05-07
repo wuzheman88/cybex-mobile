@@ -44,28 +44,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     appCoordinator = AppCoordinator(rootVC: rootVC)
     appCoordinator.start()
     
-  
     RealReachability.sharedInstance().startNotifier()
     NotificationCenter.default.addObserver(forName: NSNotification.Name.realReachabilityChanged, object: nil, queue: nil) { (notifi) in
-      let status = RealReachability.sharedInstance().currentReachabilityStatus()
-      if status == .RealStatusNotReachable {
-        BeareadToast.showError(text: "network is not available.", inView: self.window!, hide:2)
-      }
-      
-      let connected = WebsocketService.shared.checkNetworConnected()
-      if !connected {
-        WebsocketService.shared.reConnect()
-      }
+      self.handlerNetworkChanged()
     }
     
     configApplication()
+    self.handlerNetworkChanged()
 
     return true
   }
   
   func applicationWillResignActive(_ application: UIApplication) {
     if WebsocketService.shared.checkNetworConnected() {
-      WebsocketService.shared.needAutoConnect = false
+      if let vc = app_coodinator.topViewController() {
+        vc.endLoading()
+      }
       WebsocketService.shared.disConnect()
     }
   }
@@ -78,6 +72,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   }
   
   func applicationDidBecomeActive(_ application: UIApplication) {
+    let status = RealReachability.sharedInstance().currentReachabilityStatus()
+    let reactable = (status != .RealStatusNotReachable && status != .RealStatusUnknown)
+    
+    if !WebsocketService.shared.checkNetworConnected() && !WebsocketService.shared.needAutoConnect && reactable {//避免第一次 不是主动断开的链接
+      if let vc = app_coodinator.topViewController() {
+        vc.startLoading()
+      }
+      WebsocketService.shared.reConnect()
+    }
   }
   
   func applicationWillTerminate(_ application: UIApplication) {
@@ -86,16 +89,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
   }
   
+}
+
+extension AppDelegate {
   func configApplication() {
     UIApplication.shared.theme_setStatusBarStyle([.lightContent, .default], animated: true)
-
+    
     if !Defaults.hasKey(.theme) {
       ThemeManager.setTheme(index: 0)
     }
     else {
       ThemeManager.setTheme(index: Defaults[.theme])
     }
-   
+    
     if !Defaults.hasKey(.language) {
       Localize.setCurrentLanguage("en")
     }
@@ -103,6 +109,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       Localize.setCurrentLanguage(Defaults[.language])
     }
     
-    _ = WebsocketService.shared
+    app_data.data.asObservable()
+      .filter({$0.count == AssetConfiguration.shared.asset_ids.count})
+      .subscribe(onNext: { (s) in
+        if let vc = app_coodinator.topViewController() {
+          vc.endLoading()
+        }
+      }, onError: nil, onCompleted: nil, onDisposed: nil).disposed(by: disposeBag)
+  }
+  
+  func handlerNetworkChanged() {
+    let status = RealReachability.sharedInstance().currentReachabilityStatus()
+    if status == .RealStatusNotReachable || status  == .RealStatusUnknown {
+      WebsocketService.shared.disConnect()
+      if let vc = app_coodinator.topViewController() {
+        vc.endLoading()
+      }
+      BeareadToast.showError(text: "network is not available.", inView: self.window!, hide:2)
+    }
+    else {
+      let connected = WebsocketService.shared.checkNetworConnected()
+      if !connected {
+        if let vc = app_coodinator.topViewController() {
+          vc.startLoading()
+        }
+        WebsocketService.shared.reConnect()
+      }
+    }
   }
 }

@@ -78,7 +78,7 @@
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="V: -" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="hcC-8S-0TF">
                             <rect key="frame" x="0.0" y="24.5" width="95.5" height="25"/>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                            <color key="textColor" red="0.3956063985824585" green="0.42749041318893433" blue="0.53351551294326782" alpha="0.49616476893424988" colorSpace="calibratedRGB"/>
+                            <color key="textColor" name="steel50" red="0.471" green="0.506" blue="0.604" alpha="0.500" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="H: - L: -" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="2Jf-B1-778">

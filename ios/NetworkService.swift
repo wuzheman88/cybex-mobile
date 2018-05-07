@@ -150,6 +150,7 @@ class WebsocketService {
   }
   
   func disConnect() {
+    needAutoConnect = false
     socket.disconnect()
   }
   
@@ -335,16 +336,18 @@ extension WebsocketService: WebSocketDelegate {
     batchFactory.idGenerator = idGenerator
     restoreToRequestList()
     
+    if needAutoConnect {
+      reConnect()
+    }
+    
     if let e = error as? WSError {
       print("websocket is disconnected: \(e.message)")
-      if e.code == 1000 {
-        return
-      }
     } else if let e = error {
       print("websocket is disconnected: \(e.localizedDescription)")
     } else {
       print("websocket disconnected")
     }
+    
     
   }
   

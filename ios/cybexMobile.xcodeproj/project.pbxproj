@@ -30092,6 +30092,7 @@
 				18570DA782C9578569D5A4D5 /* [CP] Embed Pods Frameworks */,
 				73D9776E20562E3400CB7DE1 /* R.swift */,
 				73E6B2BF208DBF5600B015E5 /* fabric */,
+				73556A0920A008E700F1EDFF /* color set */,
 			);
 			buildRules = (
 			);
@@ -30806,6 +30807,20 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
+		};
+		73556A0920A008E700F1EDFF /* color set */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "color set";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#if [ \"${CONFIGURATION}\" = \"Release\" ]; then\n    python scripts/named_colors_compat.py\n#fi";
 		};
 		73D9776E20562E3400CB7DE1 /* R.swift */ = {
 			isa = PBXShellScriptBuildPhase;

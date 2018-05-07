@@ -85,6 +85,15 @@ class AppCoordinator {
     let container = [homeCoordinator, faqCoordinator, settingCoordinator] as [NavCoordinator]
     return container[self.rootVC.selectedIndex]
   }
+  
+  func topViewController() -> BaseViewController? {
+    if let vc = curDisplayingCoordinator().rootVC.topViewController as? BaseViewController {
+      return vc
+    }
+    
+    return nil
+  }
+
 }
 
 extension UIApplication {
